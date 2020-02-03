@@ -1,2 +1,2 @@
 # Bayesian-Bricks
-Basic building bricks in Bayesian modeling.
+Basic building blocks in Bayesian modeling.
