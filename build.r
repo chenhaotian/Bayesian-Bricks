@@ -4,7 +4,7 @@ library(usethis)
 
 system("rm -r man")
 system("rm NAMESPACE DESCRIPTION")
-system("rm .#* *~")
+
 
 create_package("../bbricks",rstudio = FALSE)
 
@@ -51,3 +51,7 @@ write(Description,file = "DESCRIPTION")
 use_mit_license(name="Haotian Chen")
 
 
+system("rm .#* *~")
+devtools::build()
+
+## devtools::release()
