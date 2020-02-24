@@ -1951,4 +1951,3 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j){
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
     c(u=us[idx],k=ks[idx],z=zs[idx])
 }
-

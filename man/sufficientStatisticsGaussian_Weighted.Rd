@@ -24,6 +24,7 @@ for a design matrix x(each row is a samples), the sufficient statistics are \cr
 }
 \examples{
 x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
-sufficientStatisticsGaussian(x,foreach = FALSE)
+w <- runif(10)
+sufficientStatisticsGaussian_Weighted(x,w,foreach = FALSE)
 sufficientStatisticsGaussian(x,foreach = TRUE)
 }

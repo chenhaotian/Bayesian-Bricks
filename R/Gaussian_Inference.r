@@ -161,7 +161,8 @@ sufficientStatisticsGaussian <- function(x,foreach=FALSE){
 #' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
 #' @examples
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
-#' sufficientStatisticsGaussian(x,foreach = FALSE)
+#' w <- runif(10)
+#' sufficientStatisticsGaussian_Weighted(x,w,foreach = FALSE)
 #' sufficientStatisticsGaussian(x,foreach = TRUE)
 sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
     if(missing(x)|missing(w)) stop("'x' or 'w' not specified!")
@@ -547,6 +548,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.Gaussian
 #' @examples
 #' ## update the piror with new observations then calculate the MAP estimate
 #' x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
+#' w <- runif(1000)
 #' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
