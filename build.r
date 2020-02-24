@@ -52,6 +52,16 @@ use_mit_license(name="Haotian Chen")
 
 devtools::use_travis()                  #add to .Rbuildignore
 
+travis <- "language: r
+r:
+  - oldrel
+  - release
+  - devel
+  - bioc-devel
+  - bioc-release
+"
+write(travis,file = ".travis.yml")
+
 system("rm .#* *~")
 devtools::build()
 
