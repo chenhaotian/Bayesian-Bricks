@@ -243,8 +243,12 @@ dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
 
     if(is.null(A) & !is.null(Sigma)) A <- chol(Sigma)
     if(is.null(A) & is.null(Sigma)) stop("Error in dGaussian(): at least one of 'Sigma' and 'A' should be non-NULL!")
-
-    stop("dGaussian() is not defined yet")
+    
+    p <- ncol(x)
+    b <- backsolve(A,diag(p))
+    logp <- -(p/2)*log(2*pi) + sum(log(diag(b))) - 0.5*colSums((crossprod(b,(t(x)-mu)))^2)
+    if(!LOG) logp <- exp(logp)
+    logp
 }
 
 #' Random Generation for (multivariate) t distribution
