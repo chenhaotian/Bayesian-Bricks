@@ -17,4 +17,5 @@ Collate:
     'Categorical_Inference.r'
     'Gaussian_Inference.r'
     'Dirichlet_Process.r'
+    'bbricks-package.R'
     'testData.r'

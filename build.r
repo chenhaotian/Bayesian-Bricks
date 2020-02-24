@@ -8,16 +8,14 @@ system("rm NAMESPACE DESCRIPTION")
 
 create_package("../bbricks",rstudio = FALSE)
 
-
 document()
 
-install()
-
-library(bbricks)
-
-uninstall()
-
-## remove.packages("bbricks")
+Rbuildignore <- "^LICENSE\\.md$
+^\\.travis\\.yml$
+^build\\.r$
+^\\.#build\\.r$
+"
+write(Rbuildignore,file = ".Rbuildignore")
 
 ## Version Reference:
 ##    http://r-pkgs.had.co.nz/release.html
@@ -43,6 +41,7 @@ Collate:
     'Categorical_Inference.r'
     'Gaussian_Inference.r'
     'Dirichlet_Process.r'
+    'bbricks-package.R'
     'testData.r'
 ")
 
@@ -50,7 +49,7 @@ write(Description,file = "DESCRIPTION")
 
 use_mit_license(name="Haotian Chen")
 
-devtools::use_travis()                  #add to .Rbuildignore
+## devtools::use_travis()                  #add to .Rbuildignore
 
 travis <- "language: r
 r:
@@ -66,3 +65,11 @@ system("rm .#* *~")
 devtools::build()
 
 ## devtools::release()
+
+
+install()
+
+library(bbricks)
+
+uninstall()
+## remove.packages("bbricks")

@@ -1,3 +1,5 @@
 ^LICENSE\.md$
 ^\.travis\.yml$
 ^build\.r$
+^\.#build\.r$
+
