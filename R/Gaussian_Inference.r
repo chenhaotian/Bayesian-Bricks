@@ -572,14 +572,6 @@ MAP.GaussianNIW <- function(obj){
 #' @param obj A "GaussianNIW" object.
 #' @return A named list, the MPE estimate of "theta".
 #' @export
-#' @examples
-#' ## update the piror with new observations then calculate the MAP estimate
-#' x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
-#' w <- runif(1000)
-#' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
-#' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
-#' for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
-#' MPE(obj)
 MPE.GaussianNIW <- function(obj){
     stop("MPE method for class 'GaussianNIW' is not implemented yet")
 }
