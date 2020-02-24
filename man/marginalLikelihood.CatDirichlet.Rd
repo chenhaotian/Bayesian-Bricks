@@ -4,7 +4,7 @@
 \alias{marginalLikelihood.CatDirichlet}
 \title{Marginal likelihood of a "CatDirichlet" object}
 \usage{
-\method{marginalLikelihood}{CatDirichlet}(obj, x, LOG = TRUE)
+\method{marginalLikelihood}{CatDirichlet}(obj, x, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
@@ -12,6 +12,8 @@
 \item{x}{numeric/integer/character vector, observed Categorical samples.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 numeric, the marginal likelihood.
@@ -28,7 +30,7 @@ obj <- CatDirichlet(gamma=list(alpha=runif(26,1,2),uniqueLabels = letters))
 x <- sample(letters,size = 20,replace = TRUE)
 marginalLikelihood(obj=obj,x=x,LOG = TRUE) #marginal likelihood
 ss <- sufficientStatistics(obj = obj,x=x)
-marginalLikelihood_bySufficientStatistics(obj=obj,ss = ss,LOG = TRUE) #marginal likelihood by sufficient statistics
+marginalLikelihood_bySufficientStatistics(obj=obj,ss = ss,LOG = TRUE)
 }
 \seealso{
 @seealso \code{\link{CatDirichlet}}, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}}

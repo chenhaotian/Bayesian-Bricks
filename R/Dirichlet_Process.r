@@ -6,17 +6,9 @@
 
 #' @include Bayesian_Bricks.r Categorical_Inference.r Gaussian_Inference.r
 
-setClass("CatDP")
-setClass("CatHDP")
-setClass("CatHDP2")
-setClass("DP")                   #a DP object is no longer a BasicBayesian object
-setClass("HDP")
-setClass("HDP2")
 
-#' a plus b with NA values
-#'
-#' make NA+NA=0 and NA+nonNA=0 instead of NA+NA=NA and NA+nonNA=NA
-#'
+#' @title a plus b with NA values
+#' @description make NA+NA=0 and NA+nonNA=0 instead of NA+NA=NA and NA+nonNA=NA
 #' @param e1 numeric
 #' @param e2 numeric
 `%plus%` <- function(e1,e2){
@@ -48,7 +40,7 @@ setClass("HDP2")
 CatDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(alpha=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"CatDP")) stop("'objCopy' must be of class 'CatDP'")
+        if(!.is(objCopy,"CatDP")) stop("'objCopy' must be of class 'CatDP'")
         object$gamma <- objCopy$gamma
         object$H <- objCopy$H
         object$F <- objCopy$F
@@ -88,14 +80,17 @@ CatDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(alpha=1)){
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
 #' @export
 #' @examples
 #' x <- sample(1L:10L,size = 4,replace = TRUE)
 #' obj <- CatDP()
-#' sufficientStatistics(obj=obj,x=x)                #an object of class "ssCatDP", which contains the counts of each unique integer
-#' sufficientStatistics(obj=obj,x=x,foreach = TRUE) #will return x itself
-sufficientStatistics.CatDP <- function(obj,x,foreach=FALSE){
+#' ## an object of class "ssCatDP", which contains the counts of each unique integer
+#' sufficientStatistics(obj=obj,x=x)
+#' ## will return x itself
+#' sufficientStatistics(obj=obj,x=x,foreach = TRUE)
+sufficientStatistics.CatDP <- function(obj,x,foreach=FALSE,...){
     if(missing(x)) stop("'x' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
     if(!is.integer(x)) stop("'x' must be a integer vector!")
@@ -120,20 +115,23 @@ sufficientStatistics.CatDP <- function(obj,x,foreach=FALSE){
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
 #' The sufficient statistics of a set of samples x is the effective counts of the unique positive integers.
 #'
-#' @seealso \code{\link{CatDP}}, \code{\link{sufficientStatistics_Weighted.CatDP}} 
+#' @seealso \code{\link{CatDP}}, \code{\link{sufficientStatistics.CatDP}} 
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param w numeric, sample weights
 #' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
 #' @export
 #' @examples
 #' x <- sample(1L:10L,size = 4,replace = TRUE)
 #' obj <- CatDP()
 #' w <- runif(4)
-#' sufficientStatistics_Weighted(obj=obj,x=x,w=w)                #an object of class "ssCatDP", which contains the weighted counts of each unique integer
-#' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE) #will return x itself, no matter what w is
-sufficientStatistics_Weighted.CatDP <- function(obj,x,w,foreach=FALSE){
+#' ## return an object of class "ssCatDP" contains the weighted counts of each unique integer
+#' sufficientStatistics_Weighted(obj=obj,x=x,w=w)
+#' ## return x itself, no matter what w is
+#' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
+sufficientStatistics_Weighted.CatDP <- function(obj,x,w,foreach=FALSE,...){
     if(missing(x)|missing(w)) stop("'x' and 'w' must be both specified")
     if(!is.vector(x)) x <- as.vector(x)
     if(!is.integer(x)) stop("'x' must be a integer vector!")
@@ -159,10 +157,11 @@ sufficientStatistics_Weighted.CatDP <- function(obj,x,w,foreach=FALSE){
 #' In the case of CatDP, x can only be positive integers. \cr
 #' Update prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{CatDP}},\code{\link{posteriorDiscard.CatDP}},\code{\link{sufficientStatistics.CatDP()}}
+#' @seealso \code{\link{CatDP}},\code{\link{posteriorDiscard.CatDP}},\code{\link{sufficientStatistics.CatDP}}
 #' @param obj A "CatDP" object.
 #' @param ss Sufficient statistics of x. In Categorical-DP case the sufficient statistic of sample x can either be an object of type "ssCatDP" generated by sufficientStatistics(), or x itself(if x is a integer vector with all positive values).
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss".
 #' @export
 #' @examples
@@ -182,9 +181,9 @@ sufficientStatistics_Weighted.CatDP <- function(obj,x,w,foreach=FALSE){
 #' obj
 #' obj2
 #' obj3
-posterior.CatDP <- function(obj,ss,w=NULL){
+posterior.CatDP <- function(obj,ss,w=NULL,...){
     if(missing(ss)) stop("'ss' must be specified")
-    if(is(ss,"ssCatDP")){
+    if(.is(ss,"ssCatDP")){
         posterior_bySufficientStatistics.CatDP(obj=obj,ss=ss)
     }else{
         if(!is.vector(ss)) ss <- as.vector(ss)
@@ -256,9 +255,12 @@ posterior.CatDP <- function(obj,ss,w=NULL){
 }
 
 #' Update a "CatDP" object with sample sufficient statistics
-posterior_bySufficientStatistics.CatDP <- function(obj,ss){
+#' @param obj A "CatDP" object.
+#' @param ss Sufficient statistics of x. In Categorical-DP case the sufficient statistic of sample x can either be an object of type "ssCatDP" generated by sufficientStatistics(), or x itself(if x is a integer vector with all positive values).
+#' @param ... Additional arguments to be passed to other inherited types.
+posterior_bySufficientStatistics.CatDP <- function(obj,ss,...){
     if(missing(ss)) stop("'ss' must be specified")
-    if(!is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
+    if(!.is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
     obj$gamma$nk[ss$partitionsLabel] <- obj$gamma$nk[ss$partitionsLabel] %plus% ss$freq
     obj$gamma$nk[is.na(obj$gamma$nk)] <- 0
     obj$gamma$maxLabel <- length(obj$gamma$nk)
@@ -283,6 +285,7 @@ posterior_bySufficientStatistics.CatDP <- function(obj,ss){
 #' @param obj A "CatDP" object.
 #' @param ss Sufficient statistics of x. In Categorical-DP case the sufficient statistic of sample x can either be an object of type "ssCatDP" generated by sufficientStatistics(), or x itself(if x is a integer vector with all positive values).
 #' @param w Sample weights,default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated with the information in "ss".
 #' @export
 #' @examples
@@ -303,9 +306,9 @@ posterior_bySufficientStatistics.CatDP <- function(obj,ss){
 #' obj
 #' obj2
 #' obj3
-posteriorDiscard.CatDP <- function(obj,ss,w=NULL){
+posteriorDiscard.CatDP <- function(obj,ss,w=NULL,...){
     if(missing(ss)) stop("'ss' must be specified")
-    if(is(ss,"ssCatDP")){
+    if(.is(ss,"ssCatDP")){
         posteriorDiscard_bySufficientStatistics.CatDP(obj=obj,ss=ss)
     }else{
         if(!is.vector(ss)) ss <- as.vector(ss)
@@ -361,9 +364,12 @@ posteriorDiscard.CatDP <- function(obj,ss,w=NULL){
 }
 
 #' Update a "CatDP" object with sample sufficient statistics
-posteriorDiscard_bySufficientStatistics.CatDP <- function(obj,ss){
+#' @param obj A "CatDP" object.
+#' @param ss Sufficient statistics of x. In Categorical-DP case the sufficient statistic of sample x can either be an object of type "ssCatDP" generated by sufficientStatistics(), or x itself(if x is a integer vector with all positive values).
+#' @param ... Additional arguments to be passed to other inherited types.
+posteriorDiscard_bySufficientStatistics.CatDP <- function(obj,ss,...){
     if(missing(ss)) stop("'ss' must be specified")
-    if(!is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
+    if(!.is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
 
     obj$gamma$nk[ss$partitionsLabel] <- obj$gamma$nk[ss$partitionsLabel] - ss$freq
     if(anyNA(obj$gamma$nk)) stop("No way to discard label that has never been observed before")
@@ -392,6 +398,7 @@ posteriorDiscard_bySufficientStatistics.CatDP <- function(obj,ss){
 #'
 #' @seealso \code{\link{CatDP}}
 #' @param obj A "CatDP" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric.
 #' @export
 #' @examples
@@ -399,7 +406,7 @@ posteriorDiscard_bySufficientStatistics.CatDP <- function(obj,ss){
 #' obj <- CatDP()
 #' posterior(obj = obj,ss = x)
 #' MAP(obj)
-MAP.CatDP <- function(obj){
+MAP.CatDP <- function(obj,...){
     out <- obj$gamma$nk
     out[obj$gamma$newLabel] <- 0L
     out <- out+obj$gamma$alpha-1
@@ -418,6 +425,7 @@ MAP.CatDP <- function(obj){
 #'
 #' @seealso \code{\link{CatDP}}
 #' @param obj A "CatDP" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric.
 #' @export
 #' @examples
@@ -425,7 +433,7 @@ MAP.CatDP <- function(obj){
 #' obj <- CatDP()
 #' posterior(obj = obj,ss = x)
 #' MPE(obj)
-MPE.CatDP <- function(obj){
+MPE.CatDP <- function(obj,...){
     out <- obj$gamma$nk
     out[obj$gamma$newLabel] <- 0L
     out <- out+obj$gamma$alpha
@@ -446,9 +454,10 @@ MPE.CatDP <- function(obj){
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
-marginalLikelihood.CatDP <- function(obj,x,LOG=TRUE){
+marginalLikelihood.CatDP <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
     if(!is.integer(x)) stop("'x' must be a integer vector!")
@@ -469,11 +478,12 @@ marginalLikelihood.CatDP <- function(obj,x,LOG=TRUE){
 #' @param obj A "CatDP" object.
 #' @param ss Sufficient statistics of x. In Categorical-DP case the sufficient statistic of sample x can either be an object of type "ssCatDP" generated by sufficientStatistics(), or x itself(if x is a integer vector with all positive values).
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
-marginalLikelihood_bySufficientStatistics.CatDP <- function(obj,ss,LOG=TRUE){
+marginalLikelihood_bySufficientStatistics.CatDP <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' must be specified")
-    if(!is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
+    if(!.is(ss,"ssCatDP")) stop("'ss' must be of class 'ssCatDP', you need to use sufficientStatistics() to generate 'ssCatDP' objects")
     stop("marginalLikelihood_bySufficientStatistics method for class 'CatDP' is not implemented yet")
 }
 
@@ -491,6 +501,7 @@ marginalLikelihood_bySufficientStatistics.CatDP <- function(obj,ss,LOG=TRUE){
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
 #' @examples
@@ -499,7 +510,7 @@ marginalLikelihood_bySufficientStatistics.CatDP <- function(obj,ss,LOG=TRUE){
 #' ss <- sufficientStatistics(obj=obj,x=x)
 #' posterior(obj = obj,ss = ss)
 #' dPosteriorPredictive(obj = obj,x=1L:11L,LOG = FALSE)
-dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE){
+dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
     if(!is.integer(x)) stop("'x' must be a integer vector!")
@@ -526,6 +537,7 @@ dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE){
 #' @seealso @seealso \code{\link{CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}
 #' @param obj A "CatDP" object.
 #' @param n integer, number of samples.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
 #' @examples
@@ -534,7 +546,8 @@ dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE){
 #' ss <- sufficientStatistics(obj=obj,x=x)
 #' posterior(obj = obj,ss = ss)
 #' rPosteriorPredictive(obj = obj,n=200L)
-rPosteriorPredictive.CatDP <- function(obj,n=1L){
+#' @import stats
+rPosteriorPredictive.CatDP <- function(obj,n=1L,...){
     vapply(1L:n,function(i){
         if(runif(1)<obj$gamma$pH0) return(obj$gamma$newLabel)
         else return(sample.int(n =length(obj$gamma$nk),size = 1,prob = obj$gamma$prop))
@@ -568,7 +581,7 @@ CatHDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                                                    )){
     object <- new.env(parent=ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"CatHDP")) stop("'objCopy' must be of class 'CatHDP'")
+        if(!.is(objCopy,"CatHDP")) stop("'objCopy' must be of class 'CatHDP'")
         object$gamma <- objCopy$gamma
         object$Z1 <- objCopy$Z1
         object$Z12map <- objCopy$Z12map
@@ -590,16 +603,18 @@ CatHDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
 }
 
 #' Print the content of an CatHDP object
+#' @param x An object of type "CatHDP".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-print.CatHDP <- function(obj){
+print.CatHDP <- function(x,...){
     cat("The partition distribution is governed by a 'CatDP' class with following parameters:\n")
-    print(obj$Z1)
+    print(x$Z1)
     cat("\n\n\n")
     cat("The partition mapping between Z1 and Z2 is:\n")
-    print(obj$Z12map)
+    print(x$Z12map)
     cat("\n\n\n")
     cat("The partition distribution for each group is governed by following 'CatDP' objects:\n")
-    print(obj$Z2)
+    print(x$Z2)
 }
 
 #' Sufficient statistics of a "CatHDP" object
@@ -619,9 +634,10 @@ print.CatHDP <- function(obj){
 #' @param z integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param k integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatHDP", the sufficient statistics of a set of categorical samples. Or an integer matrix if foreach = TRUE.
 #' @export
-sufficientStatistics.CatHDP <- function(obj,z,k,foreach=FALSE){
+sufficientStatistics.CatHDP <- function(obj,z,k,foreach=FALSE,...){
     if(missing(z)) stop("'z' must be specified")
     if(!is.vector(z)) z <- as.vector(z)
     if(!is.integer(z)) stop("'z' must be a integer vector!")
@@ -644,15 +660,16 @@ sufficientStatistics.CatHDP <- function(obj,z,k,foreach=FALSE){
 #' The model structure and prior parameters are stored in a "CatHDP" object. \cr
 #' The sufficient statistics of a set of samples z and k is the effective counts of the unique positive integers.
 #'
-#' @seealso \code{\link{CatHDP}}, \code{\link{sufficientStatistics_Weighted.CatHDP}} 
+#' @seealso \code{\link{CatHDP}}, \code{\link{sufficientStatistics.CatHDP}} 
 #' @param obj A "CatHDP" object.
 #' @param z integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param k integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param w numeric, sample weights
 #' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatHDP", the sufficient statistics of a set of categorical samples. Or an integer matrix if foreach=TRUE.
 #' @export
-sufficientStatistics_Weighted.CatHDP <- function(obj,z,k,w,foreach=FALSE){
+sufficientStatistics_Weighted.CatHDP <- function(obj,z,k,w,foreach=FALSE,...){
     if(missing(z)) stop("'z' must be specified")
     if(!is.vector(z)) z <- as.vector(z)
     if(!is.integer(z)) stop("'z' must be a integer vector!")
@@ -674,15 +691,16 @@ sufficientStatistics_Weighted.CatHDP <- function(obj,z,k,w,foreach=FALSE){
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' Update the prior knowledge by adding the information of newly observed samples z and k. The model structure and prior parameters are stored in a "CatHDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP()}}
+#' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
 #' @param obj A "CatHDP" object.
 #' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
-posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL){
+posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
     if(missing(ss2)|missing(ss1)) stop("'ss2' and 'ss1' must be specified")
     if(length(ss2)>1L) stop("posterior.CatHDP can only update from observations one at a time, for now.")
     if(!is.integer(ss2) | ss2<=0L) stop("'ss2' must be a positive integer.")
@@ -699,7 +717,12 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL){
 }
 
 #' Update a "CatHDP" object with sample sufficient statistics
-posterior_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j){
+#' @param obj A "CatHDP" object.
+#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param j integer, group label.
+#' @param ... Additional arguments to be passed to other inherited types.
+posterior_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
     stop("posterior_bySufficientStatistics for CatHDP not implemented yet")
 }
 
@@ -714,15 +737,16 @@ posterior_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j){
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP()}}
+#' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
 #' @param obj A "CatHDP" object.
 #' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
-posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL){
+posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
     if(missing(ss1)|missing(ss2)|missing(j)) stop("'ss1','ss2' and 'j'  must all be specified")
     posteriorDiscard(obj = obj$Z2[[j]],ss=ss2,w=w)
     if(obj$Z2[[j]]$gamma$nk[ss2]==0){
@@ -732,8 +756,27 @@ posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL){
 }
 
 #' Update a "CatHDP" object with sample sufficient statistics
-posteriorDiscard_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j){
+#' @param obj A "CatHDP" object.
+#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param j integer, group label.
+#' @param ... Additional arguments to be passed to other inherited types.
+posteriorDiscard_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
     stop("posteriorDiscard_bySufficientStatistics for CatHDP not implemented yet")
+}
+
+#' MAP estimate for CatHDP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+MAP.CatHDP <- function(obj,...){
+    stop("MAP.CatHDP not implemented yet.")
+}
+
+#' Marginallikelihood for CatHDP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+marginalLikelihood.CatHDP <- function(obj,...){
+    stop("marginalLikelihood for this type not implemented yet")
 }
 
 #' Posterior predictive density function of a "CatHDP" object
@@ -754,9 +797,10 @@ posteriorDiscard_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j){
 #' @param k integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param j integer, group label.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
-dPosteriorPredictive.CatHDP <- function(obj,z,k,j,LOG=TRUE){
+dPosteriorPredictive.CatHDP <- function(obj,z,k,j,LOG=TRUE,...){
     if(missing(z)|missing(j)|missing(k)) stop("'z','j' and 'k' must all be specified")
     if(length(j)>1L) stop("'j' must be of length 1")
     if(length(z)!=length(k)) stop("length of 'z' 'k' don't match")
@@ -792,9 +836,10 @@ dPosteriorPredictive.CatHDP <- function(obj,z,k,j,LOG=TRUE){
 #' @param obj A "CatHDP" object.
 #' @param n integer, number of samples.
 #' @param j integer, group label.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
-rPosteriorPredictive.CatHDP <- function(obj,n=1L,j){
+rPosteriorPredictive.CatHDP <- function(obj,n=1L,j,...){
     if(missing(j)) stop("'j'must be specified")
     if(n>1L) stop("for now only support n=1L")
     allz <- which(obj$Z2[[j]]$gamma$nk>0)
@@ -837,7 +882,7 @@ CatHDP2 <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                                                     )){
     object <- new.env(parent=ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"CatHDP2")) stop("'objCopy' must be of class 'CatHDP2'")
+        if(!.is(objCopy,"CatHDP2")) stop("'objCopy' must be of class 'CatHDP2'")
         object$gamma <- objCopy$gamma
         object$Z1 <- objCopy$Z1
         object$Z12map <- objCopy$Z12map
@@ -860,25 +905,36 @@ CatHDP2 <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
 }
 
 #' Print the content of an CatHDP2 object
+#' @param x An object of type "CatHDP2".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-print.CatHDP2 <- function(obj){
+print.CatHDP2 <- function(x,...){
     cat("The partition distribution is governed by a 'CatDP' class with following parameters:\n")
-    print(obj$Z1)
+    print(x$Z1)
     cat("\n\n\n")
     cat("The partition mapping between Z1 and Z2 is:\n")
-    print(obj$Z12map)
+    print(x$Z12map)
     cat("\n\n\n")
     cat("The partition distribution for each group is governed by following 'CatDP' objects:\n")
-    print(obj$Z2)
+    print(x$Z2)
 }
 
 #' Sufficient statistics of a "CatHDP2" object
-sufficientStatistics.CatHDP2 <- function(obj,x,foreach=FALSE){
+#' @param obj An object of type "CatHDP2".
+#' @param x integer
+#' @param foreach logical
+#' @param ... Additional arguments to be passed to other inherited types.
+sufficientStatistics.CatHDP2 <- function(obj,x,foreach=FALSE,...){
     stop("sufficientStatistics for CatHDP2 not implemented yet")
 }
 
 #' Sufficient statistics of a "CatHDP2" object
-sufficientStatistics_Weighted.CatHDP2 <- function(obj,x,w,foreach=FALSE){
+#' @param obj An object of type "CatHDP2".
+#' @param x integer
+#' @param w numeric, sample weights.
+#' @param foreach logical
+#' @param ... Additional arguments to be passed to other inherited types.
+sufficientStatistics_Weighted.CatHDP2 <- function(obj,x,w,foreach=FALSE,...){
     stop("sufficientStatistics_Weighted for CatHDP2 not implemented yet")
 }
 
@@ -895,7 +951,7 @@ sufficientStatistics_Weighted.CatHDP2 <- function(obj,x,w,foreach=FALSE){
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' Update the prior knowledge by adding the information of newly observed samples u, z and k. The model structure and prior parameters are stored in a "CatHDP2" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{sufficientStatistics.CatHDP2()}}
+#' @seealso \code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{sufficientStatistics.CatHDP2}}
 #' @param obj A "CatHDP2" object.
 #' @param ss1 Sufficient statistics of u. In CatHDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In CatHDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
@@ -903,9 +959,10 @@ sufficientStatistics_Weighted.CatHDP2 <- function(obj,x,w,foreach=FALSE){
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
-posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL){
+posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     if(missing(ss3)|missing(ss2)|missing(ss1)|missing(m)|missing(j)) stop("ss3, ss2, ss1, m and j must be specified")
     if(length(ss3)>1L) stop("posterior.CatHDP2 can only update from observations one at a time, for now.")
     if(!is.integer(ss1) | ss1<=0L) stop("'ss1' must be a positive integer.")
@@ -920,7 +977,14 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL){
 }
 
 #' Update a "CatHDP2" object with sample sufficient statistics
-posterior_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j){
+#' @param obj A "CatHDP2" object.
+#' @param ss1 Sufficient statistics of u. In CatHDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of k. In CatHDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss3 Sufficient statistics of z. In CatHDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param m integer, group label.
+#' @param j integer, subgroup label.
+#' @param ... Additional arguments to be passed to other inherited types.
+posterior_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,...){
     stop("posterior_bySufficientStatistics for CatHDP2 not implemented yet")
 }
 
@@ -937,7 +1001,7 @@ posterior_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j){
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples u, z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{sufficientStatistics.CatHDP2()}}
+#' @seealso \code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{sufficientStatistics.CatHDP2}}
 #' @param obj A "CatHDP2" object.
 #' @param ss1 Sufficient statistics of u. In CatHDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In CatHDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
@@ -945,9 +1009,10 @@ posterior_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j){
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
-posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL){
+posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     if(missing(ss1)|missing(ss2)|missing(ss3)|missing(m)|missing(j)) stop("'ss1','ss2', 'ss3', 'm' and 'j'  must all be specified")
     posteriorDiscard.CatHDP(obj = obj$Z2[[m]],ss1=ss2,ss2=ss3,j=j,w=w)
     if(obj$Z2[[m]]$Z1$gamma$nk[ss2]==0){
@@ -957,9 +1022,31 @@ posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL){
 }
 
 #' Update a "CatHDP2" object with sample sufficient statistics
-posteriorDiscard_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j){
+#' @param obj A "CatHDP2" object.
+#' @param ss1 Sufficient statistics of u. In CatHDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of k. In CatHDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss3 Sufficient statistics of z. In CatHDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param m integer, group label.
+#' @param j integer, subgroup label.
+#' @param ... Additional arguments to be passed to other inherited types.
+posteriorDiscard_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,...){
     stop("posteriorDiscard_bySufficientStatistics for CatHDP2 not implemented yet")
 }
+
+#' MAP estimate for CatHDP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+MAP.CatHDP2 <- function(obj,...){
+    stop("MAP.CatHDP not implemented yet.")
+}
+
+#' Marginallikelihood for CatHDP2
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+marginalLikelihood.CatHDP2 <- function(obj,...){
+    stop("marginalLikelihood for this type not implemented yet")
+}
+
 
 #' Posterior predictive density function of a "CatHDP" object
 #'
@@ -983,9 +1070,10 @@ posteriorDiscard_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j)
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
-dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE){
+dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE,...){
     if(missing(z)|missing(j)|missing(k)) stop("'z','j' and 'k' must all be specified")
     if(length(j)>1L|length(m)>1L) stop("'j' and 'm' must be of length 1")
     if(length(z)!=length(k)|length(z)!=length(u)) stop("length of 'z' 'k' 'u' don't match")
@@ -1025,9 +1113,10 @@ dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE){
 #' @param n integer, number of samples.
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
-rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j){
+rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j,...){
     if(missing(j)) stop("'j'must be specified")
     if(n>1L) stop("for now only support n=1L")
     allz <- which(obj$Z2[[m]]$Z2[[j]]$gamma$nk>0)
@@ -1080,7 +1169,8 @@ rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j){
 #' maxit <- 100                            #iterative for maxit times
 #' burnin <- 50                            #number of burnin samples
 #' z <- matrix(1L,nrow(x),maxit-burnin)    #labels
-#' obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create an "GaussianNIW" object to track all the changes.
+#' ## create an "GaussianNIW" object to track all the changes.
+#' obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2))))
 #' ss <- sufficientStatistics(obj,x=x,foreach = TRUE) #sufficient statistics of each x
 #' N <- nrow(x)
 #' for(i in 1L:N){ # initialize labels before Gibbs sampling
@@ -1095,9 +1185,12 @@ rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j){
 #'     if(it>burnin) colIdx <- it-burnin
 #'     else colIdx <- 1
 #'     for(i in 1L:N){
-#'         posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #remove the sample information from the posterior
-#'         z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE]) #get a new sample
-#'         posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #add the new sample information to the posterior
+#'         ## remove the sample information from the posterior
+#'         posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx])
+#'         ## get a new sample
+#'         z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE])
+#'         ## add the new sample information to the posterior
+#'         posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx])
 #'     }
 #'     if(it>burnin & colIdx<ncol(z)) z[,colIdx+1] <- z[,colIdx] #copy result of previous iteration
 #'     it <- it+1
@@ -1109,7 +1202,8 @@ rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j){
 #' ## Step3: Estimate group labels of each observation---------------
 #' col <- apply(z,1,function(l){
 #'     tmp <- table(l)
-#'     names(tmp)[which.max(tmp)]      #pick the most frequent group label in the samples to be the best estimate
+#'     ## pick the most frequent group label in the samples to be the best estimate
+#'     names(tmp)[which.max(tmp)]
 #' })
 #' plot(x=x[,1],y=x[,2],col=col)
 #' }
@@ -1120,7 +1214,7 @@ DP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                                                  )){
     object <- new.env(parent=ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"DP")) stop("'objCopy' must be of class 'DP'")
+        if(!.is(objCopy,"DP")) stop("'objCopy' must be of class 'DP'")
         object$H0aF <- objCopy$H0aF
         object$Z <- objCopy$Z
         object$H <- objCopy$H
@@ -1141,16 +1235,18 @@ DP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
 }
 
 #' print the content of a "DP" object
+#' @param x An object of type "DP".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-print.DP <- function(obj){
+print.DP <- function(x,...){
     cat("The partition distribution is governed by a 'CatDP' class with following parameters:\n")
-    print(obj$Z)
+    print(x$Z)
     cat("\n\n\n")
-    cat("The observation distribution is governed by a '",obj$H0aF,"' object with following parameters::\n",sep = "")
-    print(obj$H)
+    cat("The observation distribution is governed by a '",x$H0aF,"' object with following parameters::\n",sep = "")
+    print(x$H)
     cat("\n\n\n")
-    cat("The observation distributions of different partitions is governed by following '",obj$H0aF,"' objects:\n",sep = "")
-    print(obj$X)
+    cat("The observation distributions of different partitions is governed by following '",x$H0aF,"' objects:\n",sep = "")
+    print(x$X)
 }
 
 #' Sufficient statistics of a "DP" object
@@ -1168,6 +1264,7 @@ print.DP <- function(obj){
 #' @param obj A "DP" object.
 #' @param x Random samples of the "BasicBayesian" object.
 #' @param ... further arguments passed to the corresponding sufficientStatistics method of the "BasicBayesian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
 #' @export
 #' @examples
@@ -1182,6 +1279,29 @@ sufficientStatistics.DP <- function(obj,x,...){
     sufficientStatistics(obj = obj$H,x=x,...)
 }
 
+#' Weighted sufficient statistics of a "DP" object
+#'
+#' For following model structure: \cr
+#' Create an object of type "DP", which represents the Dirichlet-Process model structure: \cr
+#'      pi|alpha ~ DP(alpha,U) \cr
+#'      z|pi ~ Categorical(pi) \cr
+#'      theta_z|psi ~ H0(psi) \cr
+#'      x|theta_z,z ~ F(theta_z) \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
+#'
+#' @seealso \code{\link{DP}}, \code{\link{sufficientStatistics.DP}} 
+#' @param obj A "DP" object.
+#' @param x Random samples of the "BasicBayesian" object.
+#' @param w numeric, sample weights.
+#' @param ... further arguments passed to the corresponding sufficientStatistics method of the "BasicBayesian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
+#' @export
+sufficientStatistics_Weighted.DP <- function(obj,x,w,...){
+    sufficientStatistics_Weighted(obj = obj$H,x=x,w=w,...)
+}
+
 #' Update a "DP" object with sample sufficient statistics
 #'
 #' For the model structure: \cr
@@ -1192,11 +1312,12 @@ sufficientStatistics.DP <- function(obj,x,...){
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "DP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP()}}
+#' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
 #' @param obj A "DP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss. See examples.
 #' @param z integer, the partition label of the parameter space where the observation x is drawn from.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss".
 #' @export
 #' @examples
@@ -1206,7 +1327,7 @@ sufficientStatistics.DP <- function(obj,x,...){
 #' ss <- sufficientStatistics(obj = obj,x=x,foreach = TRUE) #must use foreach=TRUE
 #' for(i in 1L:length(z)) posterior(obj = obj,ss = ss[[i]],z=z[i])
 #' obj
-posterior.DP <- function(obj,ss,z,w=NULL){
+posterior.DP <- function(obj,ss,z,w=NULL,...){
     if(missing(ss)|missing(z)) stop("'ss' and 'z' must be specified")
     if(length(z)>1L) stop("posterior.DP can only update from observations one at a time")
     if(!is.integer(z) | z<=0L) stop("'z' must be a positive integer.")
@@ -1227,11 +1348,12 @@ posterior.DP <- function(obj,ss,z,w=NULL){
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP()}}
+#' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
 #' @param obj A "DP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss. See examples.
 #' @param z integer, the partition label of the parameter space where the observation x is drawn from.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss".
 #' @export
 #' @examples
@@ -1243,23 +1365,35 @@ posterior.DP <- function(obj,ss,z,w=NULL){
 #' obj
 #' for(i in 1L:length(z)) posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i])
 #' obj
-posteriorDiscard.DP <- function(obj,ss,z,w=NULL){
+posteriorDiscard.DP <- function(obj,ss,z,w=NULL,...){
     if(missing(ss)|missing(z)) stop("'ss' and 'z' must be specified")
     posteriorDiscard(obj = obj$Z,ss=z,w=w)
     posteriorDiscard(obj = obj$X[[z]],ss = ss,w=w)
 }
 
 #' MAP estimate of a "DP" object
+#' @param obj An object of type "DP".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-MAP.DP <- function(obj){
+MAP.DP <- function(obj,...){
     stop("MAP method for class 'DP' is not implemented yet")
 }
 
 #' MPE estimate of a "DP" object
+#' @param obj An object of type "DP".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-MPE.DP <- function(obj){
+MPE.DP <- function(obj,...){
     stop("MPE method for class 'DP' is not implemented yet")
 }
+
+#' Marginallikelihood for DP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+marginalLikelihood.DP <- function(obj,...){
+    stop("marginalLikelihood for this type not implemented yet")
+}
+
 
 #' Posterior predictive density function of a "DP" object
 #'
@@ -1277,6 +1411,7 @@ MPE.DP <- function(obj){
 #' @param x Random samples of the "BasicBayesian" object.
 #' @param z integer, the partition label of the parameter space where the observation x is drawn from.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
 #' @examples
@@ -1288,11 +1423,11 @@ MPE.DP <- function(obj){
 #' xnew <- rnorm(10)
 #' znew <- sample(1L:10L,size = 10,replace = TRUE)
 #' dPosteriorPredictive(obj = obj,x=xnew,z=znew)
-dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE){
+dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE,...){
     if(missing(x)|missing(z)) stop("'x' and 'z' must be specified")
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(univariate) or a matrix(multivariate)!")
     }
     if(!is.vector(z)) z <- as.vector(z)
@@ -1325,6 +1460,7 @@ dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE){
 #' @param obj A "DP" object.
 #' @param n integer, number of samples.
 #' @param x Random samples of the "BasicBayesian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
 #' @examples
@@ -1336,11 +1472,11 @@ dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE){
 #' xnew <- rnorm(10)
 #' znew <- sample(1L:10L,size = 10,replace = TRUE)
 #' rPosteriorPredictive(obj = obj,n=1,x=xnew[5])
-rPosteriorPredictive.DP <- function(obj,n=1,x){
+rPosteriorPredictive.DP <- function(obj,n=1,x,...){
     if(missing(x)) stop("'x' must be specified")
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(univariate) or a matrix(multivariate)!")
     }
     if(nrow(x)>1L) stop("'x' should be a matrix of only 1 row or a vector of length 1")
@@ -1361,49 +1497,6 @@ rPosteriorPredictive.DP <- function(obj,n=1,x){
     zs[sample.int(length(zs),size = n,replace = TRUE,prob = probs)]
 }
 
-if(FALSE){
-
-    x <- rbind(
-        rGaussian(50,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-        rGaussian(60,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-        rGaussian(70,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-        rGaussian(50,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-    )
-
-    maxit <- 100                            #iterative for maxit times
-    burnin <- 50                            #number of burnin samples
-    z <- matrix(1L,nrow(x),maxit-burnin)    #the sampled labels will be put here
-    obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create an "GaussianNIW" object to track all the changes.
-    ss <- sufficientStatistics(obj,x=x,foreach = TRUE) #sufficient statistics of each x
-    N <- nrow(x)
-    for(i in 1L:N){ # initialize labels before Gibbs sampling
-        z[i,1] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE])
-        posterior(obj = obj,ss = ss[[i]], z = z[i,1])
-    }
-
-    it <- 0                                 #iteration tracker
-    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
-    while(TRUE){
-        if(it>burnin) colIdx <- it-burnin
-        else colIdx <- 1
-        for(i in 1L:N){
-            posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #remove the sample information from the posterior
-            z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE]) #get a new sample
-            posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #add the new sample information to the posterior
-        }
-        if(it>burnin & colIdx<ncol(z)) z[,colIdx+1] <- z[,colIdx] #copy result of previous iteration
-        it <- it+1
-        setTxtProgressBar(pb,it)
-        if(it>=maxit){cat("\n");break}
-        plot(x=x[,1],y=x[,2],col=z[,colIdx]) #to see how the labels change
-    }
-
-    col <- apply(z,1,function(l){
-        tmp <- table(l)
-        names(tmp)[which.max(tmp)]      #pick the most frequent group label in the samples to be the best estimate
-    })
-    plot(x=x[,1],y=x[,2],col=col)
-}
 
 #' Create objects of type "HDP".
 #'
@@ -1428,8 +1521,9 @@ if(FALSE){
 #' \dontrun{
 #'     
 #' ## This is an example of Gibbs sampling on an hierarchical mixture model, using HDP.
-#' 
-#' data(mmhData)                           # load some hierarchical mixture data, check ?mmhData for details.
+#'
+#' ## load some hierarchical mixture data, check ?mmhData for details.
+#' data(mmhData)
 #' x <- mmhData$x
 #' js <- mmhData$groupLabel
 #' 
@@ -1437,7 +1531,10 @@ if(FALSE){
 #' ## Step1: initialize--------------------------------------------------
 #' z <- rep(1L,nrow(x))
 #' k <- rep(1L,nrow(x))
-#' obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01))) #create a HDP object to track all the changes
+#' ## create a HDP object to track all the changes
+#' obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,
+#'            H0aF="GaussianNIW",
+#'            parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
 #' ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
 #' N <- length(ss)
 #' for(i in 1L:N){# initialize k and z
@@ -1453,8 +1550,10 @@ if(FALSE){
 #' pb <- txtProgressBar(min = 0,max = maxit,style = 3)
 #' while(TRUE){
 #'     for(i in 1L:N){
-#'         posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample from the posterior info
-#'         tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])   #resample a new partition
+#'         ## remove the sample from the posterior info
+#'         posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i])
+#'         ## resample a new partition
+#'         tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
 #'         z[i] <- tmp["z"]
 #'         k[i] <- tmp["k"]
 #'         posterior(obj = obj,ss = ss[[i]], ss1=k[i],ss2 = z[i],j=js[i])
@@ -1475,7 +1574,7 @@ HDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                                                 )){
     object <- new.env(parent=ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"HDP")) stop("'objCopy' must be of class 'HDP'")
+        if(!.is(objCopy,"HDP")) stop("'objCopy' must be of class 'HDP'")
         object$gamma <- objCopy$gamma
         object$Z <- objCopy$Z
         object$H <- objCopy$H
@@ -1498,16 +1597,18 @@ HDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
 }
 
 #' print the content of a "HDP" object
+#' @param x An object of type "HDP".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-print.HDP <- function(obj){
+print.HDP <- function(x,...){
     cat("The partition distribution is governed by a 'CatHDP' class with following parameters:\n")
-    print(obj$Z)
+    print(x$Z)
     cat("\n\n\n")
-    cat("The observation distribution is governed by a '",obj$gamma$H0aF,"' object with following parameters::\n",sep = "")
-    print(obj$H)
+    cat("The observation distribution is governed by a '",x$gamma$H0aF,"' object with following parameters::\n",sep = "")
+    print(x$H)
     cat("\n\n\n")
-    cat("The observation distributions of different partitions is governed by following '",obj$gamma$H0aF,"' objects:\n",sep = "")
-    print(obj$X)
+    cat("The observation distributions of different partitions is governed by following '",x$gamma$H0aF,"' objects:\n",sep = "")
+    print(x$X)
 }
 
 #' Sufficient statistics of a "HDP" object
@@ -1531,8 +1632,14 @@ print.HDP <- function(obj){
 #' @return Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
 #' @export
 #' @examples
-#' obj1 <- HDP(gamma=list(gamma=1,alpha=1,j=2,H0aF="GaussianNIW",parH0=list(m=0,k=1,v=2,S=1))) # a HDP with Gaussian NIW observations
-#' obj2 <- HDP(gamma=list(gamma=1,alpha=1,j=2,H0aF="CatDirichlet",parH0=list(alpha=1,uniqueLabels=letters[1:3]))) # a HDP with Categorical-Dirichlet observations
+#' ## a HDP with Gaussian NIW observations
+#' obj1 <- HDP(gamma=list(gamma=1,alpha=1,j=2,
+#'                        H0aF="GaussianNIW",
+#'                        parH0=list(m=0,k=1,v=2,S=1)))
+#' ## a HDP with Categorical-Dirichlet observations
+#' obj2 <- HDP(gamma=list(gamma=1,alpha=1,j=2,
+#'             H0aF="CatDirichlet",
+#'             parH0=list(alpha=1,uniqueLabels=letters[1:3])))
 #' x1 <- rnorm(100)
 #' x2 <- sample(letters[1:3],100,replace = TRUE)
 #' sufficientStatistics(obj = obj1,x=x1,foreach = TRUE)
@@ -1540,6 +1647,31 @@ print.HDP <- function(obj){
 #' sufficientStatistics(obj = obj2,x=x2,foreach = FALSE)
 sufficientStatistics.HDP <- function(obj,x,...){
     sufficientStatistics(obj = obj$H,x=x,...)
+}
+
+#' Weighted sufficient statistics of a "HDP" object
+#'
+#' For following model structure: \cr
+#' Create an object of type "HDP", which represents the Dirichlet-Process model structure: \cr
+#'      G_j|gamma ~ DP(gamma,U), j = 1:J \cr
+#'      pi_j|G_j,alpha ~ DP(alpha,G_j) \cr
+#'      z|pi_j ~ Categorical(pi_j) \cr
+#'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
+#'      theta_k|psi ~ H0(psi) \cr
+#'      x|theta_k,k ~ F(theta_k) \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' In the case of HDP, z and k can only be positive integers. \cr
+#' The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
+#'
+#' @seealso \code{\link{HDP}}, \code{\link{sufficientStatistics.HDP}} 
+#' @param obj A "HDP" object.
+#' @param x Random samples of the "BasicBayesian" object.
+#' @param w numeric, sample weights.
+#' @param ... further arguments passed to the corresponding sufficientStatistics method of the "BasicBayesian" object.
+#' @return Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
+#' @export
+sufficientStatistics_Weighted.HDP <- function(obj,x,w,...){
+    sufficientStatistics_Weighted(obj = obj$H,x=x,w=w,...)
 }
 
 #' Update a "HDP" object with sample sufficient statistics
@@ -1555,16 +1687,17 @@ sufficientStatistics.HDP <- function(obj,x,...){
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP()}}
+#' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP}}
 #' @param obj A "HDP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
 #' @param ss1 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1" and "ss2".
 #' @export
-posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL){
+posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
     if(missing(ss)|missing(ss2)|missing(j)|missing(ss1)) stop("'ss','ss2','j' and 'ss1' must all be specified")
     if(length(ss2)>1L) stop("posterior.HDP can only update from observations one at a time, for now")
     if(!is.integer(ss2) | ss2<=0L) stop("'ss2' must be a positive integer.")
@@ -1590,20 +1723,36 @@ posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL){
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP()}}
+#' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP}}
 #' @param obj A "HDP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
 #' @param ss1 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
-posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL){
+posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
     if(missing(ss)|missing(ss2)|missing(j)|missing(ss1)) stop("'ss','ss2','j' and 'ss1' must all be specified")
     posteriorDiscard(obj = obj$Z,ss1 = ss1,ss2 = ss2,j = j,w = w)
     posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
 }
+
+#' MAP estimate for HDP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+MAP.HDP <- function(obj,...){
+    stop("MAP.HDP not implemented yet.")
+}
+
+#' Marginallikelihood for HDP
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+marginalLikelihood.HDP <- function(obj,...){
+    stop("marginalLikelihood for this type not implemented yet")
+}
+
 
 #' Posterior predictive density function of a "HDP" object
 #'
@@ -1626,14 +1775,15 @@ posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL){
 #' @param k integer, the partition label of the parameter space where the observation x is drawn from.
 #' @param j integer, group label.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
-dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE){
+dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE,...){
     pzk <- dPosteriorPredictive(obj = obj$Z,z=z,k=k,j=j,LOG = FALSE)
     if(!is.null(x)){
         if(is.vector(x)){
             x <- matrix(x, ncol = 1)
-        }else if(!is(x,"matrix")){
+        }else if(!.is(x,"matrix")){
             stop("'x' must be a vector(univariate) or a matrix(multivariate)!")
         }
         if(nrow(x)>1L) stop("There can only be one observation in 'x', so 'x' must be a matrix of only 1 row.")
@@ -1675,9 +1825,10 @@ dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE){
 #' @param n integer, number of samples.
 #' @param x Random samples of the "BasicBayesian" object.
 #' @param j integer, group label.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
-rPosteriorPredictive.HDP <- function(obj,n=1,x,j){
+rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
     if(missing(x)|missing(j)) stop("'x' and 'j'must be specified")
     if(n>1) stop("for now only support n=1")
     allz <- which(obj$Z$Z2[[j]]$gamma$nk>0)
@@ -1716,7 +1867,8 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j){
 #'
 #'## This is an example of Gibbs sampling on a hierarchical mixture model, using HDP2.
 #'
-#'data(mmhhData)                          #load some hierarchical mixture data, check ?mmhhData for details.
+#' ## load some hierarchical mixture data, check ?mmhhData for details.
+#' data(mmhhData)
 #'x <- mmhhData$x
 #'ms <- mmhhData$groupLabel
 #'js <- mmhhData$subGroupLabel
@@ -1726,7 +1878,9 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j){
 #'z <- rep(1L,nrow(x))
 #'k <- rep(1L,nrow(x))
 #'u <- rep(1L,nrow(x))
-#'obj <- HDP2(gamma = list(eta=1,gamma=1,alpha=1,m=2L,j=c(10L,20L),H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.001)))
+#' obj <- HDP2(gamma = list(eta=1,gamma=1,alpha=1,m=2L,j=c(10L,20L),
+#'             H0aF="GaussianNIW",
+#'             parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.001)))
 #'ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
 #'N <- length(ss)
 #'for(i in 1L:N){                         #initialize z k and u
@@ -1743,8 +1897,10 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j){
 #'while(TRUE){
 #'    tmp <- character(3)
 #'    for(i in 1L:N){
-#'        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i]) #remove the sample from the posterior info
-#'        tmp <- rPosteriorPredictive(obj = obj,n=1L,x=x[i,,drop=FALSE],m=ms[i],j=js[i])   #resample a new partition
+#'        ##remove the sample from the posterior info
+#'        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i])
+#'        ##resample a new partition
+#'        tmp <- rPosteriorPredictive(obj = obj,n=1L,x=x[i,,drop=FALSE],m=ms[i],j=js[i])
 #'        z[i] <- tmp["z"]
 #'        k[i] <- tmp["k"]
 #'        u[i] <- tmp["u"]
@@ -1769,7 +1925,7 @@ HDP2 <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                                                  )){
     object <- new.env(parent=ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"HDP2")) stop("'objCopy' must be of class 'HDP2'")
+        if(!.is(objCopy,"HDP2")) stop("'objCopy' must be of class 'HDP2'")
         object$gamma <- objCopy$gamma
         object$Z <- objCopy$Z
         object$H <- objCopy$H
@@ -1792,16 +1948,19 @@ HDP2 <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
 
 }
 
+#' print the content of a "HDP2" object
+#' @param x An object of type "HDP2".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @export
-print.HDP2 <- function(obj){
+print.HDP2 <- function(x,...){
     cat("The partition distribution is governed by a 'CatHDP2' class with following parameters:\n")
-    print(obj$Z)
+    print(x$Z)
     cat("\n\n\n")
-    cat("The observation distribution is governed by a '",obj$gamma$H0aF,"' object with following parameters::\n",sep = "")
-    print(obj$H)
+    cat("The observation distribution is governed by a '",x$gamma$H0aF,"' object with following parameters::\n",sep = "")
+    print(x$H)
     cat("\n\n\n")
-    cat("The observation distributions of different partitions is governed by following '",obj$gamma$H0aF,"' objects:\n",sep = "")
-    print(obj$X)
+    cat("The observation distributions of different partitions is governed by following '",x$gamma$H0aF,"' objects:\n",sep = "")
+    print(x$X)
 }
 
 #' Sufficient statistics of a "HDP2" object
@@ -1830,6 +1989,34 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
     sufficientStatistics(obj = obj$H,x=x,...)
 }
 
+#' Weighted sufficient statistics of a "HDP2" object
+#'
+#' For following model structure: \cr
+#' Create an object of type "HDP2", which represents the model structure: \cr
+#'      G_m |eta ~ DP(eta,U), m = 1:M \cr
+#'      G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m \cr
+#'      pi_mj|G_mj,alpha ~ DP(alpha,G_mj) \cr
+#'      z|pi_mj ~ Categorical(pi_mj) \cr
+#'      k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj \cr
+#'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
+#'      theta_u|psi ~ H0(psi) \cr
+#'      x|theta_u,u ~ F(theta_u) \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' In the case of HDP2, u, z and k can only be positive integers. \cr
+#' The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
+#'
+#' @seealso \code{\link{HDP2}}, \code{\link{sufficientStatistics.HDP2}} 
+#' @param obj A "HDP2" object.
+#' @param x Random samples of the "BasicBayesian" object.
+#' @param w numeric, sample weights.
+#' @param ... further arguments passed to the corresponding sufficientStatistics method of the "BasicBayesian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
+#' @export
+sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
+    sufficientStatistics_Weighted(obj = obj$H,x=x,w=w,...)
+}
+
 #' Update a "HDP2" object with sample sufficient statistics
 #'
 #' For the model structure: \cr
@@ -1845,7 +2032,7 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP2" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2()}}
+#' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 #' @param obj A "HDP2" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
 #' @param ss1 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
@@ -1854,9 +2041,10 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1", "ss2"and "ss3".
 #' @export
-posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL){
+posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
     if(length(ss2)>1L) stop("posterior.HDP2 can only update from observations one at a time, for now")
     if(length(obj$X)<ss1)
         obj$X <- c(obj$X,
@@ -1880,7 +2068,7 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL){
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2()}}
+#' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 #' @param obj A "HDP2" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
 #' @param ss1 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
@@ -1889,13 +2077,29 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL){
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1", "ss2"and "ss3".
 #' @export
-posteriorDiscard.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL){
+posteriorDiscard.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
     if(missing(ss)|missing(j)|missing(m)) stop("'ss', 'j' and 'm' must all be specified")
     posteriorDiscard(obj = obj$Z,ss1 = ss1,ss2 = ss2,ss3 = ss3,m = m,j = j,w = w)
     posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
 }
+
+#' MAP estimate for HDP2
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+MAP.HDP2 <- function(obj,...){
+    stop("MAP.HDP2 not implemented yet.")
+}
+
+#' Marginallikelihood for HDP2
+#' @param obj an object.
+#' @param ... Additional arguments to be passed to other inherited types.
+marginalLikelihood.HDP2 <- function(obj,...){
+    stop("marginalLikelihood for this type not implemented yet")
+}
+
 
 #' Posterior predictive density function of a "HDP2" object
 #'
@@ -1922,14 +2126,15 @@ posteriorDiscard.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL){
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
-dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE){
+dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE,...){
     pzk <- dPosteriorPredictive(obj = obj$Z,u=u,z=z,k=k,m=m,j=j,LOG = FALSE)
     if(!is.null(x)){
         if(is.vector(x)){
             x <- matrix(x, ncol = 1)
-        }else if(!is(x,"matrix")){
+        }else if(!.is(x,"matrix")){
             stop("'x' must be a vector(univariate) or a matrix(multivariate)!")
         }
         if(nrow(x)>1L) stop("There can only be one observation in 'x', so 'x' must be a matrix of only 1 row.")
@@ -1974,9 +2179,10 @@ dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE){
 #' @param x Random samples of the "BasicBayesian" object.
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return integer, the categorical samples.
 #' @export
-rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j){
+rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j,...){
     if(missing(x)|missing(j)|missing(m)) stop("'x', 'm'and 'j'must be specified")
     if(n>1) stop("for now only support n=1")
 
@@ -1994,233 +2200,3 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j){
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
     c(u=us[idx],k=ks[idx],z=zs[idx])
 }
-
-if(FALSE){
-    farmads <- readLines("/tmp/farm-ads")
-    
-farmads <- tolower(farmads)
-farmads <- gsub("[0-9]","",farmads)
-farmads <- gsub("[a-z]+-[a-z]+","",farmads)
-farmads <- gsub("[^a-z ]","",farmads)
-library(cld3)                           #detect language
-idx <- sapply(farmads,detect_language,simplify = TRUE,USE.NAMES = FALSE)=="en"
-farmads <- farmads[idx %in% TRUE]
-while(any(grepl("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)",farmads)))
-    farmads <- gsub("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)"," ",farmads)
-farmads <- gsub(" +"," ",farmads)
-farmads <- gsub("(^ )|( $)","",farmads)
-
-
-    set.seed(1)
-x <- strsplit(sample(farmads,400),split = " ")
-x <- sapply(x,function(l){unique(l)},simplify = FALSE,USE.NAMES = FALSE)
-removeWords <- table(unlist(x))
-removeWords <- names(removeWords[removeWords<10 | removeWords>50])
-x <- sapply(x,function(l){
-    setdiff(l,removeWords)
-})
-x <- x[sapply(x,length,simplify = TRUE,USE.NAMES = FALSE)!=0]
-js <- rep(1L:length(x),times=sapply(x,length,simplify = TRUE,USE.NAMES = FALSE))
-x <- unlist(x)
-
-
-
-
-
-
-
-
-
-
-
-
-maxit <- 30                            #iterative for maxit times
-
-z <- rep(1L,length(x))
-k <- rep(1L,length(x))
-uniqueWords <- unique(x)
-obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="CatDirichlet",parH0=list(alpha=rep(0.5,length(uniqueWords)),uniqueLabels=uniqueWords)))
-
-N <- length(x)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    posterior(obj = obj,ss = x[i], ss2 = z[i],j=js[i],ss1=k[i])
-}
-
-
-table(z)
-
-it <- 0                                 #iteration tracker
-    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
-while(TRUE){
-    for(i in 1L:N){
-        posteriorDiscard.HDP(obj = obj,ss = x[i],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample information from the posterior
-        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])   #get a new sample
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        posterior(obj = obj,ss = x[i],ss1=k[i], ss2 = z[i],j=js[i]) #add the new sample information to the posterior
-    }
-    it <- it+1
-    setTxtProgressBar(pb,it)
-    if(it>=maxit){cat("\n");break}
-}
-
-sapply(obj$X,function(l){sum(l$gamma$alpha)})
-order(sapply(obj$X,function(l){sum(l$gamma$alpha)}),decreasing = TRUE)
-
-tmpfun <- function(tmpobj,n=10){
-    tmpobj$gamma$uniqueLabels[head(order(tmpobj$gamma$alpha/sum(tmpobj$gamma$alpha),decreasing = TRUE),n)]
-}
-
-    tmpfun(obj$X[[1]])
-    tmpfun(obj$X[[2]])
-    tmpfun(obj$X[[3]])
-    tmpfun(obj$X[[5]])
-    tmpfun(obj$X[[7]])
-    tmpfun(obj$X[[8]])
-    tmpfun(obj$X[[4]])
-
-tmpfun(obj$X[[6]])
-tmpfun(obj$X[[7]])
-
-
-table(z[,ncol(z)])
-    table(z)/ncol(z)
-}
-
-
-if(FALSE){
-set.seed(1)
-
-j <- as.integer(round(runif(30,40,50)))
-PIs <- rDir(30,c(1,2,3,1))
-Xs <- list(
-    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-)
-
-x <- do.call("rbind",lapply(1L:30L,function(i){
-    out <- matrix(0,nrow = j[i],ncol = 2L)
-    for(r in 1:nrow(out)){
-        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
-    }
-    out
-}))
-js <- rep(1L:30,times=j)
-
-
-maxit <- 20                            #iterative for maxit times
-
-z <- rep(1L,nrow(x))
-k <- rep(1L,nrow(x))
-obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
-ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
-
-N <- length(ss)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    posterior.HDP(obj = obj,ss = ss[[i]],ss1 = k[i],ss2 = z[i],j = js[i])
-}
-
-it <- 0                                 #iteration tracker
-
-while(TRUE){
-    for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample from the posterior info
-        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])   #resample a new partition
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        posterior(obj = obj,ss = ss[[i]], ss1=k[i],ss2 = z[i],j=js[i])
-    }
-    plot(x=x[,1],y=x[,2],col=k)
-    it <- it+1
-    cat(it," ")
-    if(it>=maxit){cat("\n");break}
-}
-
-plot(x=x[,1],y=x[,2],col=k)
-
-tmp <- obj$X[obj$Z$Z1$gamma$nk!=0]
-for(i in 1:length(tmp))
-    print(MAP(obj = tmp[[i]]))
-
-}
-
-
-if(FALSE){
-set.seed(1)
-
-J <- as.integer(round(runif(30,40,50)))
-PIs <- rbind(rDir(10,c(1,2,3,1)),
-             rDir(20,c(3,2,1,3)))
-Xs <- list(
-    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-)
-
-x <- do.call("rbind",lapply(1L:30L,function(i){
-    out <- matrix(0,nrow = J[i],ncol = 2L)
-    for(r in 1:nrow(out)){
-        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
-    }
-    out
-}))
-js <- rep(c(1L:10L,1L:20L),times=J)
-ms <- rep(2L,nrow(x))
-ms[1:sum(J[1:10])] <- 1L
-
-maxit <- 50                            #iterative for maxit times
-
-z <- rep(1L,nrow(x))
-k <- rep(1L,nrow(x))
-u <- rep(1L,nrow(x))
-
-obj <- HDP2(gamma = list(eta=1,gamma=1,alpha=1,m=2L,j=c(10L,20L),H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.001)))
-ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
-
-N <- length(ss)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],m=ms[i],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    u[i] <- tmp["u"]
-    posterior.HDP2(obj = obj,ss = ss[[i]],ss1 = u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j = js[i])
-}
-
-it <- 0                                 #iteration tracker
-
-while(TRUE){
-    tmp <- character(3)
-    for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i]) #remove the sample from the posterior info
-        tmp <- rPosteriorPredictive(obj = obj,n=1L,x=x[i,,drop=FALSE],m=ms[i],j=js[i])   #resample a new partition
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        u[i] <- tmp["u"]
-        posterior(obj = obj,ss = ss[[i]], ss1=u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j=js[i])
-    }
-    plot(x=x[,1],y=x[,2],col=u)
-    it <- it+1
-    cat(it," ")
-    if(it>=maxit){cat("\n");break}
-}
-
-plot(x=x[,1],y=x[,2],col=u)
-
-tmp <- obj$X[obj$Z$Z1$gamma$nk>50]
-for(i in 1:length(tmp))
-    print(MAP(obj = tmp[[i]]))
-
-}
-

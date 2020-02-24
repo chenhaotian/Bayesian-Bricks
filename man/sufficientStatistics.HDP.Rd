@@ -30,8 +30,14 @@ In the case of HDP, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 }
 \examples{
-obj1 <- HDP(gamma=list(gamma=1,alpha=1,j=2,H0aF="GaussianNIW",parH0=list(m=0,k=1,v=2,S=1))) # a HDP with Gaussian NIW observations
-obj2 <- HDP(gamma=list(gamma=1,alpha=1,j=2,H0aF="CatDirichlet",parH0=list(alpha=1,uniqueLabels=letters[1:3]))) # a HDP with Categorical-Dirichlet observations
+## a HDP with Gaussian NIW observations
+obj1 <- HDP(gamma=list(gamma=1,alpha=1,j=2,
+                       H0aF="GaussianNIW",
+                       parH0=list(m=0,k=1,v=2,S=1)))
+## a HDP with Categorical-Dirichlet observations
+obj2 <- HDP(gamma=list(gamma=1,alpha=1,j=2,
+            H0aF="CatDirichlet",
+            parH0=list(alpha=1,uniqueLabels=letters[1:3])))
 x1 <- rnorm(100)
 x2 <- sample(letters[1:3],100,replace = TRUE)
 sufficientStatistics(obj = obj1,x=x1,foreach = TRUE)

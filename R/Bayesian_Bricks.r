@@ -1,6 +1,4 @@
 
-setClass("BayesianBrick")
-setClass("BasicBayesian")
 
 #' Create objects of type '"BasicBayesian"'.
 #'
@@ -57,13 +55,17 @@ sufficientStatistics <- function(obj,...) UseMethod("sufficientStatistics")
 #' @return An object of corresponding sufficient statistics class, such as "ssGaussian"
 #' @export
 #' @examples
+#' \dontrun{
 #' x <- rGaussian(10,mu = 1,Sigma = 1)
 #' w <- runif(10)
 #' obj <- GaussianNIW()                    #an GaussianNIW object
-#' sufficientStatistics(obj=obj,x=x,w=w)
+#' sufficientStatistics_Weighted(obj=obj,x=x,w=w)
+#' }
 sufficientStatistics_Weighted <- function(obj,...) UseMethod("sufficientStatistics_Weighted")
 
 #' update the prior distribution with sufficient statistics
+#' @param obj A "BayesianBrick" object used to select a method.
+#' @param ... further arguments passed to or from other methods.
 posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySufficientStatistics")
 
 #' update the prior distribution with sufficient statistics
@@ -81,6 +83,8 @@ posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySuf
 posterior <- function(obj,...) UseMethod("posterior")
 
 #' update the prior distribution with sufficient statistics
+#' @param obj A "BayesianBrick" object used to select a method.
+#' @param ... other parameters.
 posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posteriorDiscard_bySufficientStatistics")
 
 #' update the prior distribution with sufficient statistics
@@ -182,17 +186,29 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 rPosteriorPredictive <- function(obj,...) UseMethod("rPosteriorPredictive")
 
 #' the density of observation distribution
+#' @param obj An object of the target type.
+#' @param ... other parameters.
 dObservationDistribution <- function(obj,...) UseMethod("dObservationDistribution")
 
 #' random number generation of the observation distribution
+#' @param obj An object of the target type.
+#' @param ... other parameters.
 rObservationDistribution <- function(obj,...) UseMethod("rObservationDistribution")
 
 #' Print the content of an BayesicBasyeisn object
+#' @param x An object of the target type.
+#' @param ... other parameters passed to print.
 #' @export
-print.BasicBayesian <- function(obj){
-    cat("Prior distribution: ",obj$H,"\n")
-    cat("Observation distribution: ",obj$F,"\n")        
+print.BasicBayesian <- function(x,...){
+    cat("Prior distribution: ",x$H,"\n")
+    cat("Observation distribution: ",x$F,"\n")        
     cat("Parameters for prior distribution:\n")
-    print(obj$gamma)
+    print(x$gamma)
 }
 
+#' a internal version of "is", only for this package
+#' @param object an object to be test with
+#' @param class2 the class you want to test
+.is <- function(object,class2){
+    isTRUE(class2 %in% class(object))
+}

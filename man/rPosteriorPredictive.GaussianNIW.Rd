@@ -4,12 +4,14 @@
 \alias{rPosteriorPredictive.GaussianNIW}
 \title{Posterior predictive random generation of a "GaussianNIW" object}
 \usage{
-\method{rPosteriorPredictive}{GaussianNIW}(obj, n)
+\method{rPosteriorPredictive}{GaussianNIW}(obj, n, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
 
 \item{n}{integer, number of samples.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A matrix of n rows, each row is a sample.

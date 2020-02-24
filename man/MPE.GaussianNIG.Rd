@@ -4,10 +4,12 @@
 \alias{MPE.GaussianNIG}
 \title{MPE estimate of a "GaussianNIG" object}
 \usage{
-\method{MPE}{GaussianNIG}(obj)
+\method{MPE}{GaussianNIG}(obj, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIG" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A named list, the MPE estimate of beta and sigma^2.

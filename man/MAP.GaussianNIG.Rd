@@ -4,10 +4,12 @@
 \alias{MAP.GaussianNIG}
 \title{MAP estimate of a "GaussianNIG" object}
 \usage{
-\method{MAP}{GaussianNIG}(obj)
+\method{MAP}{GaussianNIG}(obj, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIG" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A named list, the MAP estimate of beta and sigma^2.

@@ -4,12 +4,14 @@
 \alias{rPosteriorPredictive.CatDirichlet}
 \title{Posterior predictive random generation of a "CatDirichlet" object}
 \usage{
-\method{rPosteriorPredictive}{CatDirichlet}(obj, n)
+\method{rPosteriorPredictive}{CatDirichlet}(obj, n, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
 
 \item{n}{integer, number of samples.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A vector of the same type as obj$gamma$uniqueLabels.

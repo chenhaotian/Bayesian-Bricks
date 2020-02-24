@@ -4,7 +4,12 @@
 \alias{print.CatHDP2}
 \title{Print the content of an CatHDP2 object}
 \usage{
-\method{print}{CatHDP2}(obj)
+\method{print}{CatHDP2}(x, ...)
+}
+\arguments{
+\item{x}{An object of type "CatHDP2".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 Print the content of an CatHDP2 object

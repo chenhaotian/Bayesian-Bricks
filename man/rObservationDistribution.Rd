@@ -6,6 +6,11 @@
 \usage{
 rObservationDistribution(obj, ...)
 }
+\arguments{
+\item{obj}{An object of the target type.}
+
+\item{...}{other parameters.}
+}
 \description{
 random number generation of the observation distribution
 }

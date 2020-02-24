@@ -4,7 +4,7 @@
 \alias{rPosteriorPredictive.GaussianNIG}
 \title{Posterior predictive random generation of a "GaussianNIG" object}
 \usage{
-\method{rPosteriorPredictive}{GaussianNIG}(obj, n, X)
+\method{rPosteriorPredictive}{GaussianNIG}(obj, n, X, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIG" object.}
@@ -12,6 +12,8 @@
 \item{n}{integer, number of samples.}
 
 \item{X}{matrix, must satisfy length(x) = nrow(X).}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A matrix of n rows and nrow(X) columns, each row is a sample.

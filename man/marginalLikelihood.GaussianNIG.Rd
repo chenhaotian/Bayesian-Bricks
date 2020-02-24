@@ -4,7 +4,7 @@
 \alias{marginalLikelihood.GaussianNIG}
 \title{Marginal likelihood of a "GaussianNIG" object}
 \usage{
-\method{marginalLikelihood}{GaussianNIG}(obj, x, X, LOG = TRUE)
+\method{marginalLikelihood}{GaussianNIG}(obj, x, X, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIG" object.}
@@ -14,6 +14,8 @@
 \item{X}{matrix, must satisfy length(x) = nrow(X).}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 numeric, the marginal likelihood.

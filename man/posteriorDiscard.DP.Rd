@@ -4,7 +4,7 @@
 \alias{posteriorDiscard.DP}
 \title{Update a "DP" object with sample sufficient statistics}
 \usage{
-\method{posteriorDiscard}{DP}(obj, ss, z, w = NULL)
+\method{posteriorDiscard}{DP}(obj, ss, z, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "DP" object.}
@@ -14,6 +14,8 @@
 \item{z}{integer, the partition label of the parameter space where the observation x is drawn from.}
 
 \item{w}{Sample weights, default NULL.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 None. the model stored in "obj" will be updated based on "ss".
@@ -38,5 +40,5 @@ for(i in 1L:length(z)) posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i])
 obj
 }
 \seealso{
-\code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP()}}
+\code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
 }

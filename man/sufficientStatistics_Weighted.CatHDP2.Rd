@@ -4,7 +4,18 @@
 \alias{sufficientStatistics_Weighted.CatHDP2}
 \title{Sufficient statistics of a "CatHDP2" object}
 \usage{
-\method{sufficientStatistics_Weighted}{CatHDP2}(obj, x, w, foreach = FALSE)
+\method{sufficientStatistics_Weighted}{CatHDP2}(obj, x, w, foreach = FALSE, ...)
+}
+\arguments{
+\item{obj}{An object of type "CatHDP2".}
+
+\item{x}{integer}
+
+\item{w}{numeric, sample weights.}
+
+\item{foreach}{logical}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 Sufficient statistics of a "CatHDP2" object

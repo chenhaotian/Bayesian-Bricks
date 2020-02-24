@@ -4,7 +4,7 @@
 \alias{sufficientStatistics.CatDP}
 \title{Sufficient statistics of a "CatDP" object}
 \usage{
-\method{sufficientStatistics}{CatDP}(obj, x, foreach = FALSE)
+\method{sufficientStatistics}{CatDP}(obj, x, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "CatDP" object.}
@@ -12,6 +12,8 @@
 \item{x}{integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
@@ -28,8 +30,10 @@ The sufficient statistics of a set of samples x is the effective counts of the u
 \examples{
 x <- sample(1L:10L,size = 4,replace = TRUE)
 obj <- CatDP()
-sufficientStatistics(obj=obj,x=x)                #an object of class "ssCatDP", which contains the counts of each unique integer
-sufficientStatistics(obj=obj,x=x,foreach = TRUE) #will return x itself
+## an object of class "ssCatDP", which contains the counts of each unique integer
+sufficientStatistics(obj=obj,x=x)
+## will return x itself
+sufficientStatistics(obj=obj,x=x,foreach = TRUE)
 }
 \seealso{
 \code{\link{CatDP}}, \code{\link{sufficientStatistics_Weighted.CatDP}}

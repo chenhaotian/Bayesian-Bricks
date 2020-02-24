@@ -4,7 +4,16 @@
 \alias{sufficientStatistics.CatHDP2}
 \title{Sufficient statistics of a "CatHDP2" object}
 \usage{
-\method{sufficientStatistics}{CatHDP2}(obj, x, foreach = FALSE)
+\method{sufficientStatistics}{CatHDP2}(obj, x, foreach = FALSE, ...)
+}
+\arguments{
+\item{obj}{An object of type "CatHDP2".}
+
+\item{x}{integer}
+
+\item{foreach}{logical}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 Sufficient statistics of a "CatHDP2" object

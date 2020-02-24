@@ -6,6 +6,11 @@
 \usage{
 posterior_bySufficientStatistics(obj, ...)
 }
+\arguments{
+\item{obj}{A "BayesianBrick" object used to select a method.}
+
+\item{...}{further arguments passed to or from other methods.}
+}
 \description{
 update the prior distribution with sufficient statistics
 }

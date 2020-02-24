@@ -38,7 +38,8 @@ This object will be used as a place for recording and accumulating information i
     
 ## This is an example of Gibbs sampling on an hierarchical mixture model, using HDP.
 
-data(mmhData)                           # load some hierarchical mixture data, check ?mmhData for details.
+## load some hierarchical mixture data, check ?mmhData for details.
+data(mmhData)
 x <- mmhData$x
 js <- mmhData$groupLabel
 
@@ -46,7 +47,10 @@ js <- mmhData$groupLabel
 ## Step1: initialize--------------------------------------------------
 z <- rep(1L,nrow(x))
 k <- rep(1L,nrow(x))
-obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01))) #create a HDP object to track all the changes
+## create a HDP object to track all the changes
+obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,
+           H0aF="GaussianNIW",
+           parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
 ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
 N <- length(ss)
 for(i in 1L:N){# initialize k and z
@@ -62,8 +66,10 @@ it <- 0                                 #iteration tracker
 pb <- txtProgressBar(min = 0,max = maxit,style = 3)
 while(TRUE){
     for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample from the posterior info
-        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])   #resample a new partition
+        ## remove the sample from the posterior info
+        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i])
+        ## resample a new partition
+        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
         z[i] <- tmp["z"]
         k[i] <- tmp["k"]
         posterior(obj = obj,ss = ss[[i]], ss1=k[i],ss2 = z[i],j=js[i])

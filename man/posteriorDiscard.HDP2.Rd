@@ -4,7 +4,7 @@
 \alias{posteriorDiscard.HDP2}
 \title{Update a "HDP2" object with sample sufficient statistics}
 \usage{
-\method{posteriorDiscard}{HDP2}(obj, ss, ss1, ss2, ss3, m, j, w = NULL)
+\method{posteriorDiscard}{HDP2}(obj, ss, ss1, ss2, ss3, m, j, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "HDP2" object.}
@@ -22,6 +22,8 @@
 \item{j}{integer, subgroup label.}
 
 \item{w}{Sample weights, default NULL.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 None. the model stored in "obj" will be updated based on "ss", "ss1", "ss2"and "ss3".
@@ -41,5 +43,5 @@ In the case of HDP2, u, z and k can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }
 \seealso{
-\code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2()}}
+\code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 }

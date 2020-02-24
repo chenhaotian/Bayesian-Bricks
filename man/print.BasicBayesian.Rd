@@ -4,7 +4,12 @@
 \alias{print.BasicBayesian}
 \title{Print the content of an BayesicBasyeisn object}
 \usage{
-\method{print}{BasicBayesian}(obj)
+\method{print}{BasicBayesian}(x, ...)
+}
+\arguments{
+\item{x}{An object of the target type.}
+
+\item{...}{other parameters passed to print.}
 }
 \description{
 Print the content of an BayesicBasyeisn object

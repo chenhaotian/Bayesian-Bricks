@@ -4,7 +4,7 @@
 \alias{sufficientStatistics.CatDirichlet}
 \title{Sufficient statistics of a "CatDirichlet" object}
 \usage{
-\method{sufficientStatistics}{CatDirichlet}(obj, x, foreach = FALSE)
+\method{sufficientStatistics}{CatDirichlet}(obj, x, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
@@ -12,6 +12,8 @@
 \item{x}{numeric,integer or character, samples of the Categorical distribution.}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 An object of class "ssCat", the sufficient statistics of a set of categorical samples. Or an object of the same class as x if foreach=TRUE.

@@ -4,7 +4,12 @@
 \alias{print.DP}
 \title{print the content of a "DP" object}
 \usage{
-\method{print}{DP}(obj)
+\method{print}{DP}(x, ...)
+}
+\arguments{
+\item{x}{An object of type "DP".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 print the content of a "DP" object

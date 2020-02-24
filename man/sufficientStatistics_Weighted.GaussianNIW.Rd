@@ -4,7 +4,7 @@
 \alias{sufficientStatistics_Weighted.GaussianNIW}
 \title{Weighted sufficient statistics for a "GaussianNIW" object}
 \usage{
-\method{sufficientStatistics_Weighted}{GaussianNIW}(obj, x, w, foreach = FALSE)
+\method{sufficientStatistics_Weighted}{GaussianNIW}(obj, x, w, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
@@ -14,6 +14,8 @@
 \item{w}{numeric, sample weightes.}
 
 \item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
@@ -32,8 +34,8 @@ The sufficient statistics of a set of samples x (each row of x is a sample) and 
 x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
 obj <- GaussianNIW()                    #an GaussianNIW object
 w <- runif(10)
-sufficientStatistics(obj=obj,x=x,w=w,foreach = FALSE)
-sufficientStatistics(obj=obj,x=x,w=w,foreach = TRUE)
+sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = FALSE)
+sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
 }
 \seealso{
 \code{\link{GaussianNIW}}, \code{\link{sufficientStatistics.GaussianNIW}}

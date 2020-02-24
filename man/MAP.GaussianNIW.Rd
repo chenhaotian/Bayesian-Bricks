@@ -4,10 +4,12 @@
 \alias{MAP.GaussianNIW}
 \title{MAP estimate of a "GaussianNIW" object}
 \usage{
-\method{MAP}{GaussianNIW}(obj)
+\method{MAP}{GaussianNIW}(obj, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A named list, the MAP estimate of "theta".

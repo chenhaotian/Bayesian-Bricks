@@ -21,7 +21,9 @@ For a design matrix x(each row is a sample), the sufficient statistics are: \cr
  the uncentered scatter matrix S = t(x)%*%x. \cr
 }
 \examples{
+\dontrun{
 x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
 sufficientStatisticsGaussian(x,foreach = FALSE)
 sufficientStatisticsGaussian(x,foreach = TRUE)
+}
 }

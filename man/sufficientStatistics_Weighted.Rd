@@ -21,10 +21,12 @@ This is a generatic function that will generate the weighted sufficient statisti
 get the weigeted sufficient statistics T(X)
 }
 \examples{
+\dontrun{
 x <- rGaussian(10,mu = 1,Sigma = 1)
 w <- runif(10)
 obj <- GaussianNIW()                    #an GaussianNIW object
-sufficientStatistics(obj=obj,x=x,w=w)
+sufficientStatistics_Weighted(obj=obj,x=x,w=w)
+}
 }
 \seealso{
 \code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorica-DP conjugate structure ...

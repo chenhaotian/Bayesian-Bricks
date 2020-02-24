@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.CatDirichlet}
 \title{Posterior predictive density function of a "CatDirichlet" object}
 \usage{
-\method{dPosteriorPredictive}{CatDirichlet}(obj, x, LOG = TRUE)
+\method{dPosteriorPredictive}{CatDirichlet}(obj, x, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
@@ -12,6 +12,8 @@
 \item{x}{numeric/integer/character vector, observed Categorical samples.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.

@@ -4,7 +4,7 @@
 \alias{marginalLikelihood.GaussianNIW}
 \title{Marginal likelihood of a "GaussianNIW" object}
 \usage{
-\method{marginalLikelihood}{GaussianNIW}(obj, x, LOG = TRUE)
+\method{marginalLikelihood}{GaussianNIW}(obj, x, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
@@ -12,6 +12,8 @@
 \item{x}{matrix, or the ones that can be converted to matrix. each row of x is an observationobservation matrix, or the ones that can be converted to matrix. each row of x is an observation}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 numeric, the marginal likelihood.

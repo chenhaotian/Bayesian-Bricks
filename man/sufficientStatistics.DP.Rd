@@ -11,7 +11,7 @@
 
 \item{x}{Random samples of the "BasicBayesian" object.}
 
-\item{...}{further arguments passed to the corresponding sufficientStatistics method of the "BasicBayesian" object.}
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 Return the sufficient statistics of the corresponding BasicBayesian type, see examples.

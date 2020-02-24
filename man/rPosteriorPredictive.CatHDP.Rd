@@ -4,7 +4,7 @@
 \alias{rPosteriorPredictive.CatHDP}
 \title{Posterior predictive random generation of a "CatHDP" object}
 \usage{
-\method{rPosteriorPredictive}{CatHDP}(obj, n = 1L, j)
+\method{rPosteriorPredictive}{CatHDP}(obj, n = 1L, j, ...)
 }
 \arguments{
 \item{obj}{A "CatHDP" object.}
@@ -12,6 +12,8 @@
 \item{n}{integer, number of samples.}
 
 \item{j}{integer, group label.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 integer, the categorical samples.

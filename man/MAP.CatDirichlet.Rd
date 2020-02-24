@@ -4,10 +4,12 @@
 \alias{MAP.CatDirichlet}
 \title{MAP estimate of a "CatDirichlet" object}
 \usage{
-\method{MAP}{CatDirichlet}(obj)
+\method{MAP}{CatDirichlet}(obj, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the MAP estimate of "pi".

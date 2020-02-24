@@ -4,7 +4,7 @@
 \alias{rPosteriorPredictive.HDP2}
 \title{Posterior predictive random generation of a "HDP2" object}
 \usage{
-\method{rPosteriorPredictive}{HDP2}(obj, n = 1, x, m, j)
+\method{rPosteriorPredictive}{HDP2}(obj, n = 1, x, m, j, ...)
 }
 \arguments{
 \item{obj}{A "HDP2" object.}
@@ -16,6 +16,8 @@
 \item{m}{integer, group label.}
 
 \item{j}{integer, subgroup label.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 integer, the categorical samples.

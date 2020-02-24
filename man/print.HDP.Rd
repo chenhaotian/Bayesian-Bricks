@@ -4,7 +4,12 @@
 \alias{print.HDP}
 \title{print the content of a "HDP" object}
 \usage{
-\method{print}{HDP}(obj)
+\method{print}{HDP}(x, ...)
+}
+\arguments{
+\item{x}{An object of type "HDP".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 print the content of a "HDP" object

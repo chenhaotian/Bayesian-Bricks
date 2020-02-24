@@ -4,10 +4,12 @@
 \alias{MPE.CatDP}
 \title{MPE estimate of a "CatDP" object}
 \usage{
-\method{MPE}{CatDP}(obj)
+\method{MPE}{CatDP}(obj, ...)
 }
 \arguments{
 \item{obj}{A "CatDP" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 numeric.

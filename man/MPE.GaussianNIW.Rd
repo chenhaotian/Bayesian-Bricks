@@ -4,10 +4,12 @@
 \alias{MPE.GaussianNIW}
 \title{MPE of a "GaussianNIW" object}
 \usage{
-\method{MPE}{GaussianNIW}(obj)
+\method{MPE}{GaussianNIW}(obj, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A named list, the MPE estimate of "theta".

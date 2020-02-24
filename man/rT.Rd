@@ -14,6 +14,8 @@ rT(n, mu, Sigma = NULL, A = NULL, df = 1)
 \item{Sigma}{matrix, covariance matrix, one of Sigma and A should be non-NULL.}
 
 \item{A}{matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.}
+
+\item{df}{numeric, degrees of freedom.}
 }
 \value{
 A matrix of n rows and length(mu) columns, each row is a sample.
@@ -22,8 +24,10 @@ A matrix of n rows and length(mu) columns, each row is a sample.
 Generate random samples from a (multivariate) t distribution
 }
 \examples{
+\dontrun{
 x <- rT(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 plot(x)
+}
 }
 \seealso{
 \code{\link{dT}}

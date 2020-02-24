@@ -15,6 +15,8 @@ dT(x, mu, Sigma = NULL, A = NULL, df = 1, LOG = TRUE)
 
 \item{A}{matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.}
 
+\item{df}{numeric, degrees of freedom.}
+
 \item{LOG}{logical, retrun log density of LOG=TRUE, default TRUE.}
 }
 \value{

@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.CatDP}
 \title{Posterior predictive density function of a "CatDP" object}
 \usage{
-\method{dPosteriorPredictive}{CatDP}(obj, x, LOG = TRUE)
+\method{dPosteriorPredictive}{CatDP}(obj, x, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "CatDP" object.}
@@ -12,6 +12,8 @@
 \item{x}{integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.

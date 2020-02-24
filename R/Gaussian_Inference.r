@@ -1,15 +1,11 @@
 
 #' @include Bayesian_Bricks.r
 
-setClass("GaussianNIW")
-setClass("GaussianNIG")
-setClass("ssGaussian")
-setClass("ssGaussianLinear")
 
-#' Inverse of a positive definite symmetric matrix
-#'
-#' Use cholseky decomposition to calculate the inverse where S = A'A, A is a upper diaganol matrix then inv(S) = inv(A)inv(A)'.
-#'
+
+
+#' @title Inverse of a positive definite symmetric matrix
+#' @description Use cholseky decomposition to calculate the inverse where S = A'A, A is a upper diaganol matrix then inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.
 #' @param returnUpper logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.
 #' @return A matrix.
@@ -125,14 +121,16 @@ linearGaussian <- function(x2,mu1,Sigma1=NULL,Precision1=NULL,A,b,Sigma21=NULL,P
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
 #' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
 #' @examples
+#' \dontrun{
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
 #' sufficientStatisticsGaussian(x,foreach = FALSE)
 #' sufficientStatisticsGaussian(x,foreach = TRUE)
+#' }
 sufficientStatisticsGaussian <- function(x,foreach=FALSE){
     if(missing(x)) stop("'x' not specified!")
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     if(foreach){
@@ -160,15 +158,17 @@ sufficientStatisticsGaussian <- function(x,foreach=FALSE){
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
 #' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
 #' @examples
+#' \dontrun{
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
 #' w <- runif(10)
 #' sufficientStatisticsGaussian_Weighted(x,w,foreach = FALSE)
 #' sufficientStatisticsGaussian(x,foreach = TRUE)
+#' }
 sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
     if(missing(x)|missing(w)) stop("'x' or 'w' not specified!")
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
@@ -201,6 +201,7 @@ sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
 #' x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 #' plot(x)
 #' }
+#' @import stats
 rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
     if(missing(n)|missing(mu)) stop("'n' or 'mu' not specified!")
     d <- length(mu)                     #dimension
@@ -236,7 +237,7 @@ dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
 
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
 
@@ -255,11 +256,15 @@ dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
 #' @param mu numeric, mean vector.
 #' @param Sigma matrix, covariance matrix, one of Sigma and A should be non-NULL.
 #' @param A matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.
+#' @param df numeric, degrees of freedom.
 #' @return A matrix of n rows and length(mu) columns, each row is a sample.
 #' @export
 #' @examples
+#' \dontrun{
 #' x <- rT(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 #' plot(x)
+#' }
+#' @import stats
 rT <- function(n,mu,Sigma=NULL,A=NULL,df=1){
     if(missing(n)|missing(mu)) stop("'n' and 'mu' must all be specified!")
 
@@ -283,6 +288,7 @@ rT <- function(n,mu,Sigma=NULL,A=NULL,df=1){
 #' @param mu numeric, mean vector.
 #' @param Sigma matrix, covariance matrix, one of Sigma and A should be non-NULL.
 #' @param A matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.
+#' @param df numeric, degrees of freedom.
 #' @param LOG logical, retrun log density of LOG=TRUE, default TRUE.
 #' @return A numeric vector, the probability densities.
 #' @export
@@ -298,7 +304,7 @@ dT <- function(x,mu,Sigma=NULL,A=NULL,df=1,LOG=TRUE){
     
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     
@@ -339,7 +345,7 @@ dT <- function(x,mu,Sigma=NULL,A=NULL,df=1,LOG=TRUE){
 GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"GaussianNIW")) stop("'objCopy' must be of class 'GaussianNIW'")
+        if(!.is(objCopy,"GaussianNIW")) stop("'objCopy' must be of class 'GaussianNIW'")
         object$gamma <- objCopy$gamma
         object$H <- objCopy$H
         object$F <- objCopy$F
@@ -371,6 +377,7 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' @param obj A "GaussianNIW" object.
 #' @param x matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
 #' @export
 #' @examples
@@ -378,11 +385,11 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' obj <- GaussianNIW()                    #an GaussianNIW object
 #' sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' sufficientStatistics(obj=obj,x=x,foreach = TRUE)
-sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE){
+sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
     if(missing(x)) stop("'x' must be specified")
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     if(foreach){
@@ -418,19 +425,20 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE){
 #' @param x, matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
 #' @param w numeric, sample weightes.
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
 #' @export
 #' @examples
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
 #' obj <- GaussianNIW()                    #an GaussianNIW object
 #' w <- runif(10)
-#' sufficientStatistics(obj=obj,x=x,w=w,foreach = FALSE)
-#' sufficientStatistics(obj=obj,x=x,w=w,foreach = TRUE)
-sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE){
+#' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = FALSE)
+#' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
+sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
     if(missing(x)|missing(x)) stop("'x' or 'w' not specified!")
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
@@ -459,10 +467,11 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE){
 #' where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
 #' Update gamma by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianNIW" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{sufficientStatistics.GaussianNIW()}}
+#' @seealso \code{\link{GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{sufficientStatistics.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
 #' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
 #' @examples
@@ -473,10 +482,10 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE){
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss = ss[[i]])
 #' obj
-posterior.GaussianNIW <- function(obj,ss,w=NULL){
+posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
+    if(!.is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
     k0 <- obj$gamma$k
     m0 <- obj$gamma$m
 
@@ -488,6 +497,10 @@ posterior.GaussianNIW <- function(obj,ss,w=NULL){
 }
 
 #' Update a "GaussianNIW" object with sample sufficient statistics
+#' @param obj A "GaussianNIW" object.
+#' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
+#' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 posterior_bySufficientStatistics.GaussianNIW <- posterior.GaussianNIW
 
 #' Update a "GaussianNIW" object with sample sufficient statistics
@@ -502,6 +515,7 @@ posterior_bySufficientStatistics.GaussianNIW <- posterior.GaussianNIW
 #' @param obj A "GaussianNIW" object.
 #' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
 #' @param w Sample weights,default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated with the information in "ss".
 #' @export
 #' @examples
@@ -522,10 +536,10 @@ posterior_bySufficientStatistics.GaussianNIW <- posterior.GaussianNIW
 #' obj
 #' posteriorDiscard(obj = obj,ss = ssAll)
 #' obj
-posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL){
+posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
+    if(!.is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
     kN <- obj$gamma$k
     mN <- obj$gamma$m
     
@@ -536,6 +550,10 @@ posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL){
 }
 
 #' Update a "GaussianNIW" object with sample sufficient statistics
+#' @param obj A "GaussianNIW" object.
+#' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
+#' @param w Sample weights,default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.GaussianNIW
 
 #' MAP estimate of a "GaussianNIW" object
@@ -549,6 +567,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.Gaussian
 #'
 #' @seealso \code{\link{GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MAP estimate of "theta".
 #' @export
 #' @examples
@@ -559,7 +578,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.Gaussian
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
 #' MAP(obj)
-MAP.GaussianNIW <- function(obj){
+MAP.GaussianNIW <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
     list(muMAP=obj$gamma$m,
          sigmaMAP=obj$gamma$S/(obj$gamma$v+D+2))
@@ -576,9 +595,10 @@ MAP.GaussianNIW <- function(obj){
 #'
 #' @seealso \code{\link{GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of "theta".
 #' @export
-MPE.GaussianNIW <- function(obj){
+MPE.GaussianNIW <- function(obj,...){
     stop("MPE method for class 'GaussianNIW' is not implemented yet")
 }
 
@@ -595,6 +615,7 @@ MPE.GaussianNIW <- function(obj){
 #' @param obj A "GaussianNIW" object.
 #' @param x matrix, or the ones that can be converted to matrix. each row of x is an observationobservation matrix, or the ones that can be converted to matrix. each row of x is an observation
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
 #' @examples
@@ -604,11 +625,11 @@ MPE.GaussianNIW <- function(obj){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
-marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE){
+marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
     ss <- sufficientStatistics.GaussianNIW(obj=obj,x=x,foreach = FALSE)
@@ -628,6 +649,7 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE){
 #' @param obj A "GaussianNIW" object.
 #' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
 #' @examples
@@ -637,9 +659,9 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
-marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRUE){
+marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
+    if(!.is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
     
     lmvgamma <- function(a,p){
         sapply(a,function(ai){
@@ -679,6 +701,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' @param obj A "GaussianNIW" object.
 #' @param x numeric/integer/character vector, observed Categorical samples.
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
 #' @examples
@@ -690,11 +713,11 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' for(i in 1:nrow(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i,,drop=FALSE],LOG = TRUE)
 #' max(abs(out1-out2))
-dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE){
+dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
+    }else if(!.is(x,"matrix")){
         stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
     }
 
@@ -717,22 +740,23 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE){
 #' @seealso @seealso \code{\link{GaussianNIW}}, \code{\link{dPosteriorPredictive.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
 #' @param n integer, number of samples.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A matrix of n rows, each row is a sample.
 #' @export
 #' @examples
 #' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
 #' rPosteriorPredictive(obj=obj,20)
-rPosteriorPredictive.GaussianNIW <- function(obj,n){
+rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
     if(obj$gamma$v-length(obj$gamma$m)+1 < 0) stop("In the parameters of NIW, 'v' must be greater than p-1, where p is the dimension of the Gaussian variable. This error can be resolved by setting a larger 'v' when initializing the GaussianNIW object.")
     d <- length(obj$gamma$m)
     rT(n=n,mu=obj$gamma$m,Sigma = (obj$gamma$k+1)/obj$gamma$k/(obj$gamma$v-d+1)*obj$gamma$S,df = obj$gamma$v-d+1)
 }
 
-dObservationDistribution.GaussianNIW <- function(obj,x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
+dObservationDistribution.GaussianNIW <- function(obj,x,mu,Sigma=NULL,A=NULL,LOG=TRUE,...){
     dGaussian(x=x,mu=mu,Sigma = Sigma,A = A,LOG = LOG)
 }
 
-rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL){
+rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL,...){
     rGaussian(n=n,mu=mu,Sigma=Sigma,A=A)
 }
 
@@ -758,12 +782,13 @@ rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL){
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
 #' posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
 #' MAP(obj)                                        #get the MAP estimate of beta and sigma^2
-#' obj                                             #print the whole content, "invV" and "mVm" in the output are temporary variables.
+#' ## print the whole content, "invV" and "mVm" in the output are temporary variables.
+#' obj
 #' }
 GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
-        if(!is(objCopy,"GaussianNIG")) stop("'objCopy' must be of class 'GaussianNIG'")
+        if(!.is(objCopy,"GaussianNIG")) stop("'objCopy' must be of class 'GaussianNIG'")
         object$gamma <- objCopy$gamma
         object$H <- objCopy$H
         object$F <- objCopy$F
@@ -800,6 +825,7 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' @param x numeric, must satisfy length(x) = nrow(X)
 #' @param X matrix, must satisfy length(x) = nrow(X)
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficent statistics as a whole.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficent statistics of (x,X) as a whole.
 #' @export
 #' @examples
@@ -808,12 +834,12 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' x <- rnorm(20)+ X*0.3
 #' sufficientStatistics(obj = obj,X=X,x=x)
 #' sufficientStatistics(obj = obj,X=X,x=x,foreach = TRUE)
-sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE){
+sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
     if(is.vector(X)){
         X <- matrix(X, ncol = 1)
-    }else if(!is(X,"matrix")){
+    }else if(!.is(X,"matrix")){
         stop("'X' must be a vector or matrix!")
     }
     if(length(x)!=nrow(X)) stop("number of observations don't match")
@@ -858,6 +884,7 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE){
 #' @param w numeric, sample weightes.
 #' @param X matrix, must satisfy length(x) = nrow(X).
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficent statistics as a whole.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficent statistics of (x,X) as a whole.
 #' @export
 #' @examples
@@ -867,13 +894,13 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE){
 #' w <- runif(20)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
-sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE){
+sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...){
     if(missing(x)|missing(w)|missing(X)) stop("'x', 'w' and 'X' must be specified")
     if(!is.vector(w)) w <- as.vector(w)
     if(!is.vector(x)) x <- as.vector(x)
     if(is.vector(X)){
         X <- matrix(X, ncol = 1)
-    }else if(!is(X,"matrix")){
+    }else if(!.is(X,"matrix")){
         stop("'X' must be a vector or matrix!")
     }
     if(length(x)!=nrow(X)) stop("number of observations between x and X don't match")
@@ -909,10 +936,11 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE){
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Update gamma by adding the information of newly observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
 #'
-#' @seealso \code{\link{GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{sufficientStatistics.GaussianNIG()}}
+#' @seealso \code{\link{GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{sufficientStatistics.GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
 #' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
 #' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
 #' @examples
@@ -922,10 +950,10 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE){
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' obj
-posterior.GaussianNIG <- function(obj,ss,w=NULL){
+posterior.GaussianNIG <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
+    if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
     invV0 <- obj$gamma$invV
     mVm0 <- obj$gamma$mVm
     
@@ -939,6 +967,10 @@ posterior.GaussianNIG <- function(obj,ss,w=NULL){
 }
 
 #' Update a "GaussianNIG" object with sample sufficient statistics
+#' @param obj A "GaussianNIG" object.
+#' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
+#' @param w Sample weights, default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 posterior_bySufficientStatistics.GaussianNIG <- posterior.GaussianNIG
 
 #' Update a "GaussianNIG" object with sample sufficient statistics
@@ -954,6 +986,7 @@ posterior_bySufficientStatistics.GaussianNIG <- posterior.GaussianNIG
 #' @param obj A "GaussianNIG" object.
 #' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
 #' @param w Sample weights,default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated with the information in "ss".
 #' @export
 #' @examples
@@ -973,10 +1006,10 @@ posterior_bySufficientStatistics.GaussianNIG <- posterior.GaussianNIG
 #' obj
 #' for(sss in ssEach) posteriorDiscard(obj = obj,ss = sss)
 #' obj
-posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL){
+posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
+    if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
     invVN <- obj$gamma$invV
     mVmN <- obj$gamma$mVm
 
@@ -990,6 +1023,10 @@ posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL){
 }
 
 #' Update a "GaussianNIG" object with sample sufficient statistics
+#' @param obj A "GaussianNIG" object.
+#' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
+#' @param w Sample weights,default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
 posteriorDiscard_bySufficientStatistics.GaussianNIG <- posteriorDiscard.GaussianNIG
 
 #' MAP estimate of a "GaussianNIG" object
@@ -1003,6 +1040,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIG <- posteriorDiscard.Gaussian
 #'
 #' @seealso \code{\link{GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MAP estimate of beta and sigma^2.
 #' @export
 #' @examples
@@ -1012,7 +1050,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIG <- posteriorDiscard.Gaussian
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' MAP(obj)
-MAP.GaussianNIG <- function(obj){
+MAP.GaussianNIG <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
     list(betaMAP=obj$gamma$m,
          sigmaMAP=obj$gamma$b/(obj$gamma$a+1+D/2))
@@ -1029,9 +1067,10 @@ MAP.GaussianNIG <- function(obj){
 #'
 #' @seealso \code{\link{GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of beta and sigma^2.
 #' @export
-MPE.GaussianNIG <- function(obj){
+MPE.GaussianNIG <- function(obj,...){
     stop("MPE method for class 'GaussianNIG' is not implemented yet")
 }
 
@@ -1049,6 +1088,7 @@ MPE.GaussianNIG <- function(obj){
 #' @param x numeric, must satisfy length(x) = nrow(X).
 #' @param X matrix, must satisfy length(x) = nrow(X).
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
 #' @examples
@@ -1057,12 +1097,12 @@ MPE.GaussianNIG <- function(obj){
 #' x <- rnorm(20)+ X*0.3
 #' marginalLikelihood(obj = obj,x = x, X = X)
 #' marginalLikelihood(obj = obj,x = x, X = X,LOG = FALSE)
-marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE){
+marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
     if(is.vector(X)){
         X <- matrix(X,ncol = 1)
-    }else if(!is(X,"matrix")){
+    }else if(!.is(X,"matrix")){
         stop("'X' must be a vector or matrix!")
     }
     if(ncol(X)!=length(obj$gamma$m)) stop("number of columns in X doesn't match number of elements in beta")
@@ -1083,6 +1123,7 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE){
 #' @param obj A "GaussianNIG" object.
 #' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
 #' @export
 #' @examples
@@ -1092,9 +1133,9 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE){
 #' ss <- sufficientStatistics(obj=obj,x=x,X=X,foreach=FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss,LOG = FALSE)
-marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRUE){
+marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
-    if(!is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
+    if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
     det <- function(m){                 #det doesn't support scalar values, so write a wrapper around it
         if(is.matrix(m)){
             base::det(m)
@@ -1129,6 +1170,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' @param x numeric, must satisfy length(x) = nrow(X).
 #' @param X matrix, must satisfy length(x) = nrow(X).
 #' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector, the posterior predictive density.
 #' @export
 #' @examples
@@ -1141,12 +1183,12 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' for(i in 1:length(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i],X=X[i],LOG = TRUE)
 #' max(abs(out1-out2))
-dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE){
+dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
     if(is.vector(X)){
         X <- matrix(X,ncol = 1)
-    }else if(!is(X,"matrix")){
+    }else if(!.is(X,"matrix")){
         stop("'X' must be a vector or matrix!")
     }
     if(nrow(X)!=length(x)) stop("nrow(X) and length(x) don't match!")
@@ -1169,15 +1211,16 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE){
 #' @param obj A "GaussianNIG" object.
 #' @param n integer, number of samples.
 #' @param X matrix, must satisfy length(x) = nrow(X).
+#' @param ... Additional arguments to be passed to other inherited types.
 #' @return A matrix of n rows and nrow(X) columns, each row is a sample.
 #' @export
 #' @examples
 #' obj <- GaussianNIG(gamma=list(m=c(1,1),V=diag(2),a=1,b=1))
 #' X <- matrix(runif(20),ncol=2)
 #' rPosteriorPredictive(obj=obj,n=3,X=X)
-rPosteriorPredictive.GaussianNIG <- function(obj,n,X){
+rPosteriorPredictive.GaussianNIG <- function(obj,n,X,...){
     if(missing(X)) stop("'X' not specified!")
-    if(!is(X,"matrix")){
+    if(!.is(X,"matrix")){
         stop("'X' must be a matrix!")
     }
     if(ncol(X)!=length(obj$gamma$m)) stop("number of columns in X doesn't match number of elements in beta")

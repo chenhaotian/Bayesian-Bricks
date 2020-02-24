@@ -4,10 +4,12 @@
 \alias{MPE.CatDirichlet}
 \title{MPE of a "CatDirichlet" object}
 \usage{
-\method{MPE}{CatDirichlet}(obj)
+\method{MPE}{CatDirichlet}(obj, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the MPE of "pi".

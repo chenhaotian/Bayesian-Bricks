@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.DP}
 \title{Posterior predictive density function of a "DP" object}
 \usage{
-\method{dPosteriorPredictive}{DP}(obj, x, z, LOG = TRUE)
+\method{dPosteriorPredictive}{DP}(obj, x, z, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "DP" object.}
@@ -14,6 +14,8 @@
 \item{z}{integer, the partition label of the parameter space where the observation x is drawn from.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.

@@ -35,7 +35,8 @@ obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
 ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
 posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
 MAP(obj)                                        #get the MAP estimate of beta and sigma^2
-obj                                             #print the whole content, "invV" and "mVm" in the output are temporary variables.
+## print the whole content, "invV" and "mVm" in the output are temporary variables.
+obj
 }
 }
 \seealso{

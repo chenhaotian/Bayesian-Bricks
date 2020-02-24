@@ -4,7 +4,12 @@
 \alias{MAP.DP}
 \title{MAP estimate of a "DP" object}
 \usage{
-\method{MAP}{DP}(obj)
+\method{MAP}{DP}(obj, ...)
+}
+\arguments{
+\item{obj}{An object of type "DP".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 MAP estimate of a "DP" object

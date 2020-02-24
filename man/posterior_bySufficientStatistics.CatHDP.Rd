@@ -4,7 +4,18 @@
 \alias{posterior_bySufficientStatistics.CatHDP}
 \title{Update a "CatHDP" object with sample sufficient statistics}
 \usage{
-\method{posterior_bySufficientStatistics}{CatHDP}(obj, ss1, ss2, j)
+\method{posterior_bySufficientStatistics}{CatHDP}(obj, ss1, ss2, j, ...)
+}
+\arguments{
+\item{obj}{A "CatHDP" object.}
+
+\item{ss1}{Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).}
+
+\item{ss2}{Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).}
+
+\item{j}{integer, group label.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 Update a "CatHDP" object with sample sufficient statistics

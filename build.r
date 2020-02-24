@@ -58,14 +58,21 @@ r:
   - devel
   - bioc-devel
   - bioc-release
+r_packages:
+  - stats
 "
 write(travis,file = ".travis.yml")
 
 system("rm .#* *~")
 devtools::build()
 
-## devtools::release()
+system("rm .#* *~")
 
+## very important step
+## must make sure there's no  warnings and errors
+devtools::check()
+
+## devtools::release()
 
 install()
 

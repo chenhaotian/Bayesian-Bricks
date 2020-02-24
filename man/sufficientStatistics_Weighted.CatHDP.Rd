@@ -4,7 +4,7 @@
 \alias{sufficientStatistics_Weighted.CatHDP}
 \title{Sufficient statistics of a "CatHDP" object}
 \usage{
-\method{sufficientStatistics_Weighted}{CatHDP}(obj, z, k, w, foreach = FALSE)
+\method{sufficientStatistics_Weighted}{CatHDP}(obj, z, k, w, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "CatHDP" object.}
@@ -16,6 +16,8 @@
 \item{w}{numeric, sample weights}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 An object of class "ssCatHDP", the sufficient statistics of a set of categorical samples. Or an integer matrix if foreach=TRUE.
@@ -32,5 +34,5 @@ The model structure and prior parameters are stored in a "CatHDP" object. \cr
 The sufficient statistics of a set of samples z and k is the effective counts of the unique positive integers.
 }
 \seealso{
-\code{\link{CatHDP}}, \code{\link{sufficientStatistics_Weighted.CatHDP}}
+\code{\link{CatHDP}}, \code{\link{sufficientStatistics.CatHDP}}
 }

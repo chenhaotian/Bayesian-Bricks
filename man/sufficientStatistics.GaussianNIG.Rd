@@ -4,7 +4,7 @@
 \alias{sufficientStatistics.GaussianNIG}
 \title{Sufficient statistics of a "GaussianNIG" object}
 \usage{
-\method{sufficientStatistics}{GaussianNIG}(obj, x, X, foreach = FALSE)
+\method{sufficientStatistics}{GaussianNIG}(obj, x, X, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIG" object.}
@@ -14,6 +14,8 @@
 \item{X}{matrix, must satisfy length(x) = nrow(X)}
 
 \item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficent statistics as a whole.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficent statistics of (x,X) as a whole.

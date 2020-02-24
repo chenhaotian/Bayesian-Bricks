@@ -4,7 +4,7 @@
 \alias{sufficientStatistics_Weighted.CatDP}
 \title{Weighted sufficient statistics of a "CatDP" object}
 \usage{
-\method{sufficientStatistics_Weighted}{CatDP}(obj, x, w, foreach = FALSE)
+\method{sufficientStatistics_Weighted}{CatDP}(obj, x, w, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "CatDP" object.}
@@ -14,6 +14,8 @@
 \item{w}{numeric, sample weights}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
@@ -31,9 +33,11 @@ The sufficient statistics of a set of samples x is the effective counts of the u
 x <- sample(1L:10L,size = 4,replace = TRUE)
 obj <- CatDP()
 w <- runif(4)
-sufficientStatistics_Weighted(obj=obj,x=x,w=w)                #an object of class "ssCatDP", which contains the weighted counts of each unique integer
-sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE) #will return x itself, no matter what w is
+## return an object of class "ssCatDP" contains the weighted counts of each unique integer
+sufficientStatistics_Weighted(obj=obj,x=x,w=w)
+## return x itself, no matter what w is
+sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
 }
 \seealso{
-\code{\link{CatDP}}, \code{\link{sufficientStatistics_Weighted.CatDP}}
+\code{\link{CatDP}}, \code{\link{sufficientStatistics.CatDP}}
 }

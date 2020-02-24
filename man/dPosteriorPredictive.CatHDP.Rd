@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.CatHDP}
 \title{Posterior predictive density function of a "CatHDP" object}
 \usage{
-\method{dPosteriorPredictive}{CatHDP}(obj, z, k, j, LOG = TRUE)
+\method{dPosteriorPredictive}{CatHDP}(obj, z, k, j, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "CatHDP" object.}
@@ -16,6 +16,8 @@
 \item{j}{integer, group label.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.

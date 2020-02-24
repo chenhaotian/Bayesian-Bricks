@@ -4,7 +4,12 @@
 \alias{MPE.DP}
 \title{MPE estimate of a "DP" object}
 \usage{
-\method{MPE}{DP}(obj)
+\method{MPE}{DP}(obj, ...)
+}
+\arguments{
+\item{obj}{An object of type "DP".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \description{
 MPE estimate of a "DP" object

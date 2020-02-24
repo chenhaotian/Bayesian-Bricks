@@ -48,7 +48,8 @@ x <- rbind(
 maxit <- 100                            #iterative for maxit times
 burnin <- 50                            #number of burnin samples
 z <- matrix(1L,nrow(x),maxit-burnin)    #labels
-obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create an "GaussianNIW" object to track all the changes.
+## create an "GaussianNIW" object to track all the changes.
+obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2))))
 ss <- sufficientStatistics(obj,x=x,foreach = TRUE) #sufficient statistics of each x
 N <- nrow(x)
 for(i in 1L:N){ # initialize labels before Gibbs sampling
@@ -63,9 +64,12 @@ while(TRUE){
     if(it>burnin) colIdx <- it-burnin
     else colIdx <- 1
     for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #remove the sample information from the posterior
-        z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE]) #get a new sample
-        posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #add the new sample information to the posterior
+        ## remove the sample information from the posterior
+        posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx])
+        ## get a new sample
+        z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE])
+        ## add the new sample information to the posterior
+        posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx])
     }
     if(it>burnin & colIdx<ncol(z)) z[,colIdx+1] <- z[,colIdx] #copy result of previous iteration
     it <- it+1
@@ -77,7 +81,8 @@ while(TRUE){
 ## Step3: Estimate group labels of each observation---------------
 col <- apply(z,1,function(l){
     tmp <- table(l)
-    names(tmp)[which.max(tmp)]      #pick the most frequent group label in the samples to be the best estimate
+    ## pick the most frequent group label in the samples to be the best estimate
+    names(tmp)[which.max(tmp)]
 })
 plot(x=x[,1],y=x[,2],col=col)
 }

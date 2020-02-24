@@ -6,6 +6,11 @@
 \usage{
 dObservationDistribution(obj, ...)
 }
+\arguments{
+\item{obj}{An object of the target type.}
+
+\item{...}{other parameters.}
+}
 \description{
 the density of observation distribution
 }

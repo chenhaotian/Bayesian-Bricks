@@ -4,10 +4,12 @@
 \alias{MAP.CatDP}
 \title{MAP estimate of a "CatDP" object}
 \usage{
-\method{MAP}{CatDP}(obj)
+\method{MAP}{CatDP}(obj, ...)
 }
 \arguments{
 \item{obj}{A "CatDP" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 numeric.

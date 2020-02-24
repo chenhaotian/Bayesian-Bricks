@@ -4,7 +4,7 @@
 \alias{posteriorDiscard.CatHDP}
 \title{Update a "CatHDP" object with sample sufficient statistics}
 \usage{
-\method{posteriorDiscard}{CatHDP}(obj, ss1, ss2, j, w = NULL)
+\method{posteriorDiscard}{CatHDP}(obj, ss1, ss2, j, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "CatHDP" object.}
@@ -16,6 +16,8 @@
 \item{j}{integer, group label.}
 
 \item{w}{Sample weights, default NULL.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 None. the model stored in "obj" will be updated based on "ss1" and "ss2".
@@ -31,5 +33,5 @@ In the case of CatHDP, z and k can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }
 \seealso{
-\code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP()}}
+\code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
 }

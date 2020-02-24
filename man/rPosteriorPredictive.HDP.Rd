@@ -4,7 +4,7 @@
 \alias{rPosteriorPredictive.HDP}
 \title{Posterior predictive random generation of a "HDP" object}
 \usage{
-\method{rPosteriorPredictive}{HDP}(obj, n = 1, x, j)
+\method{rPosteriorPredictive}{HDP}(obj, n = 1, x, j, ...)
 }
 \arguments{
 \item{obj}{A "HDP" object.}
@@ -14,6 +14,8 @@
 \item{x}{Random samples of the "BasicBayesian" object.}
 
 \item{j}{integer, group label.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 integer, the categorical samples.

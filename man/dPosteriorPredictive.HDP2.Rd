@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.HDP2}
 \title{Posterior predictive density function of a "HDP2" object}
 \usage{
-\method{dPosteriorPredictive}{HDP2}(obj, x = NULL, u, k, z, m, j, LOG = TRUE)
+\method{dPosteriorPredictive}{HDP2}(obj, x = NULL, u, k, z, m, j, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "HDP2" object.}
@@ -22,6 +22,8 @@
 \item{j}{integer, subgroup label.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.

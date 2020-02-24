@@ -4,7 +4,7 @@
 \alias{sufficientStatistics_Weighted.CatDirichlet}
 \title{Weighted sufficient statistics of a "CatDirichlet" object}
 \usage{
-\method{sufficientStatistics_Weighted}{CatDirichlet}(obj, x, w, foreach = FALSE)
+\method{sufficientStatistics_Weighted}{CatDirichlet}(obj, x, w, foreach = FALSE, ...)
 }
 \arguments{
 \item{obj}{A "CatDirichlet" object.}
@@ -14,6 +14,8 @@
 \item{w}{numeric, sample weightes.}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 An object of class "ssCat", the sufficient statistics of a set of categorical samples. Or an object of the same class as x if foreach=TRUE.

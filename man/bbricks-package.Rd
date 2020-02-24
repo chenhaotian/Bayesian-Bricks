@@ -4,12 +4,12 @@
 \name{bbricks-package}
 \alias{bbricks}
 \alias{bbricks-package}
-\title{bbricks: What the Package Does (One Line, Title Case)}
+\title{bbricks: bbricks}
 \description{
-What the package does (one paragraph).
+Basic building blocks in Bayesian network modeling.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Haotian Chen \email{chenhaotian.jtt@gmail.com} (\href{https://orcid.org/https://orcid.org/0000-0001-9751-2093}{ORCID})
 
 }
 \keyword{internal}

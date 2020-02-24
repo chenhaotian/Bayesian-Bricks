@@ -4,7 +4,7 @@
 \alias{rPosteriorPredictive.DP}
 \title{Posterior predictive random generation of a "DP" object}
 \usage{
-\method{rPosteriorPredictive}{DP}(obj, n = 1, x)
+\method{rPosteriorPredictive}{DP}(obj, n = 1, x, ...)
 }
 \arguments{
 \item{obj}{A "DP" object.}
@@ -12,6 +12,8 @@
 \item{n}{integer, number of samples.}
 
 \item{x}{Random samples of the "BasicBayesian" object.}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 integer, the categorical samples.

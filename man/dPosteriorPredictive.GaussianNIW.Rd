@@ -4,7 +4,7 @@
 \alias{dPosteriorPredictive.GaussianNIW}
 \title{Posterior predictive density function of a "GaussianNIW" object}
 \usage{
-\method{dPosteriorPredictive}{GaussianNIW}(obj, x, LOG = TRUE)
+\method{dPosteriorPredictive}{GaussianNIW}(obj, x, LOG = TRUE, ...)
 }
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
@@ -12,6 +12,8 @@
 \item{x}{numeric/integer/character vector, observed Categorical samples.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
+
+\item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
 A numeric vector, the posterior predictive density.
