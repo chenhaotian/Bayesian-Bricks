@@ -45,7 +45,9 @@ rCategorical <- function(n,p){
 #' @return A numeric vector of the same length of 'x'.
 #' @export
 #' @examples
+#' \dontrun{
 #' dCategorical(x=c(1L,2L,1L),p=c(1,2))
+#' }
 dCategorical <- function(x,p){ stop("Error in dCategorical(): function not defined yet")}
 
 #' Random generation for Dirichelt distribution
