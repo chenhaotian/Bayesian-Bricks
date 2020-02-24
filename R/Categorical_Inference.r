@@ -371,7 +371,7 @@ posteriorDiscard_bySufficientStatistics.CatDirichlet <- function(obj,ss){
 #' obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
 #' x <- sample(letters,size = 20,replace = TRUE)
 #' w <- runif(20)
-#' posterior(obj=obj,ss=x)
+#' posterior(obj=obj,ss=x,w=w)
 #' MAP(obj)
 MAP.CatDirichlet <- function(obj){
     tmp <- obj$gamma$alpha-1
@@ -394,7 +394,7 @@ MAP.CatDirichlet <- function(obj){
 #' obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
 #' x <- sample(letters,size = 20,replace = TRUE)
 #' w <- runif(20)
-#' posterior(obj=obj,ss=x)
+#' posterior(obj=obj,ss=x,w=w)
 #' MPE(obj)
 MPE.CatDirichlet <- function(obj){
     obj$gamma$alpha/sum(obj$gamma$alpha)

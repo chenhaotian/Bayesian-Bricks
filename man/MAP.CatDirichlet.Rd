@@ -23,7 +23,7 @@ MAP is pi_MAP = argmax p(pi|alpha,x).
 obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
 x <- sample(letters,size = 20,replace = TRUE)
 w <- runif(20)
-posterior(obj=obj,ss=x)
+posterior(obj=obj,ss=x,w=w)
 MAP(obj)
 }
 \seealso{
