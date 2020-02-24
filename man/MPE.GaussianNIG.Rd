@@ -20,14 +20,6 @@ where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a num
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 MPE is {beta,sigma^2}_MPE = mean(beta,sigma^2|gamma,x,X).
 }
-\examples{
-obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=1))
-X <- 1:20
-x <- rnorm(20)+ X*0.3
-ss <- sufficientStatistics(obj = obj,X=X,x=x)
-posterior(obj = obj,ss = ss)
-MPE(obj)
-}
 \seealso{
 \code{\link{GaussianNIG}}
 }

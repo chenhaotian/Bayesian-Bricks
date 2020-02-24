@@ -1033,13 +1033,6 @@ MAP.GaussianNIG <- function(obj){
 #' @param obj A "GaussianNIG" object.
 #' @return A named list, the MPE estimate of beta and sigma^2.
 #' @export
-#' @examples
-#' obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=1))
-#' X <- 1:20
-#' x <- rnorm(20)+ X*0.3
-#' ss <- sufficientStatistics(obj = obj,X=X,x=x)
-#' posterior(obj = obj,ss = ss)
-#' MPE(obj)
 MPE.GaussianNIG <- function(obj){
     stop("MPE method for class 'GaussianNIG' is not implemented yet")
 }
