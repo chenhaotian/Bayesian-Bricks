@@ -2,13 +2,18 @@
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
-Basic building blocks in Bayesian modeling. 
+This package provides a collection of tools and network substructures to facilitate Bayesian network modeling.
+
+This is a package designed for **statisticians, and the ones who want to learn the basic statistical mindsets**. This is not the right package for those who only want to intuitively understand the modeling logic, or want to get a result with one line of code.
+
+See [Examples](#examples) for details.
 
 ```
 Bayesian Linear Regression
 Mixture Models
  Mixture of Gaussian
  Dirichlet Process Mixture Model (DP-MM)
+ Mixture Model with partially observed samples
 Hierarchical Mixture Models
 Topic Modeling with LDA
 Topic Modeling with HDP
