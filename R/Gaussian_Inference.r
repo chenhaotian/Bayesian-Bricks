@@ -223,10 +223,12 @@ rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
 #' @return A numeric vector.
 #' @export
 #' @examples
+#' \dontrun{
 #' plot(
 #'    dGaussian(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
 #'    ,type = "l"
 #' )
+#' }
 dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
     if(missing(x)|missing(mu)) stop("'x' or 'mu' not specified!")
 
