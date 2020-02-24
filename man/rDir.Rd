@@ -18,7 +18,7 @@ A numeric matrix of n rows and length(alpha) columns.
 Generate random samples from Dirichlet distribution.
 }
 \examples{
-rdir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)
+rDir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)
 }
 \seealso{
 \code{\link{dDir}}

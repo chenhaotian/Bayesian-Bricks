@@ -60,7 +60,7 @@ dCategorical <- function(x,p){ stop("Error in dCategorical(): function not defin
 #' @return A numeric matrix of n rows and length(alpha) columns.
 #' @export
 #' @examples
-#' rdir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)
+#' rDir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)
 rDir <- function(n, alpha){
     l <- length(alpha)
     x <- matrix(rgamma(l * n, alpha), ncol = l, byrow = TRUE)
