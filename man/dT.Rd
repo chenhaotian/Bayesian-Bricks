@@ -24,10 +24,12 @@ A numeric vector, the probability densities.
 Get the density of a set of samples from a t distribution
 }
 \examples{
+\dontrun{
 plot(
    dT(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
    ,type = "l"
 )
+}
 }
 \seealso{
 \code{\link{rT}}

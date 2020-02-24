@@ -266,6 +266,7 @@ posterior.CatDirichlet <- function(obj,ss,w=NULL){
 
 #' Update a "CatDirichlet" object with sample sufficient statistics
 #' @examples
+#' \dontrun{
 #' obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
 #' x <- sample(letters,size = 20,replace = TRUE)
 #' w <- runif(20)
@@ -287,6 +288,7 @@ posterior.CatDirichlet <- function(obj,ss,w=NULL){
 #' obj$gamma$a
 #' posteriorDiscard_bySufficientStatistics(obj = obj,ss=ss)
 #' obj$gamma$a
+#' }
 posterior_bySufficientStatistics.CatDirichlet <- function(obj,ss){
     if(missing(ss)) stop("'ss' must be specified")
     if(!is(ss,"ssCat")) stop("'ss' must be of class 'ssCat', you need to use sufficientStatistics() to generate 'ssCat' objects")

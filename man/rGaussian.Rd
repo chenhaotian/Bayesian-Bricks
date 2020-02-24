@@ -22,8 +22,10 @@ A matrix of n rows and length(mu) columns.
 Generate random samples from a Gaussian distribution.
 }
 \examples{
+\dontrun{
 x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 plot(x)
+}
 }
 \seealso{
 \code{\link{dGaussian}}

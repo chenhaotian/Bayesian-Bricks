@@ -197,8 +197,10 @@ sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
 #' @return A matrix of n rows and length(mu) columns.
 #' @export
 #' @examples
+#' \dontrun{
 #' x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 #' plot(x)
+#' }
 rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
     if(missing(n)|missing(mu)) stop("'n' or 'mu' not specified!")
     d <- length(mu)                     #dimension
@@ -285,10 +287,12 @@ rT <- function(n,mu,Sigma=NULL,A=NULL,df=1){
 #' @return A numeric vector, the probability densities.
 #' @export
 #' @examples
+#' \dontrun{
 #' plot(
 #'    dT(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
 #'    ,type = "l"
 #' )
+#' }
 dT <- function(x,mu,Sigma=NULL,A=NULL,df=1,LOG=TRUE){
     if(missing(x)|missing(mu)) stop("'x' and 'mu' must all be specified!")
     

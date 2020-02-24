@@ -10,6 +10,7 @@
 Update a "CatDirichlet" object with sample sufficient statistics
 }
 \examples{
+\dontrun{
 obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
 x <- sample(letters,size = 20,replace = TRUE)
 w <- runif(20)
@@ -31,4 +32,5 @@ posterior_bySufficientStatistics(obj = obj,ss=ss)
 obj$gamma$a
 posteriorDiscard_bySufficientStatistics(obj = obj,ss=ss)
 obj$gamma$a
+}
 }
