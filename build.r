@@ -50,6 +50,7 @@ write(Description,file = "DESCRIPTION")
 
 use_mit_license(name="Haotian Chen")
 
+devtools::use_travis()                  #add to .Rbuildignore
 
 system("rm .#* *~")
 devtools::build()
