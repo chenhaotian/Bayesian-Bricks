@@ -2,6 +2,7 @@
 #' @include Bayesian_Bricks.r
 
 
+
 countFreq <- function(x,uniqx=NULL){
     if(!is.factor(x)){
         if(!is.null(uniqx)) x <- factor(x,levels=uniqx)

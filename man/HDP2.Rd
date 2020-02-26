@@ -24,7 +24,7 @@ An object of class "HDP2".
 \description{
 Create an object of type "HDP2", which represents the Hierarchical-Dirichlet-Process of two Dirichlet-Process hierarchies: \cr
      G_m |eta ~ DP(eta,U), m = 1:M \cr
-     G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m \cr
+     G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m \cr
      pi_mj|G_mj,alpha ~ DP(alpha,G_mj) \cr
      z|pi_mj ~ Categorical(pi_mj) \cr
      k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj \cr

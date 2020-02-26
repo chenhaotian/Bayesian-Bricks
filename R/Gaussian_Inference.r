@@ -4,6 +4,9 @@
 
 
 
+
+
+
 #' @title Inverse of a positive definite symmetric matrix
 #' @description Use cholseky decomposition to calculate the inverse where S = A'A, A is a upper diaganol matrix then inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.

@@ -2,4 +2,10 @@
 ^\.travis\.yml$
 ^build\.r$
 ^\.#build\.r$
+^README\.raw\.md$
 
+^yourfolder1$
+^yourfolder2$
+^yourfile$
+^\.#build##!\.r$
+^notes_pictures$

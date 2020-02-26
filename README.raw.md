@@ -2,35 +2,75 @@
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
-This package provides a collection of tools and network substructures to facilitate Bayesian network modeling.
+**bbricks** provides a collection of inference tools and conditoinal probability distributions(CPDs) to facilitate Bayesian network modeling. This is a package designed for **statisticians, and the ones who want to learn the basic statistical mindsets**.
 
-This is a package designed for **statisticians, and the ones who want to learn the basic statistical mindsets**. This is not the right package for those who only want to intuitively understand the modeling logic, or want to get a result with one line of code.
-
-See [Examples](#examples) for details.
-
-```
-Bayesian Linear Regression
-Mixture Models
- Mixture of Gaussian
- Dirichlet Process Mixture Model (DP-MM)
- Mixture Model with partially observed samples
-Hierarchical Mixture Models
-Topic Modeling with LDA
-Topic Modeling with HDP
-Hierarchical Topic Modeling with HDP
-Infinite State HMM (iHMM)
-
-```
+See [Mindset](#mindset) and [Examples](#examples) to get started.
 
 
-
-### Installation
+## Installation
 
 ```R
 # install development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
+
+
+## Mindset
+
+The idea of **bbricks** came from the fact that Bayesian modeling is nothing more than applying set of **tasks** on a specific **model structure**.
+
+Where the most frequently appeared **tasks** are:
++ Update prior info into posterior when new samples are observed.
++ Sample from the posterior distribution.
++ Calculate marginal likelihood of the posterior distribution.
++ Calculate posterior predictive of the posterior distribution.
++ ...
+
+And the **model structure**s are just generalizations of $3$ basic Bayesian modeling structures:
+![](./notes_pictures/basicStructures.png)
+Where
++ $(a)$ is the most basic "parameter-observation" structure. Models like Gaussian, Gamma and Exponential are in this category.
++ $(b)$ is the "prior-posterior" structure. Models like Gaussian-NIW(Gaussian observations with NIW prior), Categorical-Dirichlet(Categorical observations with Dirichlet prior) are in this category.
++ $(c)$ is the "hierarchical-Bayesian" structure, and $(d)$ is the same hierarchical structure but with more hierarchies. Models like Hierarchical Dirichlet Process(HDP) and HDP with additional hidden layers are in this category.
+
+**bbricks** tries to provide a `type/class` for each basic **model structure** and a `function/method` for each **task**.
+
+See below for details.
+
+
+## Examples
+
++ [Mixture Models](#mixture-models)
+  + [Mixture of Gaussian](#mixture-of-gaussian)
+  + [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
+  + [Mixture Model with Partially Observed Samples](#mixture-model-with-partially-observed-samples)
++ [Hierarchical Mixture Models](#hierarchical-mixture-models)
+  + [Topic Modeling with HDP](topic-modeling-with-hdp)
+  + [Hierarchical Topic Modeling with HDP2](hierarchical-topic-modeling-with-hdp2)
++ [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
++ [Bayesian Linear Regression](#bayesian-linear-regression)
++ [Esitmate Cancer Motality Rates](esitmate-cancer-motality-rates)
+
+
+### Mixture Models
+
+
+#### Mixture of Gaussian
+
+#### Dirichlet Process Mixture Model
+
+#### Mixture Model with Partially Observed Samples
+
+
+### Hierarchical Mixture Models
+
+#### Topic Modeling with HDP
+
+#### Hierarchical Topic Modeling with HDP2
+  
+A Gaussian mixture model is a combination of two "prior-posterior" structures. One Categorical-Dirichlet for the hidden class label distribution, one Gaussian-NIW for the observation distribution.
+
 
 ### Examples
 
@@ -83,24 +123,7 @@ ec <- replicate(K,GaussianNIW(gamma = list(m=c(0,0),
                                            )))
 ecMAP <- replicate(K,list(muMAP=runif(2),sigmaMAP=diag(2)),simplify = FALSE)
 
-dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
-    if(missing(x)|missing(mu)) stop("'x' or 'mu' not specified!")
 
-    if(is.vector(x)){
-        x <- matrix(x,ncol = 1)
-    }else if(!is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
-    }
-
-    if(is.null(A) & !is.null(Sigma)) A <- chol(Sigma)
-    if(is.null(A) & is.null(Sigma)) stop("Error in dGaussian(): at least one of 'Sigma' and 'A' should be non-NULL!")
-    
-    p <- ncol(x)
-    b <- backsolve(A,diag(p))
-    logp <- -(p/2)*log(2*pi) + sum(log(diag(b))) - 0.5*colSums((crossprod(b,(t(x)-mu)))^2)
-    if(!LOG) logp <- exp(logp)
-    logp
-}
 
 maxit <- 100
 

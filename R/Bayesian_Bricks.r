@@ -1,5 +1,6 @@
 
 
+
 #' Create objects of type '"BasicBayesian"'.
 #'
 #' A Basic Bayesian Object is with following conditional dependency structure: \cr
@@ -212,3 +213,27 @@ print.BasicBayesian <- function(x,...){
 .is <- function(object,class2){
     isTRUE(class2 %in% class(object))
 }
+
+#' log sum exp
+#' 
+#' For each row l of a matrix x, calculate log(sum(exp(l))).
+#' 
+#' @param x matrix, the values in x a all logged. If x is a numeric vector, it will be converted to a matrix with 1 row.
+#' @return numeric, the logsumexp of each row of x.
+#' @export
+#' @examples
+#' \dontrun{
+#' ## Normalize the rows of x to make them sum up to 1
+#' x <- matrix(runif(6,-1000,-20),nrow=2)
+#' x <- x-logsumexp(x)
+#' x <- exp(x)
+#' rowSums(x)
+#' }
+logsumexp <- function(x){
+    if(is.vector(x)) x <- matrix(x,nrow =1L)
+    else if(!is.matrix(x)) x <- as.matrix(x)
+    x <- as.matrix(x)
+    a <- apply(x,1,max)
+    log(rowSums(exp(x-a)))+a
+}
+
