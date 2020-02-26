@@ -111,7 +111,7 @@ if(FALSE){
     cancerData <- apply(X,1,function(l){
         rep(c("death","no death"),times=l)
     })
-    save(cancerData,file = "~/github/bbricks/data/cancerData.RData")
+    
     
 }
 

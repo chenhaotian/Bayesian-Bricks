@@ -11,9 +11,9 @@
 
 \item{ss}{Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.}
 
-\item{ss1}{Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).}
+\item{ss1}{Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).}
 
-\item{ss2}{Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).}
+\item{ss2}{Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).}
 
 \item{j}{integer, group label.}
 

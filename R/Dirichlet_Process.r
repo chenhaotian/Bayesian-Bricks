@@ -693,8 +693,8 @@ sufficientStatistics_Weighted.CatHDP <- function(obj,z,k,w,foreach=FALSE,...){
 #'
 #' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
 #' @param obj A "CatHDP" object.
-#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
@@ -706,9 +706,13 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
     if(!is.integer(ss2) | ss2<=0L) stop("'ss2' must be a positive integer.")
     if(!is.integer(ss1) | ss1<=0L) stop("'ss1' must be a positive integer.")
     if(!is.integer(j) | j<=0L) stop("'j' must be a positive integer.")
-    if(length(obj$Z2)<j)                #if there's new group label observed
+
+    if(length(obj$Z2)<j){                #if there's new group label observed
         obj$Z2 <- c(obj$Z2,
                     replicate(n = j-length(obj$Z2), expr = do.call("CatDP",list(ENV=obj,gamma=list(alpha=obj$gamma$alpha))),simplify = FALSE))
+        obj$Z12map <- c(obj$Z12map,
+                        replicate(n = j-length(obj$Z2),expr = integer(0),simplify = FALSE))
+    }
     posterior(obj = obj$Z2[[j]],ss=ss2,w=w)
     if(isTRUE(obj$Z2[[j]]$gamma$nk[ss2]==w) | isTRUE(obj$Z2[[j]]$gamma$nk[ss2]==1)){
         posterior(obj = obj$Z1,ss=ss1,w=w)
@@ -718,8 +722,8 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
 
 #' Update a "CatHDP" object with sample sufficient statistics
 #' @param obj A "CatHDP" object.
-#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param ... Additional arguments to be passed to other inherited types.
 posterior_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
@@ -739,8 +743,8 @@ posterior_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
 #'
 #' @seealso \code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
 #' @param obj A "CatHDP" object.
-#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
@@ -757,8 +761,8 @@ posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
 
 #' Update a "CatHDP" object with sample sufficient statistics
 #' @param obj A "CatHDP" object.
-#' @param ss1 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In CatHDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In CatHDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param ... Additional arguments to be passed to other inherited types.
 posteriorDiscard_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
@@ -966,9 +970,13 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     if(missing(ss3)|missing(ss2)|missing(ss1)|missing(m)|missing(j)) stop("ss3, ss2, ss1, m and j must be specified")
     if(length(ss3)>1L) stop("posterior.CatHDP2 can only update from observations one at a time, for now.")
     if(!is.integer(ss1) | ss1<=0L) stop("'ss1' must be a positive integer.")
-    
-    if(length(obj$Z2)<m)                #if there's new group label observed
-        stop("group label not defined, dynamic number of groups not supported for now")
+
+    if(length(obj$Z2)<m){                #if there's new group label observed
+        obj$Z2 <- c(obj$Z2,
+                    lapply(1L:(m-length(obj$Z2)),function(M){CatHDP(ENV = obj,gamma = list(gamma=obj$gamma$gamma,alpha=obj$gamma$alpha,j=1L))}))
+        obj$Z12map <- c(obj$Z12map,
+                        replicate(n = m-length(obj$Z2),expr = integer(0),simplify = FALSE))
+    }
     posterior.CatHDP(obj = obj$Z2[[m]],ss1 = ss2,ss2=ss3,w=w,j=j)
     if(isTRUE(obj$Z2[[m]]$Z1$gamma$nk[ss2]==w) | isTRUE(obj$Z2[[m]]$Z1$gamma$nk[ss2]==1)){
         posterior(obj = obj$Z1,ss=ss1,w=w)
@@ -1394,7 +1402,6 @@ marginalLikelihood.DP <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
 
-
 #' Posterior predictive density function of a "DP" object
 #'
 #' Generate the the density value of the posterior predictive distribution of the following structure: \cr
@@ -1733,8 +1740,8 @@ sufficientStatistics_Weighted.HDP <- function(obj,x,w,...){
 #' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP}}
 #' @param obj A "HDP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
-#' @param ss1 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
@@ -1769,8 +1776,8 @@ posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #' @seealso \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP}}
 #' @param obj A "HDP" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
-#' @param ss1 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
-#' @param ss2 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of k. In HDP case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
+#' @param ss2 Sufficient statistics of z. In HDP case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param j integer, group label.
 #' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
@@ -2078,9 +2085,9 @@ sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
 #' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 #' @param obj A "HDP2" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
-#' @param ss1 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of u. In HDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In HDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
-#' @param ss3 Sufficient statistics of u. In HDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
+#' @param ss3 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
@@ -2114,9 +2121,9 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
 #' @seealso \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 #' @param obj A "HDP2" object.
 #' @param ss Sufficient statistics of x of the "BasicBayesian" object, must be a list of sufficient statistics for each of the observations. Use sufficientStatistics(...,foreach=TRUE) to generate ss.
-#' @param ss1 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
+#' @param ss1 Sufficient statistics of u. In HDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
 #' @param ss2 Sufficient statistics of k. In HDP2 case the sufficient statistic of sample k is k itself(if k is a integer vector with all positive values).
-#' @param ss3 Sufficient statistics of u. In HDP2 case the sufficient statistic of sample u is u itself(if u is a integer vector with all positive values).
+#' @param ss3 Sufficient statistics of z. In HDP2 case the sufficient statistic of sample z is z itself(if z is a integer vector with all positive values).
 #' @param m integer, group label.
 #' @param j integer, subgroup label.
 #' @param w Sample weights, default NULL.
