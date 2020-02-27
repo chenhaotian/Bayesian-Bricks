@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
-**bbricks** provides a collection of inference tools and conditional probability distributions(CPDs) to facilitate Bayesian network modeling. This is a package designed for statisticians, and the ones who want to learn the basic statistical mindsets.
+**bbricks** provides a collection of inference tools and conditional probability distributions(CPDs) to facilitate Bayesian modeling. This is a package designed for statisticians, and the ones who want to learn the basic Bayesian mindsets.
 
 See [Mindset](#mindset) and [Examples](#examples) to get started.
 
@@ -68,6 +68,8 @@ x| z,\theta_z &\sim  Gaussian(\theta_z)
 \end{align}
 $$
 
+Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
+
 A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$. and one Gaussian-NIW structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
 
 In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. See R example for details:
@@ -86,9 +88,9 @@ z <- matrix(runif(nrow(mmData)*K),nrow(mmData),K) #the expected cluster labels o
 allK <- 1L:K    #temp variable, all component labels
 allZ <- rep(allK,each=nrow(mmData))     #temp variable, all possible cluster labels for each observation
 ## z, pi and alpha are distributed as a Categorical-Dirichlet sturcture
-mc <- CatDirichlet(gamma = list(alpha=0.5,uniqueLabels=allK)) # create a CatDirichlet object to track the posterior info
+mc <- CatDirichlet(gamma = list(alpha=0.5,uniqueLabels=allK)) # create a CatDirichlet object to track the posterior info, see ?CatDirichlet for details
 ## each component distribution is a Gaussian-NIW structure
-ec <- replicate(K,GaussianNIW(gamma = list(m=c(0,0),k=0.00001,v=2,S=diag(2)))) # create a GaussianNIW object to track the posterior info of each component
+ec <- replicate(K,GaussianNIW(gamma = list(m=c(0,0),k=0.00001,v=2,S=diag(2)))) # create a GaussianNIW object to track the posterior info of each component, see ?GaussianNIW for details
 mcMAP <- MAP(mc)                        #initialize pi
 ecMAP <- replicate(K,list(muMAP=runif(2),sigmaMAP=diag(2)),simplify = FALSE) #initialize theta
 ## The main EM loop
@@ -107,7 +109,7 @@ while(it<=maxit){
     ssPi <- sufficientStatistics_Weighted(obj = mc,x=allZ,w=as.vector(z)) #the weighted sufficient statistics of the cluster label distribution
     ## use the sufficient statistics to update the prior distributions:
     for(k in allK) posterior(obj = ec[[k]],ss=ssComponents[[k]]) #update component distributions
-    posterior(obj = mc,ss = ssPi)                                #update cluster label distributions
+    posterior(obj = mc,ss = ssPi)                                #update cluster label distribution
     ## get MAP from posterior
     mcMAP <- MAP(mc)
     ecMAP <- lapply(ec,MAP)
@@ -141,16 +143,16 @@ z|\pi & \sim Categorical(\pi) \\
 x| z,\theta_z &\sim  Gaussian(\theta_z)
 \end{align}
 $$
-Where $DP(\alpha)$ is a Dirichlet process on positive integers.
+Where $DP(\alpha)$ is a Dirichlet process on positive integers with "concentration parameter" $\alpha$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-A DP-MM can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-DirichletProcess structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$. and one structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
+A DP-MM can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-DirichletProcess structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$. And one structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
 
-To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object and an arbitrary `"BasicBayesian"` object. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
+To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object, which encodes the $\alpha \rightarrow \pi \rightarrow z$ structure, the Dirichlet process on positive integers, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
 
  See R example for details:
 
 ```R
-## sample z using Gibbs sampling
+## Sample cluster labels z from DP-MM using Gibbs sampling
 
 library(bbricks)
 
@@ -160,8 +162,9 @@ library(bbricks)
 data(mmData)
 maxit <- 100                            #number of total samples
 burnin <- 50                            #number of burnin samples
-z <- matrix(1L,nrow(mmData),maxit-burnin)    #place-holder for the sampled z
+## Step1: Initialization -----------------------------------------
 obj <- DP(gamma = list(alpha=10,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create a DP object to track all the changes, the DP object in this case is a combination of a CatDP object and a GaussianNIW object
+z <- matrix(1L,nrow(mmData),maxit-burnin)    #place-holder for the sampled z
 ss <- sufficientStatistics(obj,x=mmData,foreach = TRUE) #sufficient statistics of each observed sample
 N <- nrow(mmData)
 for(i in 1L:N){ # initialize labels before Gibbs sampling
@@ -169,9 +172,9 @@ for(i in 1L:N){ # initialize labels before Gibbs sampling
     posterior(obj = obj,ss = ss[[i]], z = z[i,1])
 }
 ## Step2: Main Gibbs sampling loop--------------------------------
-it <- 0                                 #iteration tracker
+it <- 1                                 #iteration tracker
 pb <- txtProgressBar(min = 0,max = maxit,style = 3)
-while(TRUE){
+while(it<=maxit){
     if(it>burnin) colIdx <- it-burnin
     else colIdx <- 1
     for(i in 1L:N){
@@ -201,18 +204,18 @@ plot(x=mmData[,1],y=mmData[,2],col=zBest)
 
 ### Mixture Model with Partially Observed Cluster Labels
 
-In the dataset `mmData` of the previous example, what if we know that the 50th, 100th, 150th and 200th samples belong to 4 different clusters(they are shown as different color and shapes in the graph below), how should we incorporate this information to increase clustering performance?
+In the dataset `mmData` of the previous example, what if we know the 50, 100, 150 and 200th samples belong to 4 different clusters(they are shown as different color and shapes in the graph below), how should we incorporate this information in the model?
 
 ![](./notes_pictures/mixtureModelPO.png)
 
-In order to incorporate the additional information into our model, one only need to **1.** update the DP prior (as defined in previous R example) into posterior with the information of the 4 observed samples, and **2.** use the posterior as prior of the Gibbs sampling procedure. 
+With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) into posterior with the information of the 4 observed samples, and **2.** use the posterior as prior of the Gibbs sampling procedure. 
 
 This can be achieved by adding 2 additional steps after  `obj <- DP(...)` in the previous R example:
 
 ```R
 ## 1. add the information of the 4 observed samples to the DP object
 ssObserved <- sufficientStatistics(obj=obj,x=mmData[c(50,100,150,200),,drop=FALSE],foreach = TRUE)
-for(i in 1L:4L) posterior(obj = obj,ss = ssObserved[[i]], z = i) # the choice of cluster label 'z' don't matter, as long as the z for the 4 observations are different from each other. In this example I'll simply use z=1:4.
+for(i in 1L:4L) posterior(obj = obj,ss = ssObserved[[i]], z = i) # the choice of cluster label 'z' for the 4 observed samples are arbitrary, as long as they are different from each other. In this example I simply use z=1L:4L.
 ## 2. remove the 4 samples from the upcoming Gibbs sampling procedure
 mmData <- mmData[-c(50,100,150,200),]
 ```
@@ -224,6 +227,94 @@ Run the code, and the result will be:
 
 
 ### Hierarchical Mixture Models
+
+In a hierarchical mixture model, the observation $x$ are generated by some unknown mixture components and are split into $J$ groups, all $J$ groups share the same set of mixture components but with different component weights.
+
+It has the following graph structure:
+
+![](./notes_pictures/hierarchicalMixtureModel.png)
+
+If the observations are Gaussian distributed, the CPDs will be:
+$$
+\begin{align}
+G_j|\gamma & \sim DP(\gamma) \\
+\pi |\alpha,G_j & \sim DP(\alpha,G_j) \\
+z | \pi & \sim Categorical(\pi) \\
+k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
+\theta_k | \psi & \sim NIW(\psi) \\
+x|\theta_k & \sim Gaussian(\theta_k)
+\end{align}
+$$
+ $DP(\gamma)$ is a Dirichlet process on positive integers with "concentration parameter" $\gamma$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $DP(\alpha,G_j)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_j$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
+
+The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a Hierarchical Dirichlet Process(HDP) on positive integers. HDP are usually represented in a much simpler and compact way(though not easier to understand) in most literatures:
+
+![](./notes_pictures/HDP.png)
+
+From the compact representation we can see that HDP is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$.
+
+To simplify the calculations, **bbricks** provides an `"HDP"` type to represent all Hierarchical Dirichlet process structures. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
+
+ See R example for details:
+
+```R
+## Sample cluster labels k from HDP-MM using Gibbs sampling
+
+library(bbricks)
+
+## load some mixture of Gaussian samples.
+## mmhData is a list of two elements. mmhData$x is a matrix of Gaussian observations, each row is an observation; mmhData$groupLabel is the group label of each observations.
+## see ?mmhData for details
+data(mmhData)
+x <- mmhData$x
+js <- mmhData$groupLabel
+## Step1: Initialization------------------------------------------
+maxit <- 50                             #iterative for maxit times
+burnin <- 30                            #number of burn in samples
+## create a HDP object to track all the changes
+obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,
+                        H0aF="GaussianNIW",
+                        parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
+ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
+set.seed(1)
+z <- rep(1L,nrow(x))
+k <- matrix(1L,nrow(x),maxit-burnin)    #place-holder for the sampled k
+N <- length(ss)
+for(i in 1L:N){# initialize k and z
+    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
+    z[i] <- tmp["z"]
+    k[i,1] <- tmp["k"]
+    posterior.HDP(obj = obj,ss = ss[[i]],ss1 = k[i],ss2 = z[i],j = js[i])
+}
+## Step2: main Gibbs loop---------------------------------------------
+it <- 1                                 #iteration tracker
+pb <- txtProgressBar(min = 0,max = maxit,style = 3)
+while(it<=maxit){
+    if(it>burnin) colIdx <- it-burnin
+    else colIdx <- 1
+    for(i in 1L:N){
+        ## remove the sample from the posterior info
+        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i,colIdx],ss2=z[i],j=js[i])
+        ## resample a new partition
+        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
+        z[i] <- tmp["z"]
+        k[i,colIdx] <- tmp["k"]
+        ## add the information of the new sample
+        posterior(obj = obj,ss = ss[[i]], ss1=k[i,colIdx],ss2 = z[i],j=js[i])
+    }
+    if(it>burnin & colIdx<ncol(k)) k[,colIdx+1] <- k[,colIdx] #copy result of previous iteration
+    it <- it+1
+    plot(x=x[,1],y=x[,2],col=k[,colIdx])         #to visualize the group label dynamics
+    setTxtProgressBar(pb,it)
+}
+## Step3: Estimate group labels of each observation---------------
+## pick the most frequent k as the best estimate
+kBest <- apply(k,1,function(l){
+    tmp <- table(l)
+    names(tmp)[which.max(tmp)]
+})
+plot(x=x[,1],y=x[,2],col=kBest)
+```
 
 
 

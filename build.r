@@ -29,7 +29,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"https://orcid.org/0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: Basic building blocks in Bayesian network modeling.
+Description: Basic building blocks in Bayesian modeling.
 License: What license it uses
 Encoding: UTF-8
 LazyData: true
