@@ -1,6 +1,3 @@
-# exclude all pdf files
-*.pdf
-
 # stupid R session emacs files
 .\#\*R*\*
 

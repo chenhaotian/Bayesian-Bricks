@@ -772,6 +772,7 @@ posteriorDiscard_bySufficientStatistics.CatHDP <- function(obj,ss1,ss2,j,...){
 #' MAP estimate for CatHDP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 MAP.CatHDP <- function(obj,...){
     stop("MAP.CatHDP not implemented yet.")
 }
@@ -779,6 +780,7 @@ MAP.CatHDP <- function(obj,...){
 #' Marginallikelihood for CatHDP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 marginalLikelihood.CatHDP <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
@@ -928,6 +930,7 @@ print.CatHDP2 <- function(x,...){
 #' @param x integer
 #' @param foreach logical
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 sufficientStatistics.CatHDP2 <- function(obj,x,foreach=FALSE,...){
     stop("sufficientStatistics for CatHDP2 not implemented yet")
 }
@@ -938,6 +941,7 @@ sufficientStatistics.CatHDP2 <- function(obj,x,foreach=FALSE,...){
 #' @param w numeric, sample weights.
 #' @param foreach logical
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 sufficientStatistics_Weighted.CatHDP2 <- function(obj,x,w,foreach=FALSE,...){
     stop("sufficientStatistics_Weighted for CatHDP2 not implemented yet")
 }
@@ -1044,6 +1048,7 @@ posteriorDiscard_bySufficientStatistics.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,
 #' MAP estimate for CatHDP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 MAP.CatHDP2 <- function(obj,...){
     stop("MAP.CatHDP not implemented yet.")
 }
@@ -1051,6 +1056,7 @@ MAP.CatHDP2 <- function(obj,...){
 #' Marginallikelihood for CatHDP2
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 marginalLikelihood.CatHDP2 <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
@@ -1398,6 +1404,7 @@ MPE.DP <- function(obj,...){
 #' Marginallikelihood for DP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 marginalLikelihood.DP <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
@@ -1502,6 +1509,50 @@ rPosteriorPredictive.DP <- function(obj,n=1,x,...){
     probs <- exp(probs-max(probs))
     probs <- probs/sum(probs)
     zs[sample.int(length(zs),size = n,replace = TRUE,prob = probs)]
+}
+
+if(FALSE){
+
+    x <- rbind(
+        rGaussian(50,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
+        rGaussian(60,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
+        rGaussian(70,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
+        rGaussian(50,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
+    )
+
+    maxit <- 100                            #iterative for maxit times
+    burnin <- 50                            #number of burnin samples
+    z <- matrix(1L,nrow(x),maxit-burnin)    #the sampled labels will be put here
+    obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create an "GaussianNIW" object to track all the changes.
+    ss <- sufficientStatistics(obj,x=x,foreach = TRUE) #sufficient statistics of each x
+    N <- nrow(x)
+    for(i in 1L:N){ # initialize labels before Gibbs sampling
+        z[i,1] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE])
+        posterior(obj = obj,ss = ss[[i]], z = z[i,1])
+    }
+
+    it <- 0                                 #iteration tracker
+    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
+    while(TRUE){
+        if(it>burnin) colIdx <- it-burnin
+        else colIdx <- 1
+        for(i in 1L:N){
+            posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #remove the sample information from the posterior
+            z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE]) #get a new sample
+            posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #add the new sample information to the posterior
+        }
+        if(it>burnin & colIdx<ncol(z)) z[,colIdx+1] <- z[,colIdx] #copy result of previous iteration
+        it <- it+1
+        setTxtProgressBar(pb,it)
+        if(it>=maxit){cat("\n");break}
+        plot(x=x[,1],y=x[,2],col=z[,colIdx]) #to see how the labels change
+    }
+
+    col <- apply(z,1,function(l){
+        tmp <- table(l)
+        names(tmp)[which.max(tmp)]      #pick the most frequent group label in the samples to be the best estimate
+    })
+    plot(x=x[,1],y=x[,2],col=col)
 }
 
 #' Create objects of type "HDP".
@@ -1748,6 +1799,7 @@ posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #' MAP estimate for HDP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 MAP.HDP <- function(obj,...){
     stop("MAP.HDP not implemented yet.")
 }
@@ -1755,6 +1807,7 @@ MAP.HDP <- function(obj,...){
 #' Marginallikelihood for HDP
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 marginalLikelihood.HDP <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
@@ -2095,6 +2148,7 @@ posteriorDiscard.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
 #' MAP estimate for HDP2
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 MAP.HDP2 <- function(obj,...){
     stop("MAP.HDP2 not implemented yet.")
 }
@@ -2102,6 +2156,7 @@ MAP.HDP2 <- function(obj,...){
 #' Marginallikelihood for HDP2
 #' @param obj an object.
 #' @param ... Additional arguments to be passed to other inherited types.
+#' @export
 marginalLikelihood.HDP2 <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
 }
@@ -2206,3 +2261,233 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j,...){
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
     c(u=us[idx],k=ks[idx],z=zs[idx])
 }
+
+if(FALSE){
+    farmads <- readLines("/tmp/farm-ads")
+    
+farmads <- tolower(farmads)
+farmads <- gsub("[0-9]","",farmads)
+farmads <- gsub("[a-z]+-[a-z]+","",farmads)
+farmads <- gsub("[^a-z ]","",farmads)
+library(cld3)                           #detect language
+idx <- sapply(farmads,detect_language,simplify = TRUE,USE.NAMES = FALSE)=="en"
+farmads <- farmads[idx %in% TRUE]
+while(any(grepl("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)",farmads)))
+    farmads <- gsub("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)"," ",farmads)
+farmads <- gsub(" +"," ",farmads)
+farmads <- gsub("(^ )|( $)","",farmads)
+
+
+    set.seed(1)
+x <- strsplit(sample(farmads,400),split = " ")
+x <- sapply(x,function(l){unique(l)},simplify = FALSE,USE.NAMES = FALSE)
+removeWords <- table(unlist(x))
+removeWords <- names(removeWords[removeWords<10 | removeWords>50])
+x <- sapply(x,function(l){
+    setdiff(l,removeWords)
+})
+x <- x[sapply(x,length,simplify = TRUE,USE.NAMES = FALSE)!=0]
+js <- rep(1L:length(x),times=sapply(x,length,simplify = TRUE,USE.NAMES = FALSE))
+x <- unlist(x)
+
+
+
+
+
+
+
+
+
+
+
+
+maxit <- 30                            #iterative for maxit times
+
+z <- rep(1L,length(x))
+k <- rep(1L,length(x))
+uniqueWords <- unique(x)
+obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="CatDirichlet",parH0=list(alpha=rep(0.5,length(uniqueWords)),uniqueLabels=uniqueWords)))
+
+N <- length(x)
+
+for(i in 1L:N){
+    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])
+    z[i] <- tmp["z"]
+    k[i] <- tmp["k"]
+    posterior(obj = obj,ss = x[i], ss2 = z[i],j=js[i],ss1=k[i])
+}
+
+
+table(z)
+
+it <- 0                                 #iteration tracker
+    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
+while(TRUE){
+    for(i in 1L:N){
+        posteriorDiscard.HDP(obj = obj,ss = x[i],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample information from the posterior
+        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])   #get a new sample
+        z[i] <- tmp["z"]
+        k[i] <- tmp["k"]
+        posterior(obj = obj,ss = x[i],ss1=k[i], ss2 = z[i],j=js[i]) #add the new sample information to the posterior
+    }
+    it <- it+1
+    setTxtProgressBar(pb,it)
+    if(it>=maxit){cat("\n");break}
+}
+
+sapply(obj$X,function(l){sum(l$gamma$alpha)})
+order(sapply(obj$X,function(l){sum(l$gamma$alpha)}),decreasing = TRUE)
+
+tmpfun <- function(tmpobj,n=10){
+    tmpobj$gamma$uniqueLabels[head(order(tmpobj$gamma$alpha/sum(tmpobj$gamma$alpha),decreasing = TRUE),n)]
+}
+
+    tmpfun(obj$X[[1]])
+    tmpfun(obj$X[[2]])
+    tmpfun(obj$X[[3]])
+    tmpfun(obj$X[[5]])
+    tmpfun(obj$X[[7]])
+    tmpfun(obj$X[[8]])
+    tmpfun(obj$X[[4]])
+
+tmpfun(obj$X[[6]])
+tmpfun(obj$X[[7]])
+
+
+table(z[,ncol(z)])
+    table(z)/ncol(z)
+}
+
+
+if(FALSE){
+set.seed(1)
+
+j <- as.integer(round(runif(30,40,50)))
+PIs <- rDir(30,c(1,2,3,1))
+Xs <- list(
+    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
+    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
+    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
+    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
+)
+
+x <- do.call("rbind",lapply(1L:30L,function(i){
+    out <- matrix(0,nrow = j[i],ncol = 2L)
+    for(r in 1:nrow(out)){
+        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
+    }
+    out
+}))
+js <- rep(1L:30,times=j)
+
+
+maxit <- 20                            #iterative for maxit times
+
+z <- rep(1L,nrow(x))
+k <- rep(1L,nrow(x))
+obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
+ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
+
+N <- length(ss)
+
+for(i in 1L:N){
+    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
+    z[i] <- tmp["z"]
+    k[i] <- tmp["k"]
+    posterior.HDP(obj = obj,ss = ss[[i]],ss1 = k[i],ss2 = z[i],j = js[i])
+}
+
+it <- 0                                 #iteration tracker
+
+while(TRUE){
+    for(i in 1L:N){
+        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample from the posterior info
+        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])   #resample a new partition
+        z[i] <- tmp["z"]
+        k[i] <- tmp["k"]
+        posterior(obj = obj,ss = ss[[i]], ss1=k[i],ss2 = z[i],j=js[i])
+    }
+    plot(x=x[,1],y=x[,2],col=k)
+    it <- it+1
+    cat(it," ")
+    if(it>=maxit){cat("\n");break}
+}
+
+plot(x=x[,1],y=x[,2],col=k)
+
+tmp <- obj$X[obj$Z$Z1$gamma$nk!=0]
+for(i in 1:length(tmp))
+    print(MAP(obj = tmp[[i]]))
+
+}
+
+
+if(FALSE){
+set.seed(1)
+
+J <- as.integer(round(runif(30,40,50)))
+PIs <- rbind(rDir(10,c(1,2,3,1)),
+             rDir(20,c(3,2,1,3)))
+Xs <- list(
+    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
+    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
+    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
+    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
+)
+
+x <- do.call("rbind",lapply(1L:30L,function(i){
+    out <- matrix(0,nrow = J[i],ncol = 2L)
+    for(r in 1:nrow(out)){
+        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
+    }
+    out
+}))
+js <- rep(c(1L:10L,1L:20L),times=J)
+ms <- rep(2L,nrow(x))
+ms[1:sum(J[1:10])] <- 1L
+
+maxit <- 50                            #iterative for maxit times
+
+z <- rep(1L,nrow(x))
+k <- rep(1L,nrow(x))
+u <- rep(1L,nrow(x))
+
+obj <- HDP2(gamma = list(eta=1,gamma=1,alpha=1,m=2L,j=c(10L,20L),H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.001)))
+ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
+
+N <- length(ss)
+
+for(i in 1L:N){
+    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],m=ms[i],j=js[i])
+    z[i] <- tmp["z"]
+    k[i] <- tmp["k"]
+    u[i] <- tmp["u"]
+    posterior.HDP2(obj = obj,ss = ss[[i]],ss1 = u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j = js[i])
+}
+
+it <- 0                                 #iteration tracker
+
+while(TRUE){
+    tmp <- character(3)
+    for(i in 1L:N){
+        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i]) #remove the sample from the posterior info
+        tmp <- rPosteriorPredictive(obj = obj,n=1L,x=x[i,,drop=FALSE],m=ms[i],j=js[i])   #resample a new partition
+        z[i] <- tmp["z"]
+        k[i] <- tmp["k"]
+        u[i] <- tmp["u"]
+        posterior(obj = obj,ss = ss[[i]], ss1=u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j=js[i])
+    }
+    plot(x=x[,1],y=x[,2],col=u)
+    it <- it+1
+    cat(it," ")
+    if(it>=maxit){cat("\n");break}
+}
+
+plot(x=x[,1],y=x[,2],col=u)
+
+tmp <- obj$X[obj$Z$Z1$gamma$nk>50]
+for(i in 1:length(tmp))
+    print(MAP(obj = tmp[[i]]))
+
+}
+
