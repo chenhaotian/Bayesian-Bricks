@@ -20,6 +20,8 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 
 [Examples](#examples)
 
++ [Bayesian Linear Regression](#bayesian-linear-regression)
++ [Estimate Cancer Mortality Rates with Hierarchical Bayesian](estimate-cancer-mortality-rates-with-hierarchical-bayesian)
 + [Mixture of Gaussian](#mixture-of-gaussian)
 + [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
 + [Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels)
@@ -27,8 +29,6 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 + [Topic Modeling with HDP](topic-modeling-with-hdp)
 + [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
 + [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
-+ [Bayesian Linear Regression](#bayesian-linear-regression)
-+ [Hierarchical Bayesian: Estimate Cancer Mortality Rates](hierarchical-bayesian-estimate-cancer-mortality-rates)
 
 
 
@@ -59,6 +59,10 @@ See [Examples](#examples) for details.
 
 Here's a list of examples:
 
+[Bayesian Linear Regression](#bayesian-linear-regression)
+
+[Estimate Cancer Mortality Rates with Hierarchical Bayesian](estimate-cancer-mortality-rates-with-hierarchical-bayesian)
+
 [Mixture of Gaussian](#mixture-of-gaussian)
 
 [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
@@ -73,9 +77,145 @@ Here's a list of examples:
 
 [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
 
-[Bayesian Linear Regression](#bayesian-linear-regression)
+### Bayesian Linear Regression
 
-[Estimate Cancer Mortality Rates](estimate-cancer-mortality-rates)
+A Bayesian linear regression model has following graph structure:
+
+![](./notes_pictures/bayesianLinearRegression.png)
+
+The CPDs are:
+$$
+\begin{align}
+\beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
+x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
+\end{align}
+$$
+Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
+
+The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object type `"GaussianNIG"` to represent such a structures. 
+
+See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood on the `"GaussianNIG"` object:
+
+```R
+## Bayesian linear regression
+
+library(bbricks)
+
+## lrData is a list of two elements. lrData$x is the sample set of the dependent variable; lrData$X is the sample set of the independent variable
+## see ?lrData for details
+data(lrData)
+X <- lrData$X                           #a matrix of 1 column
+x <- lrData$x                           #a numeric vector
+## task 1. update the prior into posterior using X and x
+obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
+ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
+posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
+## task 2. get MAP estimate of beta and sigma^2 from the posterior
+bsMAP <- MAP(obj)                               #get the MAP estimate of beta and sigma^2
+bsMAP                                           #print the MAP estimate
+## plot the MAP estimate of the regression line
+plot(X,X%*%bsMAP$betaMAP,type = "l")
+points(X,x,pch=20)
+## task 3. calculate marginal likelihood
+## generate some new data
+Xnew <- matrix(runif(3,min=0,max=),ncol=1)
+xnew <- Xnew*0.2+rnorm(3,sd=10)
+marginalLikelihood(obj = obj,X=x,x=x,LOG = TRUE)
+## task 4. calculate the posterior prediction
+## say we want to predict x at the location X=100
+predictedSamples <- rPosteriorPredictive(obj = obj,X=matrix(101,ncol = 1),n=1000)
+## histogram of the prediction
+hist(predictedSamples)
+## the mean and standard devition of the prediction
+mean(predictedSamples)
+sd(predictedSamples)
+
+```
+
+
+
+### Estimate Cancer Mortality Rates with Hierarchical Bayesian
+
+This is an example is from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
+
+The model's graph structure is:
+
+![](./notes_pictures/cancer.png)
+
+The CPDs are:
+$$
+\begin{align}
+x|\pi_k & \sim Categorical(\pi_k) \\
+\pi_k | \alpha &  \sim Dirichlet(\alpha) \\
+\alpha | \eta & \sim Exponential(\eta)
+\end{align}
+$$
+Where $x$ is a categorical random sample that takes one of two values: "death" or "no death".
+
+To estimate $\pi_k,k=1...K$, we use the following Gibbs sampling procedure:
+
+1. sample $\pi_k,k=1...K$ from $\pi_k | \alpha,x$
+2. sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$
+
+Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done with the "independent Metropolis-Hastings algorithm", see `?MetropolisHastings` for details.
+
+R code:
+
+```R
+## Estimate cancer mortality rates using Gibbs sampling
+
+library(bbricks)
+
+## see ?cancerData for details
+data(cancerData)
+## Step1: Initialization----------------------------------------------
+K <- length(cancerData)                          #then number of cities
+eta <- 1                                         #assume eta is known, eta=1
+## initialize a, PI, and sufficient statistics
+a <- rexp(2,rate = eta)                 #initialize alpha
+PI <- matrix(0,K,2L)                    #initialize pi
+cityPrior <- CatDirichlet(gamma = list(alpha=a,uniqueLabels=c("death","no death")))
+citySS <- lapply(cancerData,function(x){sufficientStatistics(obj = cityPrior,x=x)}) #sufficient statistics of each city
+## initialize functions used in Metropolis-Hastings, see ?MetropolisHastings for details
+## density of the target distribution
+dp <- function(a){
+    if(any(a<0)) -Inf
+    else sum(dDir(x=PI,alpha = a,LOG = TRUE))+sum(dexp(x=a,rate = eta,log = TRUE))
+}
+## density of the proposal distribution
+dq <- function(anew,a){1}                #use a independent proposal
+## random sample generator of the proposal distribution
+rq <- function(x){
+    c(runif(1,x[1]-1,x[1]+1),
+      runif(1,x[2]-1,x[2]+1))
+}
+## Step2: main Gibbs sampling loop between alpha and pi --------------
+maxit <- 1000
+burnin <- 500                            #number of burn-in samples
+meanPI <- numeric(K)                     #place-hoder for the sample mean
+it <- 1
+while(it<=maxit){
+    ## Step1: sample pi from p(pi|a,x)-------------
+    for(k in 1L:K){
+        posterior(obj = cityPrior,ss=citySS[[k]])
+        PI[k,] <- rDir(n=1,alpha = cityPrior$gamma$alpha)
+        posteriorDiscard(obj = cityPrior,ss=citySS[[k]])
+    }
+    ## calculate the sample mean
+    if(it>burnin) meanPI <- meanPI+PI[,1]/(maxit-burnin)
+    ## Step2: sample a from p(a|pi,g)--------------
+    ## use Metropolis-Hastings
+    a <- MetropolisHastings(nsamples = 1,xini = a,dp=dp,dq=dq,rq=rq)
+    ## increase iteration counter 
+    it <- it+1
+}
+## Step3: plot the result---------------------------------------------
+## black bars are the sample mean from the hierarchical Bayesian model
+## blue bars are the MLE of the mortality rates.
+plot(1:K,meanPI,type = "h",xlab = "city",ylab = "mortality rate",lwd=3)
+lines(1:K+0.2,sapply(cancerData,function(l){sum(l=="death")/length(l)}),type = "h",col = "blue",lwd = 3)
+legend(1, 0.005, legend=c("Sample Mean", "MLE"),col=c("black", "blue"), lty=c(1,1), cex=1,lwd = 3)
+```
 
 
 
@@ -99,7 +239,12 @@ Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\
 
 A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure $\alpha \rightarrow \pi \rightarrow z$ for the hidden cluster labels. and one Gaussian-NIW structure $\gamma \rightarrow \theta_z \rightarrow x$ for the observation distribution.
 
-In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. See R example for details:
+In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. To estimate $\pi$ and $\theta$, we use the following EM procedure:
+
+1. E-step: calculate $p(z|\theta,\pi,x)$ as the expected sufficient statistics.
+2. M-step: Based on the expected sufficient statistics to get an MAP estimate of $\theta$ and $\pi$
+
+R code:
 
 ```R
 ## Get the MAP estimate of pi and theta using EM algorithm.
@@ -128,12 +273,12 @@ while(it<=maxit){
     ## calculate the expected cluster labels: p(z|pi,theta)
     for(k in allK) z[,k] <- dGaussian(x=mmData,mu = ecMAP[[k]]$muMAP,Sigma=ecMAP[[k]]$sigmaMAP)+log(mcMAP[k])
     z <- exp(z-logsumexp(z))            #use logsumexp() to avoid numerical underflow
-    ## M-step---------------------------------------------------------
-    ## calculate the weighted sufficient statistics, based on results of the E-step:
+    ## calculate the expected sufficient statistics
     ssComponents <- lapply(allK,function(k){
         sufficientStatistics_Weighted(obj = ec[[k]],x=mmData,w=z[,k])
-    })                                  #the weighted sufficient statistics of each Gaussian component
-    ssPi <- sufficientStatistics_Weighted(obj = mc,x=allZ,w=as.vector(z)) #the weighted sufficient statistics of the cluster label distribution
+    })                                  #the expected sufficient statistics of each Gaussian component
+    ssPi <- sufficientStatistics_Weighted(obj = mc,x=allZ,w=as.vector(z)) #the expected sufficient statistics of the cluster label distribution
+    ## M-step---------------------------------------------------------
     ## use the sufficient statistics to update the prior distributions:
     for(k in allK) posterior(obj = ec[[k]],ss=ssComponents[[k]]) #update component distributions
     posterior(obj = mc,ss = ssPi)                                #update cluster label distribution
@@ -174,9 +319,13 @@ Where $DP(\alpha)$ is a Dirichlet process on positive integers with "concentrati
 
 A DP-MM can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-DirichletProcess structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$, which we call it a "DP on positive integers". And one structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
 
-To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object, which encodes the $\alpha \rightarrow \pi \rightarrow z$ structure, i.e. a Dirichlet process on positive integers, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
+To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object, which encodes the $\alpha \rightarrow \pi \rightarrow z$ structure, i.e. a Dirichlet process on positive integers, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) .
 
- See R example for details:
+To estimate $z$, we use the following collapse Gibbs sampling procedure:
+
+1. sample $z_i$ from $z_i|z_{-i},\alpha,x,\gamma$.
+
+R code:
 
 ```R
 ## Sample cluster labels z from DP-MM using Gibbs sampling
@@ -280,7 +429,11 @@ From the compact representation we can see that HDP on positive integers is foll
 
 To simplify the calculations, **bbricks** provides an `"HDP"` type to represent all Hierarchical Dirichlet process structures. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$, i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
 
- See R example for details:
+To estimate $k$, we use the following Gibbs sampling procedure:
+
+1. sample $z_i,k_i$ from $z_i,k_i|z_{-i},k_{-i},\alpha,x,\gamma$.
+
+R code:
 
 ```R
 ## Sample cluster labels k from HDP-MM using Gibbs sampling
@@ -356,11 +509,79 @@ k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
 x|\pi_k & \sim Categorical(\pi_k)
 \end{align}
 $$
+The Gibbs sampling procedure on this model is exactly the same as the one in [Hierarchical Mixture Models](#hierarchical-mixture-models)
 
+R code:
+
+```R
+## HDP-LDA on the farm-ads corpus
+
+## load a subset of farm ads data from https://archive.ics.uci.edu/ml/datasets/Farm+Ads
+## see ?farmadsData for details
+data(farmadsData)
+word <- farmadsData$word
+document <- farmadsData$document
+## Step1: Initialization------------------------------------------
+set.seed(1)
+maxit <- 30                            #iterative for maxit times
+z <- rep(1L,length(word))
+k <- rep(1L,length(word))
+## initialize
+uniqueWords <- unique(word)
+obj <- HDP(gamma = list(gamma=1,j=max(document),alpha=1,H0aF="CatDirichlet",parH0=list(alpha=rep(0.5,length(uniqueWords)),uniqueLabels=uniqueWords))) #create a HDP object to track all the changes, the HDP object in this case is a combination of a CatHDP object and a CatDrirchlet object
+N <- length(word)
+## initialize k and z
+for(i in 1L:N){
+    tmp <- rPosteriorPredictive(obj = obj,n=1,x=word[i],j=document[i])
+    z[i] <- tmp["z"]
+    k[i] <- tmp["k"]
+    posterior(obj = obj,ss = word[i], ss2 = z[i],j=document[i],ss1=k[i])
+}
+## Step2: main Gibbs loop---------------------------------------------
+it <- 1                                 #iteration tracker
+pb <- txtProgressBar(min = 0,max = maxit,style = 3)
+while(it<=maxit){
+    for(i in 1L:N){
+        posteriorDiscard.HDP(obj = obj,ss = word[i],ss1=k[i],ss2=z[i],j=document[i]) #remove the sample information from the posterior
+        tmp <- rPosteriorPredictive(obj = obj,n=1,x=word[i],j=document[i])   #get a new sample
+        z[i] <- tmp["z"]
+        k[i] <- tmp["k"]
+        posterior(obj = obj,ss = word[i],ss1=k[i], ss2 = z[i],j=document[i]) #add the new sample information to the posterior
+    }
+    it <- it+1
+    setTxtProgressBar(pb,it)
+}
+## Step3: plot the result --------------------------------------------
+## see which topics are most frequently appeared:
+order(sapply(obj$X,function(l){sum(l$gamma$alpha)}),decreasing = TRUE)
+## seems topic 2 and 1 appear the most, let's plot them:
+## install.packages("wordcloud") # for word-cloud
+## install.packages("RColorBrewer") # color palettes
+## print topic 1
+wordcloud:: wordcloud(words = obj$X[[1]]$gamma$uniqueLabels,
+                      freq = obj$X[[1]]$gamma$alpha,
+                      min.freq = 1,
+                      max.words=100,
+                      random.order=FALSE, rot.per=0.35,
+                      colors=RColorBrewer::brewer.pal(5, "Set1"))
+## print topic 2
+wordcloud:: wordcloud(words = obj$X[[2]]$gamma$uniqueLabels,
+                      freq = obj$X[[2]]$gamma$alpha,
+                      min.freq = 1,
+                      max.words=100,
+                      random.order=FALSE, rot.per=0.35,
+                      colors=RColorBrewer::brewer.pal(5, "Set1"))
+```
 
 
 
 ### Hierarchical Topic Modeling with HDP2
+
+A hierarchical topic model is a hierarchical mixture model with 2 hierarchies:
+
+![](./notes_pictures/hierarchicalMixtureModel2.png)
+
+
 
 
 
@@ -368,43 +589,5 @@ $$
 
 
 
-### Bayesian Linear Regression
-
-A Bayesian linear regression model has following graph structure:
-
-![](./notes_pictures/bayesianLinearRegression.png)
-
-The CPDs are:
-$$
-\begin{align}
-\beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
-x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
-\end{align}
-$$
-Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
-
-The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object type "GaussianNIG" to represent such a structures. See the R example below:
-
-```R
-## Bayesian linear regression
-
-library(bbricks)
-
-## lrData is a list of two elements. lrData$x is the sample set of the dependent variable; lrData$X is the sample set of the independent variable
-## see ?lrData for details
-data(lrData)
-X <- lrData$X                           #a matrix of 1 column
-x <- lrData$x                           #a numeric vector
-obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
-ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
-posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
-bsMAP <- MAP(obj)                               #get the MAP estimate of beta and sigma^2
-bsMAP                                           #print the MAP estimate
-## plot the MAP estimate of the regression line
-plot(X,X%*%bsMAP$betaMAP,type = "l")
-points(X,x,pch=20)
-```
 
 
-
-### Hierarchical Bayesian: Estimate Cancer Mortality Rates
