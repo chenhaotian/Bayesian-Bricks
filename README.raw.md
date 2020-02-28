@@ -6,8 +6,7 @@
 
 See [Mindset](#mindset) and [Examples](#examples) to get started.
 
-
-## Installation
+**Installation:**
 
 ```R
 # install development version from GitHub:
@@ -15,10 +14,27 @@ See [Mindset](#mindset) and [Examples](#examples) to get started.
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
 
+**Contents:**
+
+[Mindset](#Mindset)
+
+[Examples](#examples)
+
++ [Mixture of Gaussian](#mixture-of-gaussian)
++ [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
++ [Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels)
++ [Hierarchical Mixture Models](#hierarchical-mixture-models)
++ [Topic Modeling with HDP](topic-modeling-with-hdp)
++ [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
++ [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
++ [Bayesian Linear Regression](#bayesian-linear-regression)
++ [Hierarchical Bayesian: Estimate Cancer Mortality Rates](hierarchical-bayesian-estimate-cancer-mortality-rates)
+
+
 
 ## Mindset
 
-The idea of **bbricks** came from the fact that Bayesian modeling is nothing more than applying set of **tasks** on a specific **model structure**.
+The idea of **bbricks** came from the fact that modeling in Bayesian statistics is nothing more than applying set of **tasks** on a specific **model structure**.
 
 Where the most frequently applied **tasks** are:
 + Update prior info into posterior when new samples are observed.
@@ -30,25 +46,36 @@ Where the most frequently applied **tasks** are:
 And the **model structure**s are just generalizations of $3$ basic Bayesian modeling structures:
 ![](./notes_pictures/basicStructures.png)
 Where
+
 + $(a)$ is the most basic "parameter-observation" structure. Models like Gaussian, Gamma and Exponential are in this category.
 + $(b)$ is the "prior-posterior" structure. Models like Gaussian-NIW(Gaussian observations with NIW prior), Categorical-Dirichlet(Categorical observations with Dirichlet prior) are in this category.
 + $(c)$ is the "hierarchical-Bayesian" structure, and $(d)$ is the same hierarchical structure but with more hierarchies. Models like Hierarchical Dirichlet Process(HDP) and HDP with additional hidden layers are in this category.
 
 **bbricks** tries to provide a `type/class` for each basic **model structure** and a `function/method` for each **task**.
 
-See below for details.
+See [Examples](#examples) for details.
 
 ## Examples
 
-+ [Mixture of Gaussian](#mixture-of-gaussian)
-+ [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
-+ [Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels)
-+ [Hierarchical Mixture Models](#hierarchical-mixture-models)
-+ [Topic Modeling with HDP](topic-modeling-with-hdp)
-+ [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
-+ [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
-+ [Bayesian Linear Regression](#bayesian-linear-regression)
-+ [Estimate Cancer Mortality Rates](estimate-cancer-mortality-rates)
+Here's a list of examples:
+
+[Mixture of Gaussian](#mixture-of-gaussian)
+
+[Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
+
+[Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels)
+
+[Hierarchical Mixture Models](#hierarchical-mixture-models)
+
+[Topic Modeling with HDP](topic-modeling-with-hdp)
+
+[Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
+
+[Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model)
+
+[Bayesian Linear Regression](#bayesian-linear-regression)
+
+[Estimate Cancer Mortality Rates](estimate-cancer-mortality-rates)
 
 
 
@@ -70,7 +97,7 @@ $$
 
 Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$. and one Gaussian-NIW structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
+A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure $\alpha \rightarrow \pi \rightarrow z$ for the hidden cluster labels. and one Gaussian-NIW structure $\gamma \rightarrow \theta_z \rightarrow x$ for the observation distribution.
 
 In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. See R example for details:
 
@@ -83,16 +110,16 @@ library(bbricks)
 ## mmData is a numeric matrix with 2 columns, each row is a sample
 ## see ?mmData for details
 data(mmData)
-K <- 4L                                 #number of clusters, or mixture components
-z <- matrix(runif(nrow(mmData)*K),nrow(mmData),K) #the expected cluster labels of each observation
+K <- 4L                                 #number of clusters(mixtures components)
+z <- matrix(runif(nrow(mmData)*K),nrow(mmData),K) #the expected cluster label of each observation
 allK <- 1L:K    #temp variable, all component labels
-allZ <- rep(allK,each=nrow(mmData))     #temp variable, all possible cluster labels for each observation
-## z, pi and alpha are distributed as a Categorical-Dirichlet sturcture
+allZ <- rep(allK,each=nrow(mmData))     #temp variable, all possible cluster labels for all observations
+## z, pi and alpha are distributed as a Categorical-Dirichlet sturcture:
 mc <- CatDirichlet(gamma = list(alpha=0.5,uniqueLabels=allK)) # create a CatDirichlet object to track the posterior info, see ?CatDirichlet for details
-## each component distribution is a Gaussian-NIW structure
-ec <- replicate(K,GaussianNIW(gamma = list(m=c(0,0),k=0.00001,v=2,S=diag(2)))) # create a GaussianNIW object to track the posterior info of each component, see ?GaussianNIW for details
-mcMAP <- MAP(mc)                        #initialize pi
-ecMAP <- replicate(K,list(muMAP=runif(2),sigmaMAP=diag(2)),simplify = FALSE) #initialize theta
+## each component distribution is a Gaussian-NIW structure:
+ec <- replicate(K,GaussianNIW(gamma = list(m=c(0,0),k=0.00001,v=2,S=diag(2)))) # create a GaussianNIW object to track the posterior info of each mixture component, see ?GaussianNIW for details
+mcMAP <- MAP(mc)                        #initialize the MAP estimate of pi
+ecMAP <- replicate(K,list(muMAP=runif(2),sigmaMAP=diag(2)),simplify = FALSE) #initialize the MAP estimate of theta
 ## The main EM loop
 maxit <- 100                            #number of EM loops
 it <- 1
@@ -102,7 +129,7 @@ while(it<=maxit){
     for(k in allK) z[,k] <- dGaussian(x=mmData,mu = ecMAP[[k]]$muMAP,Sigma=ecMAP[[k]]$sigmaMAP)+log(mcMAP[k])
     z <- exp(z-logsumexp(z))            #use logsumexp() to avoid numerical underflow
     ## M-step---------------------------------------------------------
-    ## get the weighted sufficient statistics, based on results of the E-step
+    ## calculate the weighted sufficient statistics, based on results of the E-step:
     ssComponents <- lapply(allK,function(k){
         sufficientStatistics_Weighted(obj = ec[[k]],x=mmData,w=z[,k])
     })                                  #the weighted sufficient statistics of each Gaussian component
@@ -110,14 +137,14 @@ while(it<=maxit){
     ## use the sufficient statistics to update the prior distributions:
     for(k in allK) posterior(obj = ec[[k]],ss=ssComponents[[k]]) #update component distributions
     posterior(obj = mc,ss = ssPi)                                #update cluster label distribution
-    ## get MAP from posterior
+    ## calculate the MAP estimates from posterior:
     mcMAP <- MAP(mc)
     ecMAP <- lapply(ec,MAP)
-    ## Reset for next EM loop-----------------------------------------
+    ## Reset the priors for next EM loop-----------------------------------------
     ## to prepare for the next EM iteration, discard the sufficient statistics info from the posteriors:
     for(k in allK) posteriorDiscard(obj = ec[[k]],ss=ssComponents[[k]])
     posteriorDiscard(obj = mc,ss = ssPi)
-    ## increase iteration counter
+    ## increase the iteration counter
     it <- it+1
 }
 
@@ -145,9 +172,9 @@ x| z,\theta_z &\sim  Gaussian(\theta_z)
 $$
 Where $DP(\alpha)$ is a Dirichlet process on positive integers with "concentration parameter" $\alpha$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-A DP-MM can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-DirichletProcess structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$. And one structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
+A DP-MM can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-DirichletProcess structure for the hidden cluster label distribution $\alpha \rightarrow \pi \rightarrow z$, which we call it a "DP on positive integers". And one structure for the observation distribution $\gamma \rightarrow \theta_z \rightarrow x$.
 
-To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object, which encodes the $\alpha \rightarrow \pi \rightarrow z$ structure, the Dirichlet process on positive integers, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
+To simplify the calculations, **bbricks** provides an `"DP"` type to represent all Dirichlet process structures. An object of type  `"DP"` is in essence a combination of a `"CatDP"` object, which encodes the $\alpha \rightarrow \pi \rightarrow z$ structure, i.e. a Dirichlet process on positive integers, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
 
  See R example for details:
 
@@ -208,9 +235,7 @@ In the dataset `mmData` of the previous example, what if we know the 50, 100, 15
 
 ![](./notes_pictures/mixtureModelPO.png)
 
-With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) into posterior with the information of the 4 observed samples, and **2.** use the posterior as prior of the Gibbs sampling procedure. 
-
-This can be achieved by adding 2 additional steps after  `obj <- DP(...)` in the previous R example:
+With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) with the information of the 4 observed samples, and **2.** use the updated prior as the prior of the Gibbs sampling procedure.  These 2 steps can be achieved by adding following code after `obj <- DP(...)` in the previous R example:
 
 ```R
 ## 1. add the information of the 4 observed samples to the DP object
@@ -228,9 +253,9 @@ Run the code, and the result will be:
 
 ### Hierarchical Mixture Models
 
-In a hierarchical mixture model, the observation $x$ are generated by some unknown mixture components and are split into $J$ groups, all $J$ groups share the same set of mixture components but with different component weights.
+In a hierarchical mixture model, the observation $x$ are generated by some unknown mixture components and are split into $J$ groups, all $J$ groups share the same set of mixture components but with different mixture weights.
 
-It has the following graph structure:
+Hierarchical Dirichlet Process(HDP) is a natural representation of a hierarchical mixture model, It has following graph structure:
 
 ![](./notes_pictures/hierarchicalMixtureModel.png)
 
@@ -247,13 +272,13 @@ x|\theta_k & \sim Gaussian(\theta_k)
 $$
  $DP(\gamma)$ is a Dirichlet process on positive integers with "concentration parameter" $\gamma$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $DP(\alpha,G_j)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_j$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a Hierarchical Dirichlet Process(HDP) on positive integers. HDP are usually represented in a much simpler and compact way(though not easier to understand) in most literatures:
+The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literatures:
 
 ![](./notes_pictures/HDP.png)
 
-From the compact representation we can see that HDP is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$.
+From the compact representation we can see that HDP on positive integers is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$.
 
-To simplify the calculations, **bbricks** provides an `"HDP"` type to represent all Hierarchical Dirichlet process structures. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$, and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
+To simplify the calculations, **bbricks** provides an `"HDP"` type to represent all Hierarchical Dirichlet process structures. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$, i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the $\gamma \rightarrow \theta_z \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"CatDirichlet"` and even `"CatDP"`) 
 
  See R example for details:
 
@@ -271,7 +296,7 @@ js <- mmhData$groupLabel
 ## Step1: Initialization------------------------------------------
 maxit <- 50                             #iterative for maxit times
 burnin <- 30                            #number of burn in samples
-## create a HDP object to track all the changes
+## create a HDP object to track all the changes, the HDP object in this case is a combination of a CatHDP object and a GaussianNIW object:
 obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,
                         H0aF="GaussianNIW",
                         parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
@@ -320,6 +345,19 @@ plot(x=x[,1],y=x[,2],col=kBest)
 
 ### Topic Modeling with HDP
 
+A topic model is a hierarchical mixture model(See [Hierarchical Mixture Models](#hierarchical-mixture-models)) with categorical observations:
+$$
+\begin{align}
+G_j|\gamma & \sim DP(\gamma) \\
+\pi |\alpha,G_j & \sim DP(\alpha,G_j) \\
+z | \pi & \sim Categorical(\pi) \\
+k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
+\pi_k | \psi & \sim Dirichlet(\psi) \\
+x|\pi_k & \sim Categorical(\pi_k)
+\end{align}
+$$
+
+
 
 
 ### Hierarchical Topic Modeling with HDP2
@@ -332,6 +370,41 @@ plot(x=x[,1],y=x[,2],col=kBest)
 
 ### Bayesian Linear Regression
 
+A Bayesian linear regression model has following graph structure:
+
+![](./notes_pictures/bayesianLinearRegression.png)
+
+The CPDs are:
+$$
+\begin{align}
+\beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
+x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
+\end{align}
+$$
+Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
+
+The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object type "GaussianNIG" to represent such a structures. See the R example below:
+
+```R
+## Bayesian linear regression
+
+library(bbricks)
+
+## lrData is a list of two elements. lrData$x is the sample set of the dependent variable; lrData$X is the sample set of the independent variable
+## see ?lrData for details
+data(lrData)
+X <- lrData$X                           #a matrix of 1 column
+x <- lrData$x                           #a numeric vector
+obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
+ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
+posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
+bsMAP <- MAP(obj)                               #get the MAP estimate of beta and sigma^2
+bsMAP                                           #print the MAP estimate
+## plot the MAP estimate of the regression line
+plot(X,X%*%bsMAP$betaMAP,type = "l")
+points(X,x,pch=20)
+```
 
 
-### Estimate Cancer Mortality Rates
+
+### Hierarchical Bayesian: Estimate Cancer Mortality Rates
