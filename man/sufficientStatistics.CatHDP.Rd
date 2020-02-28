@@ -13,7 +13,7 @@
 
 \item{k}{integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.}
 
-\item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+\item{foreach}{logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }

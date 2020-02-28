@@ -2,6 +2,9 @@ library(roxygen2)
 library(devtools)
 library(usethis)
 
+VERSION <- "0.1.0.9000"
+VERSION <- "0.1.0"
+
 ## remove previous build
 system("rm -r man")
 system("rm -r vignettes Meta doc")
@@ -14,7 +17,9 @@ create_package("../bbricks",rstudio = FALSE)
 devtools::document()
 
 ## add to .Rbuildignore to ignore non-package files
-usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md","NEWS.md"))
+## "NEWS.md" is supported by CRAN, no need to exclude
+usethis::use_build_ignore(c("LICENSE.md","README.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md"))
+## usethis::use_build_ignore(c("README.md",".travis.yml","build.r",".#build.r","README.raw.md","cran-comments.md"))
 
 ## Edit DESCRIPTIONN
 ## Version Reference:
@@ -24,7 +29,7 @@ usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","RE
 Description <- paste0("Type: Package
 Package: bbricks
 Title: Bayesian Bricks
-Version: 0.1.0.9000
+Version: ",VERSION,"
 Authors@R: 
     person(given = \"Haotian\",
            family = \"Chen\",
@@ -129,7 +134,7 @@ devtools::build()
 
 ## devtools::release()
 
-install.packages("../bbricks_0.1.0.9000.tar.gz") #different from install()
+install.packages(paste0("../bbricks_",VERSION,".tar.gz")) #different from install()
 ## install()                                        #different from install.packages()
 
 library(bbricks)
@@ -138,6 +143,14 @@ remove.packages("bbricks")
 ## uninstall()
 ## remove.packages("bbricks")
 
+
+## check from rhub
+check_rhub()
+
+## check from win builder
+check_win_devel()
+check_win_release()
+check_win_oldrelease()
 
 ## If you are ready to sumit it to CRAN, run relsease, release will do following things:
 ## • Confirm that the package passes ‘R CMD check’ on relevant
@@ -149,7 +162,10 @@ remove.packages("bbricks")
 release_questions <- function() {
   c("Have you set the correct version number?",
     "Have you removed the irrelevant code blocks?",
-    "Have you add {width=100%} to each inluded image?")
+    "Have you add {width=100%} to each inluded image?",
+    "Have you add all R files to DESCRIPTION?",
+    "Have you removed the unfinished lines from vignette?")
 }
+
 devtools::release()
 

@@ -11,10 +11,10 @@ sufficientStatisticsGaussian_Weighted(x, w, foreach = FALSE)
 
 \item{w}{numeric, sample weights}
 
-\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole}
+\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole}
 }
 \value{
-if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
+if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole
 }
 \description{
 for a design matrix x(each row is a samples), the sufficient statistics are \cr

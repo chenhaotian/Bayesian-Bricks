@@ -8,7 +8,7 @@
 
 
 #' @title Inverse of a positive definite symmetric matrix
-#' @description Use cholseky decomposition to calculate the inverse where S = A'A, A is a upper diaganol matrix then inv(S) = inv(A)inv(A)'.
+#' @description Use Cholseky decomposition to calculate the inverse where S = A'A, A is a upper diagonal matrix then inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.
 #' @param returnUpper logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.
 #' @return A matrix.
@@ -25,7 +25,7 @@ pdsInverse <- function(S,returnUpper=FALSE){
         else
             return(sqrt(S))
     }else{
-        A <- chol(S)                              #cholesky decomposition S=A'A
+        A <- chol(S)                              #Cholesky decomposition S=A'A
         Ai <- backsolve(A,diag(nrow(S)))          #A_i = A^(-1)
         if(returnUpper==FALSE)
             return(crossprod(t(Ai)))
@@ -38,7 +38,7 @@ pdsInverse <- function(S,returnUpper=FALSE){
 #'
 #' For the model structure \cr
 #'    x1,x2|mu,Sigma ~ Gaussian(mu,Sigma) \cr
-#'    x1|x2,mu,Sigma ~ Gaussian(mu12,Sgima12)
+#'    x1|x2,mu,Sigma ~ Gaussian(mu12,Sigma12)
 #'
 #' @seealso \code{\link{linearGaussian}}
 #' @param x2 numeric, an sample of X2, satisfying length(x2)<D, D is the dimension of the joint distribution.
@@ -121,8 +121,8 @@ linearGaussian <- function(x2,mu1,Sigma1=NULL,Precision1=NULL,A,b,Sigma21=NULL,P
 #'  the uncentered scatter matrix S = t(x)%*%x. \cr
 #'
 #' @param x, matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
-#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
+#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @examples
 #' \dontrun{
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
@@ -158,8 +158,8 @@ sufficientStatisticsGaussian <- function(x,foreach=FALSE){
 #'
 #' @param x, matrix, Gaussian samples, when x is a matrix, each row is an sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1
 #' @param w numeric, sample weights
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
-#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole
+#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole
 #' @examples
 #' \dontrun{
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
@@ -225,7 +225,7 @@ rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
 #' @param mu numeric, mean vector.
 #' @param Sigma matrix, covariance matrix, one of Sigma and A should be non-NULL.
 #' @param A matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.
-#' @param LOG logical, retrun log density of LOG=TRUE, default TRUE.
+#' @param LOG logical, return log density of LOG=TRUE, default TRUE.
 #' @return A numeric vector.
 #' @export
 #' @examples
@@ -296,7 +296,7 @@ rT <- function(n,mu,Sigma=NULL,A=NULL,df=1){
 #' @param Sigma matrix, covariance matrix, one of Sigma and A should be non-NULL.
 #' @param A matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.
 #' @param df numeric, degrees of freedom.
-#' @param LOG logical, retrun log density of LOG=TRUE, default TRUE.
+#' @param LOG logical, return log density of LOG=TRUE, default TRUE.
 #' @return A numeric vector, the probability densities.
 #' @export
 #' @examples
@@ -383,9 +383,9 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' @seealso \code{\link{GaussianNIW}}, \code{\link{sufficientStatistics_Weighted.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
 #' @param x matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.
-#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @export
 #' @examples
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
@@ -431,9 +431,9 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #' @param obj A "GaussianNIW" object.
 #' @param x, matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
 #' @param w numeric, sample weightes.
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.
-#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @export
 #' @examples
 #' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
@@ -831,9 +831,9 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' @param obj A "GaussianNIG" object.
 #' @param x numeric, must satisfy length(x) = nrow(X)
 #' @param X matrix, must satisfy length(x) = nrow(X)
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficent statistics as a whole.
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficient statistics as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.
-#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficent statistics of (x,X) as a whole.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficient statistics of (x,X) as a whole.
 #' @export
 #' @examples
 #' obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0))
@@ -890,9 +890,9 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' @param x numeric, must satisfy length(x) = nrow(X).
 #' @param w numeric, sample weightes.
 #' @param X matrix, must satisfy length(x) = nrow(X).
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficent statistics as a whole.
+#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficient statistics as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.
-#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficent statistics of (x,X) as a whole.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficient statistics of (x,X) as a whole.
 #' @export
 #' @examples
 #' obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0))

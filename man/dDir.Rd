@@ -9,7 +9,7 @@ dDir(x, alpha, LOG = FALSE)
 \arguments{
 \item{x}{matrix or numeric vector, if matrix every row of x is an observation, if numeric vector, it's the same as a matrix with only one row.}
 
-\item{alpha}{numeric, dirichlet parameter.}
+\item{alpha}{numeric, Dirichlet parameter.}
 
 \item{LOG}{logical, return the log density if set to "TRUE".}
 }

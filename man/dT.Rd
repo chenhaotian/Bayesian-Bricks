@@ -17,7 +17,7 @@ dT(x, mu, Sigma = NULL, A = NULL, df = 1, LOG = TRUE)
 
 \item{df}{numeric, degrees of freedom.}
 
-\item{LOG}{logical, retrun log density of LOG=TRUE, default TRUE.}
+\item{LOG}{logical, return log density of LOG=TRUE, default TRUE.}
 }
 \value{
 A numeric vector, the probability densities.

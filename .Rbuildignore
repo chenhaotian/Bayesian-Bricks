@@ -1,10 +1,8 @@
 ^LICENSE\.md$
+^README\.md$
 ^\.travis\.yml$
 ^build\.r$
 ^\.#build\.r$
 ^README\.raw\.md$
 ^notes_pictures$
 ^cran-comments\.md$
-^NEWS\.md$
-^doc$
-^Meta$

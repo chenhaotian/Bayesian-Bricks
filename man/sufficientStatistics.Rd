@@ -15,7 +15,7 @@ sufficientStatistics(obj, ...)
 An object of corresponding sufficient statistics class, such as "ssGaussian"
 }
 \description{
-This is a generatic function that will generate the sufficient statistics of a given bayesian bricks object. i.e.
+This is a generic function that will generate the sufficient statistics of a given Bayesian bricks object. i.e.
 for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
@@ -27,5 +27,5 @@ obj <- GaussianNIW()                    #an GaussianNIW object
 sufficientStatistics(obj=obj,x=x)
 }
 \seealso{
-\code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 }

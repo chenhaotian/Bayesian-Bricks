@@ -15,7 +15,7 @@ CatHDP2(
 
 \item{ENV}{environment, specify where the object will be created.}
 
-\item{gamma}{list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamm$m.}
+\item{gamma}{list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamma$m.}
 }
 \value{
 An object of class "CatHDP2".

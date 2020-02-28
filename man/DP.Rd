@@ -16,7 +16,7 @@ DP(
 
 \item{ENV}{environment, specify where the object will be created.}
 
-\item{gamma}{list, a named list of parameters, gamma=list(alpha,H0aF,parH0). Where gamma$alpha is a numeric value specifying the concentration parameter of the Dirichlet Process. gamma$H0aF is the name of the "BayesianBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.}
+\item{gamma}{list, a named list of parameters, gamma=list(alpha,H0aF,parH0). Where gamma$alpha is a numeric value specifying the concentration parameter of the Dirichlet Process. gamma$H0aF is the name of the "BasicBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.}
 }
 \value{
 An object of class "DP".
@@ -27,8 +27,8 @@ Create an object of type "DP", which represents the Dirichlet-Process model stru
      z|pi ~ Categorical(pi) \cr
      theta_z|psi ~ H0(psi) \cr
      x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
-In essense, An "DP" object is a combination of a "CatDP" object and an object of any "BasicBayesian" types(such as "GaussianNIG", "GaussianNIW", "CatDirichlet", and event "CatDP"). H0() and F() will be different baed on different specification of the "BasicBayesian" object. \cr
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
+In essence, An "DP" object is a combination of a "CatDP" object and an object of any "BasicBayesian" types(such as "GaussianNIG", "GaussianNIW", "CatDirichlet", and event "CatDP"). H0() and F() will be different based on different specification of the "BasicBayesian" object. \cr
 The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }
 \examples{

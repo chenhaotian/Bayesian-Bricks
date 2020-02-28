@@ -38,7 +38,7 @@ For the model structure: \cr
      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
      theta_u|psi ~ H0(psi) \cr
      x|theta_u,u ~ F(theta_u) \cr
-where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 In the case of HDP2, u, z and k can only be positive integers. \cr
 This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP2" object, the prior parameters in this object will be updated after running this function.
 }

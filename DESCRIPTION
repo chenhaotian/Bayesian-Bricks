@@ -1,7 +1,7 @@
 Type: Package
 Package: bbricks
 Title: Bayesian Bricks
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Haotian",
            family = "Chen",

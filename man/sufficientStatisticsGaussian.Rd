@@ -9,10 +9,10 @@ sufficientStatisticsGaussian(x, foreach = FALSE)
 \arguments{
 \item{x, }{matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.}
 
-\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.}
+\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.}
 }
 \value{
-if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 }
 \description{
 For a design matrix x(each row is a sample), the sufficient statistics are: \cr

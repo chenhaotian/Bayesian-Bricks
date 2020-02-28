@@ -11,7 +11,7 @@
 
 \item{x}{numeric,integer or character, samples of the Categorical distribution.}
 
-\item{w}{numeric, sample weightes.}
+\item{w}{numeric, sample weights.}
 
 \item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
 

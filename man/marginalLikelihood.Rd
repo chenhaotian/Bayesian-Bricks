@@ -15,11 +15,11 @@ marginalLikelihood(obj, ...)
 numeric, the marginal likelihood
 }
 \description{
-This is a generatic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
+This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
 get p(X|gamma)
 }
 \seealso{
-\code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorical-DP conjugate structure ...
 }

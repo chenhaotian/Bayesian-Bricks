@@ -13,12 +13,12 @@
 
 \item{w}{numeric, sample weightes.}
 
-\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.}
+\item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
-If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficent statistics of x as a whole.
+If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 }
 \description{
 For following Gaussian-NIW model structure: \cr

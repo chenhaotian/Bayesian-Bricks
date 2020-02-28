@@ -29,7 +29,7 @@ Create an object of type "HDP2", which represents the model structure: \cr
      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
      theta_u|psi ~ H0(psi) \cr
      x|theta_u,u ~ F(theta_u) \cr
-where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 In the case of HDP2, u, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
 }

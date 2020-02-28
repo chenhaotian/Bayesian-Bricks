@@ -25,7 +25,7 @@ Create an object of type "HDP", which represents the Dirichlet-Process model str
      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
      theta_k|psi ~ H0(psi) \cr
      x|theta_k,k ~ F(theta_k) \cr
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 In the case of HDP, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 }

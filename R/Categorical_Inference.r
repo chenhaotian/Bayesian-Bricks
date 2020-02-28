@@ -74,7 +74,7 @@ rDir <- function(n, alpha){
 #'
 #' @seealso \code{\link{rDir}}
 #' @param x matrix or numeric vector, if matrix every row of x is an observation, if numeric vector, it's the same as a matrix with only one row.
-#' @param alpha numeric, dirichlet parameter.
+#' @param alpha numeric, Dirichlet parameter.
 #' @param LOG logical, return the log density if set to "TRUE".
 #' @return A numeric vector of density values.
 #' @export
@@ -188,7 +188,7 @@ sufficientStatistics.CatDirichlet <- function(obj,x,foreach=FALSE,...){
 #' @seealso @seealso \code{\link{sufficientStatistics.CatDirichlet}} \code{\link{CatDirichlet}}
 #' @param obj A "CatDirichlet" object.
 #' @param x numeric,integer or character, samples of the Categorical distribution.
-#' @param w numeric, sample weightes.
+#' @param w numeric, sample weights.
 #' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCat", the sufficient statistics of a set of categorical samples. Or an object of the same class as x if foreach=TRUE.

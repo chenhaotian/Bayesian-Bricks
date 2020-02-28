@@ -9,7 +9,7 @@ MetropolisHastings(nsamples, xini, dp, dq, rq)
 \arguments{
 \item{nsamples}{integer, number of samples to draw}
 
-\item{xini}{initial sample, the chain of samlples starts from here. xini must be a matrix of one row, or a numeric vector that will be converted to a matrix of one row.}
+\item{xini}{initial sample, the chain of samples starts from here. xini must be a matrix of one row, or a numeric vector that will be converted to a matrix of one row.}
 
 \item{dp}{function(x), the LOG density function of the target distribution log dp(x), DON'T FORGET THE LOG.}
 

@@ -3,13 +3,13 @@
 \docType{data}
 \name{cancerData}
 \alias{cancerData}
-\title{Cancer motality of 20 cities}
+\title{Cancer mortality of 20 cities}
 \format{A list of 20 character vectors.}
 \usage{
 data(cancerData)
 }
 \description{
-Cancer motality data from Ordinal Data Modeling(1999) p24. This dataset is a list of 20 character vectors, representing the individuals in 20 cities' cancer motality information. There can be only two possible values "death" and "no death" in each character vector. For example "death" occurs 3 times the 10th character vector, while "no death" occurs 582 times, this mean there are 3 death among the 585 cancer patients in city 10.
+Cancer mortality data from Ordinal Data Modeling(1999) p24. This dataset is a list of 20 character vectors, representing the individuals in 20 cities' cancer mortality information. There can be only two possible values "death" and "no death" in each character vector. For example "death" occurs 3 times the 10th character vector, while "no death" occurs 582 times, this mean there are 3 death among the 585 cancer patients in city 10.
 }
 \references{
 Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006.

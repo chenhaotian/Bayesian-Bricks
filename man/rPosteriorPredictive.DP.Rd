@@ -24,7 +24,7 @@ Generate random samples from the posterior predictive distribution of the follow
      z|pi ~ Categorical(pi) \cr
      theta_z|psi ~ H0(psi) \cr
      x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 The model structure and prior parameters are stored in a "DP" object. \cr
 This function will generate random samples from the distribution  z|alpha,psi,x.
 }

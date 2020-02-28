@@ -19,5 +19,5 @@ A Basic Bayesian Object is with following conditional dependency structure: \cr
 Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP" are all "BasicBayesian"s.
 }
 \seealso{
-\code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
 }

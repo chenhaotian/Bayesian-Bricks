@@ -13,6 +13,6 @@
 data(lrData)
 }
 \description{
-A list of two elements, a matrix "X" and a numeric vector "x". They came from a linear model: x = X*0.3 + epsilon, where epsilong is Gaussian distributed with mean 0 and variannce 25.
+A list of two elements, a matrix "X" and a numeric vector "x". They came from a linear model: x = X*0.3 + epsilon, where epsilon is Gaussian distributed with mean 0 and variance 25.
 }
 \keyword{datasets}

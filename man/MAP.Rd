@@ -15,11 +15,11 @@ MAP(obj, ...)
 A list of the MAP estimates
 }
 \description{
-This is a generatic function that will generate the MAP estimate of a given "BayesianBrick" object. For the model structure:  \cr
+This is a generic function that will generate the MAP estimate of a given "BayesianBrick" object. For the model structure:  \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
 get theta_MAP
 }
 \seealso{
-\code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
 }

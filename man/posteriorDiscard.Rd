@@ -15,11 +15,11 @@ posteriorDiscard(obj, ...)
 None, or an error message if the update fails.
 }
 \description{
-Contrary to posterior(), posteriorDiscard() a generatic function that will update the prior distribution of a "BayesianBrick" object by removing the information provided by the observation's sufficient statistics. i.e. for the model structure: \cr
+Contrary to posterior(), posteriorDiscard() a generic function that will update the prior distribution of a "BayesianBrick" object by removing the information provided by the observation's sufficient statistics. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
 update gamma to gamma_posterior by removing the information of X from gamma
 }
 \seealso{
-\code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
 }

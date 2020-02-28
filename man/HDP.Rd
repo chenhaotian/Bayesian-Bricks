@@ -16,7 +16,7 @@ HDP(
 
 \item{ENV}{environment, specify where the object will be created.}
 
-\item{gamma}{list, a named list of parameters, gamma=list(gamma,alpha,j,H0aF,parH0). Where gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,U), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_j), gamma$j is the number of groups J. gamma$H0aF is the name of the "BayesianBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.}
+\item{gamma}{list, a named list of parameters, gamma=list(gamma,alpha,j,H0aF,parH0). Where gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,U), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_j), gamma$j is the number of groups J. gamma$H0aF is the name of the "BasicBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.}
 }
 \value{
 An object of class "HDP".
@@ -29,7 +29,7 @@ Create an object of type "HDP", which represents the Hierarchical-Dirichlet-Proc
      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
      theta_k|psi ~ H0(psi) \cr
      x|theta_k,k ~ F(theta_k) \cr
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 In the case of HDP, z and k can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }

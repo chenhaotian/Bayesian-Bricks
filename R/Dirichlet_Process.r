@@ -79,7 +79,7 @@ CatDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(alpha=1)){
 #' @seealso \code{\link{CatDP}}, \code{\link{sufficientStatistics_Weighted.CatDP}} 
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
-#' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
 #' @export
@@ -119,7 +119,7 @@ sufficientStatistics.CatDP <- function(obj,x,foreach=FALSE,...){
 #' @param obj A "CatDP" object.
 #' @param x integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param w numeric, sample weights
-#' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
 #' @export
@@ -421,7 +421,7 @@ MAP.CatDP <- function(obj,...){
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
-#' MPE is pi_MEP = mean(pi|alpha,x).
+#' MPE is pi_MPE = mean(pi|alpha,x).
 #'
 #' @seealso \code{\link{CatDP}}
 #' @param obj A "CatDP" object.
@@ -633,7 +633,7 @@ print.CatHDP <- function(x,...){
 #' @param obj A "CatHDP" object.
 #' @param z integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param k integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
-#' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatHDP", the sufficient statistics of a set of categorical samples. Or an integer matrix if foreach = TRUE.
 #' @export
@@ -665,7 +665,7 @@ sufficientStatistics.CatHDP <- function(obj,z,k,foreach=FALSE,...){
 #' @param z integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param k integer, the elements of the vector must all greater than 0, the samples of a Categorical distribution.
 #' @param w numeric, sample weights
-#' @param foreach logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return An object of class "ssCatHDP", the sufficient statistics of a set of categorical samples. Or an integer matrix if foreach=TRUE.
 #' @export
@@ -873,7 +873,7 @@ rPosteriorPredictive.CatHDP <- function(obj,n=1L,j,...){
 #' @seealso \code{\link{posterior.CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{MAP.CatHDP2}},\code{\link{marginalLikelihood.CatHDP2}} ...
 #' @param objCopy an object of type "CatHDP2". If "objCopy" is not NULL, the function create a new "CatHDP2" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
 #' @param ENV environment, specify where the object will be created.
-#' @param gamma list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamm$m.
+#' @param gamma list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamma$m.
 #' @return An object of class "CatHDP2".
 #' @export
 #' @examples
@@ -1156,14 +1156,14 @@ rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
-#' In essense, An "DP" object is a combination of a "CatDP" object and an object of any "BasicBayesian" types(such as "GaussianNIG", "GaussianNIW", "CatDirichlet", and event "CatDP"). H0() and F() will be different baed on different specification of the "BasicBayesian" object. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
+#' In essence, An "DP" object is a combination of a "CatDP" object and an object of any "BasicBayesian" types(such as "GaussianNIG", "GaussianNIW", "CatDirichlet", and event "CatDP"). H0() and F() will be different based on different specification of the "BasicBayesian" object. \cr
 #' The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 #'
 #' @seealso \code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatDP}},\code{\link{posterior.DP}},\code{\link{posteriorDiscard.DP}},\code{\link{MAP.DP}},\code{\link{marginalLikelihood.DP}} ...
 #' @param objCopy an object of type "DP". If "objCopy" is not NULL, the function create a new "DP" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
 #' @param ENV environment, specify where the object will be created.
-#' @param gamma list, a named list of parameters, gamma=list(alpha,H0aF,parH0). Where gamma$alpha is a numeric value specifying the concentration parameter of the Dirichlet Process. gamma$H0aF is the name of the "BayesianBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
+#' @param gamma list, a named list of parameters, gamma=list(alpha,H0aF,parH0). Where gamma$alpha is a numeric value specifying the concentration parameter of the Dirichlet Process. gamma$H0aF is the name of the "BasicBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
 #' @return An object of class "DP".
 #' @export
 #' @examples
@@ -1271,7 +1271,7 @@ print.DP <- function(x,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
 #'
 #' @seealso \code{\link{DP}}, \code{\link{sufficientStatistics_Weighted.DP}} 
@@ -1301,7 +1301,7 @@ sufficientStatistics.DP <- function(obj,x,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
 #'
 #' @seealso \code{\link{DP}}, \code{\link{sufficientStatistics.DP}} 
@@ -1323,7 +1323,7 @@ sufficientStatistics_Weighted.DP <- function(obj,x,w,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "DP" object, the prior parameters in this object will be updated after running this function.
 #'
 #' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
@@ -1359,7 +1359,7 @@ posterior.DP <- function(obj,ss,z,w=NULL,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
 #' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
@@ -1416,7 +1416,7 @@ marginalLikelihood.DP <- function(obj,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' The model structure and prior parameters are stored in a "DP" object. \cr
 #' Posterior predictive is a distribution of x,z|alpha,psi.
 #'
@@ -1466,7 +1466,7 @@ dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE,...){
 #'      z|pi ~ Categorical(pi) \cr
 #'      theta_z|psi ~ H0(psi) \cr
 #'      x|theta_z,z ~ F(theta_z) \cr
-#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+#' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 #' The model structure and prior parameters are stored in a "DP" object. \cr
 #' This function will generate random samples from the distribution  z|alpha,psi,x.
 #' 
@@ -1511,50 +1511,6 @@ rPosteriorPredictive.DP <- function(obj,n=1,x,...){
     zs[sample.int(length(zs),size = n,replace = TRUE,prob = probs)]
 }
 
-if(FALSE){
-
-    x <- rbind(
-        rGaussian(50,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-        rGaussian(60,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-        rGaussian(70,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-        rGaussian(50,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-    )
-
-    maxit <- 100                            #iterative for maxit times
-    burnin <- 50                            #number of burnin samples
-    z <- matrix(1L,nrow(x),maxit-burnin)    #the sampled labels will be put here
-    obj <- DP(gamma = list(alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)))) #create an "GaussianNIW" object to track all the changes.
-    ss <- sufficientStatistics(obj,x=x,foreach = TRUE) #sufficient statistics of each x
-    N <- nrow(x)
-    for(i in 1L:N){ # initialize labels before Gibbs sampling
-        z[i,1] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE])
-        posterior(obj = obj,ss = ss[[i]], z = z[i,1])
-    }
-
-    it <- 0                                 #iteration tracker
-    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
-    while(TRUE){
-        if(it>burnin) colIdx <- it-burnin
-        else colIdx <- 1
-        for(i in 1L:N){
-            posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #remove the sample information from the posterior
-            z[i,colIdx] <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE]) #get a new sample
-            posterior(obj = obj,ss = ss[[i]],z=z[i,colIdx]) #add the new sample information to the posterior
-        }
-        if(it>burnin & colIdx<ncol(z)) z[,colIdx+1] <- z[,colIdx] #copy result of previous iteration
-        it <- it+1
-        setTxtProgressBar(pb,it)
-        if(it>=maxit){cat("\n");break}
-        plot(x=x[,1],y=x[,2],col=z[,colIdx]) #to see how the labels change
-    }
-
-    col <- apply(z,1,function(l){
-        tmp <- table(l)
-        names(tmp)[which.max(tmp)]      #pick the most frequent group label in the samples to be the best estimate
-    })
-    plot(x=x[,1],y=x[,2],col=col)
-}
-
 #' Create objects of type "HDP".
 #'
 #' Create an object of type "HDP", which represents the Hierarchical-Dirichlet-Process conjugate structure: \cr
@@ -1564,14 +1520,14 @@ if(FALSE){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 #'
 #' @seealso \code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP}},\code{\link{posterior.HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{MAP.HDP}},\code{\link{marginalLikelihood.HDP}} ...
 #' @param objCopy an object of type "HDP". If "objCopy" is not NULL, the function create a new "HDP" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
 #' @param ENV environment, specify where the object will be created.
-#' @param gamma list, a named list of parameters, gamma=list(gamma,alpha,j,H0aF,parH0). Where gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,U), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_j), gamma$j is the number of groups J. gamma$H0aF is the name of the "BayesianBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
+#' @param gamma list, a named list of parameters, gamma=list(gamma,alpha,j,H0aF,parH0). Where gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,U), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_j), gamma$j is the number of groups J. gamma$H0aF is the name of the "BasicBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
 #' @return An object of class "HDP".
 #' @export
 #' @examples
@@ -1678,7 +1634,7 @@ print.HDP <- function(x,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 #'
@@ -1716,7 +1672,7 @@ sufficientStatistics.HDP <- function(obj,x,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 #'
@@ -1740,7 +1696,7 @@ sufficientStatistics_Weighted.HDP <- function(obj,x,w,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP" object, the prior parameters in this object will be updated after running this function.
 #'
@@ -1776,7 +1732,7 @@ posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
@@ -1822,7 +1778,7 @@ marginalLikelihood.HDP <- function(obj,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP" object. \cr
 #' Posterior predictive is a distribution of x,z,k|gamma,alpha,psi or z,k|gamma,alpha,psi,x.
@@ -1874,7 +1830,7 @@ dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE,...){
 #'      k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
 #'      theta_k|psi ~ H0(psi) \cr
 #'      x|theta_k,k ~ F(theta_k) \cr
-#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitary, they are distributions of x and theta_k correspondingly. \cr
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP" object. \cr
 #' This function will generate random samples from the distribution z,k|gamma,alpha,psi,x.
@@ -1911,14 +1867,14 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 #' 
 #' @seealso \code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP2}},\code{\link{posterior.HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{MAP.HDP2}},\code{\link{marginalLikelihood.HDP2}} ...
 #' @param objCopy an object of type "HDP2". If "objCopy" is not NULL, the function create a new "HDP2" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
 #' @param ENV environment, specify where the object will be created.
-#' @param gamma list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j,H0aF,parH0), where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamm$m. gamma$H0aF is the name of the "BayesianBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
+#' @param gamma list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j,H0aF,parH0), where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamma$m. gamma$H0aF is the name of the "BasicBayesian" object which specifies the structure of H0() and F(). gamma$parH0 is the parameters passed to the selected H0aF. For example, if gamma$H0aF="GaussianNIW", then gamma$parH0 should be a named list of NIW parameters: gamma$parH0=list(m,k,v,S), where gamma$parH0$m is a numeric "location" parameter; gamma$parH0$S is a symmetric positive definite matrix representing the "scale" parameters; gamma$parH0$k and gamma$parH0$v are numeric values.
 #' @return An object of class "HDP2".
 #' @export
 #' @examples
@@ -2034,7 +1990,7 @@ print.HDP2 <- function(x,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
 #'
@@ -2060,7 +2016,7 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
 #'
@@ -2087,7 +2043,7 @@ sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP2" object, the prior parameters in this object will be updated after running this function.
 #'
@@ -2123,7 +2079,7 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #'
@@ -2173,7 +2129,7 @@ marginalLikelihood.HDP2 <- function(obj,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP2" object. \cr
 #' Posterior predictive is a distribution of x,u,z,k|eta,gamma,alpha,psi or u,z,k|eta,gamma,alpha,psi,x.
@@ -2229,7 +2185,7 @@ dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE,...){
 #'      u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
 #'      theta_u|psi ~ H0(psi) \cr
 #'      x|theta_u,u ~ F(theta_u) \cr
-#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitary, they are distributions of x and theta_u correspondingly. \cr
+#' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP2" object. \cr
 #' This function will generate random samples from the distribution u,z,k|eta,gamma,alpha,psi,x.
@@ -2260,234 +2216,5 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j,...){
     probs <- exp(probs-max(probs))
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
     c(u=us[idx],k=ks[idx],z=zs[idx])
-}
-
-if(FALSE){
-    farmads <- readLines("/tmp/farm-ads")
-    
-farmads <- tolower(farmads)
-farmads <- gsub("[0-9]","",farmads)
-farmads <- gsub("[a-z]+-[a-z]+","",farmads)
-farmads <- gsub("[^a-z ]","",farmads)
-library(cld3)                           #detect language
-idx <- sapply(farmads,detect_language,simplify = TRUE,USE.NAMES = FALSE)=="en"
-farmads <- farmads[idx %in% TRUE]
-while(any(grepl("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)",farmads)))
-    farmads <- gsub("( [a-z]{2} )|( [a-z]{1} )|(^[a-z]{2} )|( [a-z]{2}$)|(^[a-z]{1} )|( [a-z]{1}$)"," ",farmads)
-farmads <- gsub(" +"," ",farmads)
-farmads <- gsub("(^ )|( $)","",farmads)
-
-
-    set.seed(1)
-x <- strsplit(sample(farmads,400),split = " ")
-x <- sapply(x,function(l){unique(l)},simplify = FALSE,USE.NAMES = FALSE)
-removeWords <- table(unlist(x))
-removeWords <- names(removeWords[removeWords<10 | removeWords>50])
-x <- sapply(x,function(l){
-    setdiff(l,removeWords)
-})
-x <- x[sapply(x,length,simplify = TRUE,USE.NAMES = FALSE)!=0]
-js <- rep(1L:length(x),times=sapply(x,length,simplify = TRUE,USE.NAMES = FALSE))
-x <- unlist(x)
-
-
-
-
-
-
-
-
-
-
-
-
-maxit <- 30                            #iterative for maxit times
-
-z <- rep(1L,length(x))
-k <- rep(1L,length(x))
-uniqueWords <- unique(x)
-obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="CatDirichlet",parH0=list(alpha=rep(0.5,length(uniqueWords)),uniqueLabels=uniqueWords)))
-
-N <- length(x)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    posterior(obj = obj,ss = x[i], ss2 = z[i],j=js[i],ss1=k[i])
-}
-
-
-table(z)
-
-it <- 0                                 #iteration tracker
-    pb <- txtProgressBar(min = 0,max = maxit,style = 3)
-while(TRUE){
-    for(i in 1L:N){
-        posteriorDiscard.HDP(obj = obj,ss = x[i],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample information from the posterior
-        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i],j=js[i])   #get a new sample
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        posterior(obj = obj,ss = x[i],ss1=k[i], ss2 = z[i],j=js[i]) #add the new sample information to the posterior
-    }
-    it <- it+1
-    setTxtProgressBar(pb,it)
-    if(it>=maxit){cat("\n");break}
-}
-
-sapply(obj$X,function(l){sum(l$gamma$alpha)})
-order(sapply(obj$X,function(l){sum(l$gamma$alpha)}),decreasing = TRUE)
-
-tmpfun <- function(tmpobj,n=10){
-    tmpobj$gamma$uniqueLabels[head(order(tmpobj$gamma$alpha/sum(tmpobj$gamma$alpha),decreasing = TRUE),n)]
-}
-
-    tmpfun(obj$X[[1]])
-    tmpfun(obj$X[[2]])
-    tmpfun(obj$X[[3]])
-    tmpfun(obj$X[[5]])
-    tmpfun(obj$X[[7]])
-    tmpfun(obj$X[[8]])
-    tmpfun(obj$X[[4]])
-
-tmpfun(obj$X[[6]])
-tmpfun(obj$X[[7]])
-
-
-table(z[,ncol(z)])
-    table(z)/ncol(z)
-}
-
-
-if(FALSE){
-set.seed(1)
-
-j <- as.integer(round(runif(30,40,50)))
-PIs <- rDir(30,c(1,2,3,1))
-Xs <- list(
-    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-)
-
-x <- do.call("rbind",lapply(1L:30L,function(i){
-    out <- matrix(0,nrow = j[i],ncol = 2L)
-    for(r in 1:nrow(out)){
-        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
-    }
-    out
-}))
-js <- rep(1L:30,times=j)
-
-
-maxit <- 20                            #iterative for maxit times
-
-z <- rep(1L,nrow(x))
-k <- rep(1L,nrow(x))
-obj <- HDP(gamma = list(gamma=1,j=max(js),alpha=1,H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.01)))
-ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
-
-N <- length(ss)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    posterior.HDP(obj = obj,ss = ss[[i]],ss1 = k[i],ss2 = z[i],j = js[i])
-}
-
-it <- 0                                 #iteration tracker
-
-while(TRUE){
-    for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=k[i],ss2=z[i],j=js[i]) #remove the sample from the posterior info
-        tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],j=js[i])   #resample a new partition
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        posterior(obj = obj,ss = ss[[i]], ss1=k[i],ss2 = z[i],j=js[i])
-    }
-    plot(x=x[,1],y=x[,2],col=k)
-    it <- it+1
-    cat(it," ")
-    if(it>=maxit){cat("\n");break}
-}
-
-plot(x=x[,1],y=x[,2],col=k)
-
-tmp <- obj$X[obj$Z$Z1$gamma$nk!=0]
-for(i in 1:length(tmp))
-    print(MAP(obj = tmp[[i]]))
-
-}
-
-
-if(FALSE){
-set.seed(1)
-
-J <- as.integer(round(runif(30,40,50)))
-PIs <- rbind(rDir(10,c(1,2,3,1)),
-             rDir(20,c(3,2,1,3)))
-Xs <- list(
-    list(n=1,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2)),
-    list(n=1,mu = c(-1.5,-1.5),Sigma = matrix(c(0.8,0.5,0.5,0.8),2,2)),
-    list(n=1,mu = c(1.5,1.5),Sigma = matrix(c(0.3,0.05,0.05,0.3),2,2)),
-    list(n=1,mu = c(1.5,-1.5),Sigma = matrix(c(0.5,-0.08,-0.08,0.5),2,2))
-)
-
-x <- do.call("rbind",lapply(1L:30L,function(i){
-    out <- matrix(0,nrow = J[i],ncol = 2L)
-    for(r in 1:nrow(out)){
-        out[r,] <- do.call("rGaussian",Xs[[rCategorical(1,PIs[i,])]])
-    }
-    out
-}))
-js <- rep(c(1L:10L,1L:20L),times=J)
-ms <- rep(2L,nrow(x))
-ms[1:sum(J[1:10])] <- 1L
-
-maxit <- 50                            #iterative for maxit times
-
-z <- rep(1L,nrow(x))
-k <- rep(1L,nrow(x))
-u <- rep(1L,nrow(x))
-
-obj <- HDP2(gamma = list(eta=1,gamma=1,alpha=1,m=2L,j=c(10L,20L),H0aF="GaussianNIW",parH0=list(m=c(0,0),k=0.001,v=2,S=diag(2)*0.001)))
-ss <- sufficientStatistics(obj$H,x=x,foreach = TRUE) #sufficient statistics
-
-N <- length(ss)
-
-for(i in 1L:N){
-    tmp <- rPosteriorPredictive(obj = obj,n=1,x=x[i,,drop=FALSE],m=ms[i],j=js[i])
-    z[i] <- tmp["z"]
-    k[i] <- tmp["k"]
-    u[i] <- tmp["u"]
-    posterior.HDP2(obj = obj,ss = ss[[i]],ss1 = u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j = js[i])
-}
-
-it <- 0                                 #iteration tracker
-
-while(TRUE){
-    tmp <- character(3)
-    for(i in 1L:N){
-        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i]) #remove the sample from the posterior info
-        tmp <- rPosteriorPredictive(obj = obj,n=1L,x=x[i,,drop=FALSE],m=ms[i],j=js[i])   #resample a new partition
-        z[i] <- tmp["z"]
-        k[i] <- tmp["k"]
-        u[i] <- tmp["u"]
-        posterior(obj = obj,ss = ss[[i]], ss1=u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j=js[i])
-    }
-    plot(x=x[,1],y=x[,2],col=u)
-    it <- it+1
-    cat(it," ")
-    if(it>=maxit){cat("\n");break}
-}
-
-plot(x=x[,1],y=x[,2],col=u)
-
-tmp <- obj$X[obj$Z$Z1$gamma$nk>50]
-for(i in 1:length(tmp))
-    print(MAP(obj = tmp[[i]]))
-
 }
 

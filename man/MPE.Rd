@@ -15,11 +15,11 @@ MPE(obj, ...)
 A list of MPE estimates
 }
 \description{
-This is a generatic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
+This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
 get theta_MPE
 }
 \seealso{
-\code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
 }

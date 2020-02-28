@@ -15,10 +15,10 @@ sufficientStatistics_Weighted(obj, ...)
 An object of corresponding sufficient statistics class, such as "ssGaussian"
 }
 \description{
-This is a generatic function that will generate the weighted sufficient statistics of a given "BayesianBrick" object. That is, for the model structure: \cr
+This is a generic function that will generate the weighted sufficient statistics of a given "BayesianBrick" object. That is, for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
-get the weigeted sufficient statistics T(X)
+get the weighted sufficient statistics T(X)
 }
 \examples{
 \dontrun{
@@ -29,5 +29,5 @@ sufficientStatistics_Weighted(obj=obj,x=x,w=w)
 }
 }
 \seealso{
-\code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorical-DP conjugate structure ...
 }

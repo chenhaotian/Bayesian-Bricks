@@ -8,7 +8,7 @@
 #' where dp() is the density function of the target distribution, dq() the the density function of the proposal distribution. A new sample xhat is drawn from the sampler of the proposal distribution rq(). See examples.
 #' 
 #' @param nsamples integer, number of samples to draw
-#' @param xini initial sample, the chain of samlples starts from here. xini must be a matrix of one row, or a numeric vector that will be converted to a matrix of one row.
+#' @param xini initial sample, the chain of samples starts from here. xini must be a matrix of one row, or a numeric vector that will be converted to a matrix of one row.
 #' @param dp function(x), the LOG density function of the target distribution log dp(x), DON'T FORGET THE LOG.
 #' @param dq function(xhat,x), the LOG density function of the proposal distribution log dq(xhat | x), DON'T FORGET THE LOG.
 #' @param rq function(x), the generator of the proposal distribution rq(xhat | x).

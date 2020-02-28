@@ -26,7 +26,7 @@ For the model structure: \cr
      z|pi ~ Categorical(pi) \cr
      theta_z|psi ~ H0(psi) \cr
      x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 This function will update the prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "DP" object, the prior parameters in this object will be updated after running this function.
 }
 \examples{

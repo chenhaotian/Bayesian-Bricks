@@ -423,7 +423,7 @@ x|\theta_k & \sim Gaussian(\theta_k)
 $$
  $DP(\gamma)$ is a Dirichlet process on positive integers with "concentration parameter" $\gamma$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $DP(\alpha,G_j)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_j$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literatures:
+The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literature:
 
 ![](./notes_pictures/HDP.png){width=100%}
 

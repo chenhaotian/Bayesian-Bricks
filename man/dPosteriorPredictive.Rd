@@ -15,11 +15,11 @@ dPosteriorPredictive(obj, ...)
 numeric, the density value
 }
 \description{
-This is a generatic function that will generate the the density value of the posterior predictive distribution. i.e. for the model structure: \cr
+This is a generic function that will generate the the density value of the posterior predictive distribution. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
 get p(x_new|gamma)
 }
 \seealso{
-\code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorica-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorica-DP conjugate structure ...
+\code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
 }

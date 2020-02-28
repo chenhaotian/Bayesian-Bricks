@@ -25,7 +25,7 @@ Create an object of type "DP", which represents the Dirichlet-Process model stru
      z|pi ~ Categorical(pi) \cr
      theta_z|psi ~ H0(psi) \cr
      x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitary, they are distributions of x and theta_z correspondingly. \cr
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
 The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
 }
 \seealso{

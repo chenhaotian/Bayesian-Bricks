@@ -15,7 +15,7 @@
 
 \item{w}{numeric, sample weights}
 
-\item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+\item{foreach}{logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }

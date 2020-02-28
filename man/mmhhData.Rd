@@ -3,7 +3,7 @@
 \docType{data}
 \name{mmhhData}
 \alias{mmhhData}
-\title{Samples from a hierarchical mixture model with two layers of hierarcchies}
+\title{Samples from a hierarchical mixture model with two layers of hierarchies}
 \format{A list of two elements:
 \describe{
   \item{x}{matrix, 2-dimensional Gaussian samples, each row is a sample}
