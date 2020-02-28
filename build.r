@@ -4,7 +4,7 @@ library(usethis)
 
 ## remove previous build
 system("rm -r man")
-system("rm NAMESPACE DESCRIPTION")
+system("rm NAMESPACE DESCRIPTION .Rbuildignore")
 
 ## create skeleton files
 create_package("../bbricks",rstudio = FALSE)
@@ -13,15 +13,16 @@ create_package("../bbricks",rstudio = FALSE)
 devtools::document()
 
 ## add to .Rbuildignore to ignore non-package files
-usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures"))
+usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md"))
 
 ## Edit DESCRIPTIONN
 ## Version Reference:
 ##    http://r-pkgs.had.co.nz/release.html
 ##    Version format:  major.minor.patch.dev
 ## add to Collate: when there's new files added
-Description <- paste0("Package: bbricks
-Title: bbricks
+Description <- paste0("Type: Package
+Package: bbricks
+Title: Bayesian Bricks
 Version: 0.1.0.9000
 Authors@R: 
     person(given = \"Haotian\",
@@ -31,6 +32,8 @@ Authors@R:
            comment = structure(\"https://orcid.org/0000-0001-9751-2093\", .Names = \"ORCID\"))
 Description: Basic building blocks in Bayesian modeling.
 License: What license it uses
+URL: https://github.com/chenhaotian/Bayesian-Bricks
+BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: ",packageVersion("roxygen2"),"
@@ -60,8 +63,6 @@ r_packages:
   - stats
 "
 write(travis,file = ".travis.yml")
-
-
 
 ## very important step, must make sure there's no  warnings and errors
 ## remove stupic emacs tmp file before check()
@@ -98,3 +99,17 @@ library(bbricks)
 remove.packages("bbricks")
 ## uninstall()
 ## remove.packages("bbricks")
+
+
+## If you are ready to sumit it to CRAN, run relsease, release will do following things:
+## • Confirm that the package passes ‘R CMD check’ on relevant
+##    platforms
+## • Confirm that important files are up-to-date
+## • Build the package
+## • Submit the package to CRAN, using comments in
+##    "cran-comments.md"
+release_questions <- function() {
+  c("Have you set the correct version number?",
+    "Have you removed the irrelevant code blocks?")
+}
+devtools::release()

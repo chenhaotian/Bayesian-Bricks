@@ -1217,7 +1217,7 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' @seealso @seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
 #' @param n integer, number of samples.
-#' @param X matrix, must satisfy length(x) = nrow(X).
+#' @param X matrix, the location of the prediction, each row is a location.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A matrix of n rows and nrow(X) columns, each row is a sample.
 #' @export

@@ -4,9 +4,17 @@
 \name{bbricks-package}
 \alias{bbricks}
 \alias{bbricks-package}
-\title{bbricks: bbricks}
+\title{bbricks: Bayesian Bricks}
 \description{
-Basic building blocks in Bayesian network modeling.
+Basic building blocks in Bayesian modeling.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/chenhaotian/Bayesian-Bricks}
+  \item Report bugs at \url{https://github.com/chenhaotian/Bayesian-Bricks/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Haotian Chen \email{chenhaotian.jtt@gmail.com} (\href{https://orcid.org/https://orcid.org/0000-0001-9751-2093}{ORCID})

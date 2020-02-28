@@ -1,5 +1,6 @@
+Type: Package
 Package: bbricks
-Title: bbricks
+Title: Bayesian Bricks
 Version: 0.1.0.9000
 Authors@R: 
     person(given = "Haotian",
@@ -7,8 +8,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "chenhaotian.jtt@gmail.com",
            comment = structure("https://orcid.org/0000-0001-9751-2093", .Names = "ORCID"))
-Description: Basic building blocks in Bayesian network modeling.
+Description: Basic building blocks in Bayesian modeling.
 License: MIT + file LICENSE
+URL: https://github.com/chenhaotian/Bayesian-Bricks
+BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2

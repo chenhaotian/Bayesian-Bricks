@@ -11,7 +11,7 @@
 
 \item{n}{integer, number of samples.}
 
-\item{X}{matrix, must satisfy length(x) = nrow(X).}
+\item{X}{matrix, the location of the prediction, each row is a location.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
