@@ -1,3 +1,18 @@
+---
+title: "bbricks-getting-started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{bbricks: Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 # bbricks
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
@@ -8,7 +23,7 @@ See [Mindset](#mindset) and [Examples](#examples) to get started.
 
 **Installation:**
 
-```R
+```{r,eval=FALSE}
 # install development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("chenhaotian/Bayesian-Bricks")
@@ -98,7 +113,7 @@ The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a bas
 
 See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood on the `"GaussianNIG"` object:
 
-```R
+```{r,eval=FALSE}
 ## Bayesian linear regression
 
 library(bbricks)
@@ -163,7 +178,7 @@ Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done with the "independent Metro
 
 R code:
 
-```R
+```{r,eval=FALSE}
 ## Estimate cancer mortality rates using Gibbs sampling
 
 library(bbricks)
@@ -248,7 +263,7 @@ In **bbricks** these two structures are initialized with a `CatDirichlet` object
 
 R code:
 
-```R
+```{r,eval=FALSE}
 ## Get the MAP estimate of pi and theta using EM algorithm.
 
 library(bbricks)
@@ -329,7 +344,7 @@ To estimate $z$, we use the following collapse Gibbs sampling procedure:
 
 R code:
 
-```R
+```{r,eval=FALSE}
 ## Sample cluster labels z from DP-MM using Gibbs sampling
 
 library(bbricks)
@@ -388,7 +403,7 @@ In the dataset `mmData` of the previous example, what if we know the 50, 100, 15
 
 With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) with the information of the 4 observed samples, and **2.** use the updated prior as the prior of the Gibbs sampling procedure.  These 2 steps can be achieved by adding following code after `obj <- DP(...)` in the previous R example:
 
-```R
+```{r,eval=FALSE}
 ## 1. add the information of the 4 observed samples to the DP object
 ssObserved <- sufficientStatistics(obj=obj,x=mmData[c(50,100,150,200),,drop=FALSE],foreach = TRUE)
 for(i in 1L:4L) posterior(obj = obj,ss = ssObserved[[i]], z = i) # the choice of cluster label 'z' for the 4 observed samples are arbitrary, as long as they are different from each other. In this example I simply use z=1L:4L.
@@ -437,7 +452,7 @@ To estimate $k$, we use the following Gibbs sampling procedure:
 
 R code:
 
-```R
+```{r,eval=FALSE}
 ## Sample cluster labels k from HDP-MM using Gibbs sampling
 
 library(bbricks)
@@ -515,7 +530,7 @@ The Gibbs sampling procedure on this model is exactly the same as the one in [Hi
 
 R code:
 
-```R
+```{r,eval=FALSE}
 ## HDP-LDA on the farm-ads corpus
 
 ## load a subset of farm ads data from https://archive.ics.uci.edu/ml/datasets/Farm+Ads

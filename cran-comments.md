@@ -1,9 +1,12 @@
+## Release summary
+This is a minor release
+
 ## Test environments
-* local: OS X install, R 3.1.2
-* local: Ubuntu 16.04, R 3.6.2
-* travis-ci: Ubuntu 16.04, R 3.5.3
-* travis-ci: Ubuntu 16.04, R 3.6.2
-* travis-ci: Ubuntu 16.04, R Under development (unstable) (2020-02-24 r77852)
+* local Ubuntu 16.04, R 3.6.2
+* local Mac OS 10.10, R. 3.6.2
+* Ubuntu 16.04 (on travis-ci), R-devel, R 3.5.3, R 3.6.2
+* 
 
 ## R CMD check results
-There were no ERRORs, WARNINGs or NOTEs.
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+

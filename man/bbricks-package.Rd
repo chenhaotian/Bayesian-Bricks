@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Haotian Chen \email{chenhaotian.jtt@gmail.com} (\href{https://orcid.org/https://orcid.org/0000-0001-9751-2093}{ORCID})
+\strong{Maintainer}: Haotian Chen \email{chenhaotian.jtt@gmail.com} (\href{https://orcid.org/0000-0001-9751-2093}{ORCID})
 
 }
 \keyword{internal}

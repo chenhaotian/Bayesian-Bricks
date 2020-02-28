@@ -93,3 +93,6 @@ rsconnect/
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+inst/doc
+doc
+Meta

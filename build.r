@@ -4,6 +4,7 @@ library(usethis)
 
 ## remove previous build
 system("rm -r man")
+system("rm -r vignettes Meta doc")
 system("rm NAMESPACE DESCRIPTION .Rbuildignore")
 
 ## create skeleton files
@@ -13,7 +14,7 @@ create_package("../bbricks",rstudio = FALSE)
 devtools::document()
 
 ## add to .Rbuildignore to ignore non-package files
-usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md"))
+usethis::use_build_ignore(c("LICENSE.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md","NEWS.md"))
 
 ## Edit DESCRIPTIONN
 ## Version Reference:
@@ -29,7 +30,7 @@ Authors@R:
            family = \"Chen\",
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
-           comment = structure(\"https://orcid.org/0000-0001-9751-2093\", .Names = \"ORCID\"))
+           comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
 Description: Basic building blocks in Bayesian modeling.
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
@@ -64,10 +65,47 @@ r_packages:
 "
 write(travis,file = ".travis.yml")
 
+
+## add vignette
+## reference: https://cran.r-project.org/web/packages/R.rsp/vignettes/R_packages-RSP_vignettes.html
+use_vignette("bbricks-getting-started")
+
+readme <- readLines("README.raw.md")
+pics <- gsub("\\).*$","",gsub("^.*\\(","",grep("\\./notes_pictures/",readme,value = TRUE)))
+if(length(pics)>0){
+    if(length(dir("vignettes/notes_pictures/"))==0)
+        system("mkdir vignettes/notes_pictures")
+    system(paste("cp",paste(pics,collapse = " "),"vignettes/notes_pictures/"))
+}
+
+readme <- gsub("```R","```{r,eval=FALSE}",readme)
+
+writeLines(c("---
+title: \"bbricks-getting-started\"
+output: rmarkdown::html_vignette
+vignette: >
+  %\\VignetteIndexEntry{bbricks: Getting Started}
+  %\\VignetteEngine{knitr::rmarkdown}
+  %\\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = \"#>\"
+)
+```
+",readme),"vignettes/bbricks-getting-started.Rmd")
+
+system("rm .#* *~")
+build_vignettes()
+
 ## very important step, must make sure there's no  warnings and errors
 ## remove stupic emacs tmp file before check()
 system("rm .#* *~")
 devtools::check()
+
+
 
 ## somehow the S3 methods are not exported... export them mannually
 ## have to be after check(), otherwise it will be overwritten
@@ -110,6 +148,8 @@ remove.packages("bbricks")
 ##    "cran-comments.md"
 release_questions <- function() {
   c("Have you set the correct version number?",
-    "Have you removed the irrelevant code blocks?")
+    "Have you removed the irrelevant code blocks?",
+    "Have you add {width=100%} to each inluded image?")
 }
 devtools::release()
+
