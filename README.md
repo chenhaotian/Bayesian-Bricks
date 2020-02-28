@@ -21,12 +21,12 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 [Examples](#examples) 
  
 + [Bayesian Linear Regression](#bayesian-linear-regression) 
-+ [Estimate Cancer Mortality Rates with Hierarchical Bayesian](estimate-cancer-mortality-rates-with-hierarchical-bayesian) 
++ [Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian) 
 + [Mixture of Gaussian](#mixture-of-gaussian) 
 + [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model) 
 + [Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels) 
 + [Hierarchical Mixture Models](#hierarchical-mixture-models) 
-+ [Topic Modeling with HDP](topic-modeling-with-hdp) 
++ [Topic Modeling with HDP](#topic-modeling-with-hdp) 
 + [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2) 
 + [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model) 
  
@@ -44,7 +44,7 @@ Where the most frequently applied **tasks** are:
 + ... 
  
 And the **model structure**s are just generalizations of ![](./notes_pictures/4d6fd63efeec1ee031fad293ef1c7e85.png) basic Bayesian modeling structures: 
-![](./notes_pictures/basicStructures.png) 
+![](./notes_pictures/basicStructures.png){width=100%} 
 Where 
  
 + ![](./notes_pictures/1cfadaec6045bfd821038dce18a6e149.png) is the most basic "parameter-observation" structure. Models like Gaussian, Gamma and Exponential are in this category. 
@@ -61,7 +61,7 @@ Here's a list of examples:
  
 [Bayesian Linear Regression](#bayesian-linear-regression) 
  
-[Estimate Cancer Mortality Rates with Hierarchical Bayesian](estimate-cancer-mortality-rates-with-hierarchical-bayesian) 
+[Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian) 
  
 [Mixture of Gaussian](#mixture-of-gaussian) 
  
@@ -71,17 +71,19 @@ Here's a list of examples:
  
 [Hierarchical Mixture Models](#hierarchical-mixture-models) 
  
-[Topic Modeling with HDP](topic-modeling-with-hdp) 
+[Topic Modeling with HDP](#topic-modeling-with-hdp) 
  
 [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2) 
  
 [Infinite State Hidden Markov Model](#infinite-state-hidden-markov-model) 
  
+ 
+ 
 ### Bayesian Linear Regression 
  
 A Bayesian linear regression model has following graph structure: 
  
-![](./notes_pictures/bayesianLinearRegression.png) 
+![](./notes_pictures/bayesianLinearRegression.png){width=100%} 
  
 The CPDs are: 
 
@@ -137,7 +139,7 @@ This is an example is from Johson and Albert(Johnson, Valen E., and James H. Alb
  
 The model's graph structure is: 
  
-![](./notes_pictures/cancer.png) 
+![](./notes_pictures/cancer.png){width=100%} 
  
 The CPDs are: 
 
@@ -216,7 +218,7 @@ legend(1, 0.005, legend=c("Sample Mean", "MLE"),col=c("black", "blue"), lty=c(1,
  
 A mixture of Gaussian has following graph structure: 
  
-![](./notes_pictures/mixtureModel.png) 
+![](./notes_pictures/mixtureModel.png){width=100%} 
  
 The CPDs are: 
 
@@ -292,7 +294,7 @@ ecMAP                                 #the MAP estimate of theta_z
  
 The graph structure of Dirichlet Process Mixture Model(DP-MM) is exactly the same as a standard mixture model, except that the number of mixture components is not predetermined: 
  
-![](./notes_pictures/mixtureModelDP.png) 
+![](./notes_pictures/mixtureModelDP.png){width=100%} 
  
 The CPDs of a DP-MM is similar to the ones shown in [Mixture of Gaussian](#mixture-of-gaussian), the only difference is the distribution of ![](./notes_pictures/fb84d7e0ac23c9ae0d924dc072ed5951.png) is a Dirichlet process rather than a Dirichlet distribution, for example if the observations are Gaussian distributed, the CPDs will be: 
 
@@ -365,7 +367,7 @@ plot(x=mmData[,1],y=mmData[,2],col=zBest)
  
 In the dataset `mmData` of the previous example, what if we know the 50, 100, 150 and 200th samples belong to 4 different clusters(they are shown as different color and shapes in the graph below), how should we incorporate this information in the model? 
  
-![](./notes_pictures/mixtureModelPO.png) 
+![](./notes_pictures/mixtureModelPO.png){width=100%} 
  
 With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) with the information of the 4 observed samples, and **2.** use the updated prior as the prior of the Gibbs sampling procedure.  These 2 steps can be achieved by adding following code after `obj <- DP(...)` in the previous R example: 
  
@@ -379,7 +381,7 @@ mmData <- mmData[-c(50,100,150,200),]
  
 Run the code, and the result will be: 
  
-![](./notes_pictures/mixtureModelPO2.png) 
+![](./notes_pictures/mixtureModelPO2.png){width=100%} 
  
  
  
@@ -389,7 +391,7 @@ In a hierarchical mixture model, the observation ![](./notes_pictures/6ee74a8824
  
 Hierarchical Dirichlet Process(HDP) is a natural representation of a hierarchical mixture model, It has following graph structure: 
  
-![](./notes_pictures/hierarchicalMixtureModel.png) 
+![](./notes_pictures/hierarchicalMixtureModel.png){width=100%} 
  
 If the observations are Gaussian distributed, the CPDs will be: 
 
@@ -397,9 +399,9 @@ If the observations are Gaussian distributed, the CPDs will be:
  
  ![](./notes_pictures/bf864399590af71694003acc86b1177c.png) is a Dirichlet process on positive integers with "concentration parameter" ![](./notes_pictures/3030fb4bd381ae861c94ec34459cf6bc.png), the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  ![](./notes_pictures/d08443355a96ffd86396722206cb0a71.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/8c087632bdd26f21799b9723227cabd4.png) and base measure ![](./notes_pictures/b87769cbb7f88da5148a1819fd467b83.png). ![](./notes_pictures/633fecc6c70e1dbb0c3765b388c9607b.png) is the Normal-Inverse-Wishart distribution with parameter ![](./notes_pictures/89ddf9f6873006f15de5f63f5aba8c89.png). ![](./notes_pictures/1ad7791ac511a6757ec0f9b5ea3a3f15.png) is a numeric vector representing the "location parameter", ![](./notes_pictures/2811f81f916c5df8b5c165dc20b419aa.png) is a symmetric positive definitive matrix representing the "scale parameter", ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png) and ![](./notes_pictures/bf33aa428e818d7fec11a721452d05e9.png) are degree of freedoms. 
  
-The distribution of ![](./notes_pictures/df7112b638719a1743a4cb3d060b64d5.png) is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literatures: 
+The distribution of ![](./notes_pictures/df7112b638719a1743a4cb3d060b64d5.png) is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literature: 
  
-![](./notes_pictures/HDP.png) 
+![](./notes_pictures/HDP.png){width=100%} 
  
 From the compact representation we can see that HDP on positive integers is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph ![](./notes_pictures/aa6d91472b50a7d81415d654a507a89b.png). 
  
@@ -548,7 +550,7 @@ wordcloud:: wordcloud(words = obj$X[[2]]$gamma$uniqueLabels,
  
 A hierarchical topic model is a hierarchical mixture model with 2 hierarchies: 
  
-![](./notes_pictures/hierarchicalMixtureModel2.png) 
+![](./notes_pictures/hierarchicalMixtureModel2.png){width=100%} 
  
  
  
