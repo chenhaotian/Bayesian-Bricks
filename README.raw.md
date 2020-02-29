@@ -2,11 +2,16 @@
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
-**bbricks** provides a collection of inference tools and conditional probability distributions(CPDs) to facilitate Bayesian modeling. This is a package designed for statisticians, and the ones who want to learn the basic Bayesian mindsets.
 
-See [Mindset](#mindset) and [Examples](#examples) to get started.
+**bbricks** provides a collection of frequently used Bayesian parametric and nonparametric model *structures* and their inference *tasks*.
++ *Structures* include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
++ *Tasks* include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ...
 
-**Installation:**
+See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples) to get started.
+
+**Note:** This is a package designed for statisticians, and the ones who want to learn the basic Bayesian mindsets.
+
+**----Installation----**
 
 ```R
 # install development version from GitHub:
@@ -14,11 +19,11 @@ See [Mindset](#mindset) and [Examples](#examples) to get started.
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
 
-**Contents:**
+**----Table of Contents----**
 
-[Mindset](#Mindset)
+[1.Mindset](#Mindset)
 
-[Examples](#examples)
+[2.Examples](#examples)
 
 + [Bayesian Linear Regression](#bayesian-linear-regression)
 + [Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian)
@@ -36,7 +41,7 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 
 The idea of **bbricks** came from the fact that modeling in Bayesian statistics is nothing more than applying set of **tasks** on a specific **model structure**.
 
-Where the most frequently applied **tasks** are:
+Where the most frequently appeared **tasks** are:
 + Update prior info into posterior when new samples are observed.
 + Sample from the posterior distribution.
 + Calculate marginal likelihood of the posterior distribution.
@@ -44,7 +49,7 @@ Where the most frequently applied **tasks** are:
 + ...
 
 And the **model structure**s are just generalizations of $3$ basic Bayesian modeling structures:
-![](./notes_pictures/basicStructures.png){width=100%}
+![](./notes_pictures/basicStructures.png)
 Where
 
 + $(a)$ is the most basic "parameter-observation" structure. Models like Gaussian, Gamma and Exponential are in this category.
@@ -83,7 +88,7 @@ Here's a list of examples:
 
 A Bayesian linear regression model has following graph structure:
 
-![](./notes_pictures/bayesianLinearRegression.png){width=100%}
+![](./notes_pictures/bayesianLinearRegression.png)
 
 The CPDs are:
 $$
@@ -94,9 +99,9 @@ x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
 $$
 Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
 
-The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object type `"GaussianNIG"` to represent such a structures. 
+The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object of type `"GaussianNIG"` to represent such a structure. 
 
-See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood on the `"GaussianNIG"` object:
+See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood calculations on the `"GaussianNIG"` object:
 
 ```R
 ## Bayesian linear regression
@@ -138,11 +143,11 @@ sd(predictedSamples)
 
 ### Estimate Cancer Mortality Rates with Hierarchical Bayesian
 
-This is an example is from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
+This is an example from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
 
 The model's graph structure is:
 
-![](./notes_pictures/cancer.png){width=100%}
+![](./notes_pictures/cancer.png)
 
 The CPDs are:
 $$
@@ -159,7 +164,7 @@ To estimate $\pi_k,k=1...K$, we use the following Gibbs sampling procedure:
 1. sample $\pi_k,k=1...K$ from $\pi_k | \alpha,x$
 2. sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$
 
-Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done with the "independent Metropolis-Hastings algorithm", see `?MetropolisHastings` for details.
+Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done via an independent Metropolis-Hastings algorithm, see `?MetropolisHastings` for details.
 
 R code:
 
@@ -225,7 +230,7 @@ legend(1, 0.005, legend=c("Sample Mean", "MLE"),col=c("black", "blue"), lty=c(1,
 
 A mixture of Gaussian has following graph structure:
 
-![](./notes_pictures/mixtureModel.png){width=100%}
+![](./notes_pictures/mixtureModel.png)
 
 The CPDs are:
 $$
@@ -241,9 +246,9 @@ Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\
 
 A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure $\alpha \rightarrow \pi \rightarrow z$ for the hidden cluster labels. and one Gaussian-NIW structure $\gamma \rightarrow \theta_z \rightarrow x$ for the observation distribution.
 
-In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. To estimate $\pi$ and $\theta$, we use the following EM procedure:
+In **bbricks** these two structures are initialized with a `"CatDirichlet"` object and a `"GaussianNIW"` object. To estimate $\pi$ and $\theta$, we use the following EM procedure:
 
-1. E-step: calculate $p(z|\theta,\pi,x)$ as the expected sufficient statistics.
+1. E-step: calculate $p(z|\theta,\pi,x)$ and the expected sufficient statistics$E_z(T(z))$ and $E_z(T(x))$.
 2. M-step: Based on the expected sufficient statistics to get an MAP estimate of $\theta$ and $\pi$
 
 R code:
@@ -306,7 +311,7 @@ ecMAP                                 #the MAP estimate of theta_z
 
 The graph structure of Dirichlet Process Mixture Model(DP-MM) is exactly the same as a standard mixture model, except that the number of mixture components is not predetermined:
 
-![](./notes_pictures/mixtureModelDP.png){width=100%}
+![](./notes_pictures/mixtureModelDP.png)
 
 The CPDs of a DP-MM is similar to the ones shown in [Mixture of Gaussian](#mixture-of-gaussian), the only difference is the distribution of $\pi|\alpha$ is a Dirichlet process rather than a Dirichlet distribution, for example if the observations are Gaussian distributed, the CPDs will be:
 $$
@@ -384,7 +389,7 @@ plot(x=mmData[,1],y=mmData[,2],col=zBest)
 
 In the dataset `mmData` of the previous example, what if we know the 50, 100, 150 and 200th samples belong to 4 different clusters(they are shown as different color and shapes in the graph below), how should we incorporate this information in the model?
 
-![](./notes_pictures/mixtureModelPO.png){width=100%}
+![](./notes_pictures/mixtureModelPO.png)
 
 With DP-MM, one only need to **1.** update the DP prior (as defined in previous R example) with the information of the 4 observed samples, and **2.** use the updated prior as the prior of the Gibbs sampling procedure.  These 2 steps can be achieved by adding following code after `obj <- DP(...)` in the previous R example:
 
@@ -398,7 +403,7 @@ mmData <- mmData[-c(50,100,150,200),]
 
 Run the code, and the result will be:
 
-![](./notes_pictures/mixtureModelPO2.png){width=100%}
+![](./notes_pictures/mixtureModelPO2.png)
 
 
 
@@ -408,7 +413,7 @@ In a hierarchical mixture model, the observation $x$ are generated by some unkno
 
 Hierarchical Dirichlet Process(HDP) is a natural representation of a hierarchical mixture model, It has following graph structure:
 
-![](./notes_pictures/hierarchicalMixtureModel.png){width=100%}
+![](./notes_pictures/hierarchicalMixtureModel.png)
 
 If the observations are Gaussian distributed, the CPDs will be:
 $$
@@ -425,7 +430,7 @@ $$
 
 The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literature:
 
-![](./notes_pictures/HDP.png){width=100%}
+![](./notes_pictures/HDP.png)
 
 From the compact representation we can see that HDP on positive integers is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$.
 
@@ -581,7 +586,7 @@ wordcloud:: wordcloud(words = obj$X[[2]]$gamma$uniqueLabels,
 
 A hierarchical topic model is a hierarchical mixture model with 2 hierarchies:
 
-![](./notes_pictures/hierarchicalMixtureModel2.png){width=100%}
+![](./notes_pictures/hierarchicalMixtureModel2.png)
 
 
 

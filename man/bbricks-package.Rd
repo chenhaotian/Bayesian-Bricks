@@ -4,9 +4,9 @@
 \name{bbricks-package}
 \alias{bbricks}
 \alias{bbricks-package}
-\title{bbricks: Bayesian Bricks}
+\title{bbricks: Bayesian methods and graphical model structures for statistical modeling}
 \description{
-Basic building blocks in Bayesian modeling.
+A class of frequently used Bayesian parametric and nonparametric model structures and the corresponding inference tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process and so on; Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates and so on.
 }
 \seealso{
 Useful links:

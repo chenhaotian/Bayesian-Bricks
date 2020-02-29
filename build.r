@@ -28,7 +28,7 @@ usethis::use_build_ignore(c("LICENSE.md","README.md",".travis.yml","build.r",".#
 ## add to Collate: when there's new files added
 Description <- paste0("Type: Package
 Package: bbricks
-Title: Bayesian Bricks
+Title: Bayesian methods and graphical model structures for statistical modeling
 Version: ",VERSION,"
 Authors@R: 
     person(given = \"Haotian\",
@@ -36,7 +36,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: Basic building blocks in Bayesian modeling.
+Description: A class of frequently used Bayesian parametric and nonparametric model structures and the corresponding inference tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process and so on; Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates and so on.
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
 BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
@@ -82,6 +82,8 @@ if(length(pics)>0){
         system("mkdir vignettes/notes_pictures")
     system(paste("cp",paste(pics,collapse = " "),"vignettes/notes_pictures/"))
 }
+picsNotInline <- grep("^\\!.*\\./notes_pictures/.*\\)$",readme)
+readme[picsNotInline] <- paste0(readme[picsNotInline],"{width=100%}")
 
 readme <- gsub("```R","```{r,eval=FALSE}",readme)
 

@@ -17,11 +17,16 @@ knitr::opts_chunk$set(
 
 [![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
-**bbricks** provides a collection of inference tools and conditional probability distributions(CPDs) to facilitate Bayesian modeling. This is a package designed for statisticians, and the ones who want to learn the basic Bayesian mindsets.
 
-See [Mindset](#mindset) and [Examples](#examples) to get started.
+**bbricks** provides a collection of frequently used Bayesian parametric and nonparametric model *structures* and their inference *tasks*.
++ *Structures* include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
++ *Tasks* include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates ...
 
-**Installation:**
+See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples) to get started.
+
+**Note:** This is a package designed for statisticians, and the ones who want to learn the basic Bayesian mindsets.
+
+**----Installation----**
 
 ```{r,eval=FALSE}
 # install development version from GitHub:
@@ -29,11 +34,11 @@ See [Mindset](#mindset) and [Examples](#examples) to get started.
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
 
-**Contents:**
+**----Table of Contents----**
 
-[Mindset](#Mindset)
+[1.Mindset](#Mindset)
 
-[Examples](#examples)
+[2.Examples](#examples)
 
 + [Bayesian Linear Regression](#bayesian-linear-regression)
 + [Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian)
@@ -51,7 +56,7 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 
 The idea of **bbricks** came from the fact that modeling in Bayesian statistics is nothing more than applying set of **tasks** on a specific **model structure**.
 
-Where the most frequently applied **tasks** are:
+Where the most frequently appeared **tasks** are:
 + Update prior info into posterior when new samples are observed.
 + Sample from the posterior distribution.
 + Calculate marginal likelihood of the posterior distribution.
@@ -109,9 +114,9 @@ x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
 $$
 Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
 
-The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object type `"GaussianNIG"` to represent such a structures. 
+The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object of type `"GaussianNIG"` to represent such a structure. 
 
-See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood on the `"GaussianNIG"` object:
+See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood calculations on the `"GaussianNIG"` object:
 
 ```{r,eval=FALSE}
 ## Bayesian linear regression
@@ -153,7 +158,7 @@ sd(predictedSamples)
 
 ### Estimate Cancer Mortality Rates with Hierarchical Bayesian
 
-This is an example is from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
+This is an example from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
 
 The model's graph structure is:
 
@@ -174,7 +179,7 @@ To estimate $\pi_k,k=1...K$, we use the following Gibbs sampling procedure:
 1. sample $\pi_k,k=1...K$ from $\pi_k | \alpha,x$
 2. sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$
 
-Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done with the "independent Metropolis-Hastings algorithm", see `?MetropolisHastings` for details.
+Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done via an independent Metropolis-Hastings algorithm, see `?MetropolisHastings` for details.
 
 R code:
 
@@ -256,9 +261,9 @@ Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\
 
 A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure $\alpha \rightarrow \pi \rightarrow z$ for the hidden cluster labels. and one Gaussian-NIW structure $\gamma \rightarrow \theta_z \rightarrow x$ for the observation distribution.
 
-In **bbricks** these two structures are initialized with a `CatDirichlet` object and a `GaussianNIW` object. To estimate $\pi$ and $\theta$, we use the following EM procedure:
+In **bbricks** these two structures are initialized with a `"CatDirichlet"` object and a `"GaussianNIW"` object. To estimate $\pi$ and $\theta$, we use the following EM procedure:
 
-1. E-step: calculate $p(z|\theta,\pi,x)$ as the expected sufficient statistics.
+1. E-step: calculate $p(z|\theta,\pi,x)$ and the expected sufficient statistics$E_z(T(z))$ and $E_z(T(x))$.
 2. M-step: Based on the expected sufficient statistics to get an MAP estimate of $\theta$ and $\pi$
 
 R code:
