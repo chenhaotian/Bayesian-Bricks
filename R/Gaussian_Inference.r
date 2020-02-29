@@ -8,7 +8,7 @@
 
 
 #' @title Inverse of a positive definite symmetric matrix
-#' @description Use Cholseky decomposition to calculate the inverse where S = A'A, A is a upper diagonal matrix then inv(S) = inv(A)inv(A)'.
+#' @description Use Cholesky decomposition to calculate the inverse where S = A'A, A is a upper diagonal matrix then inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.
 #' @param returnUpper logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.
 #' @return A matrix.
@@ -422,7 +422,7 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #'      theta|gamma ~ NIW(gamma) \cr
 #'      x|theta ~ Gaussian(theta) \cr
 #' where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
-#' The sufficient statistics of a set of samples x (each row of x is a sample) and weightes w are: \cr
+#' The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are: \cr
 #'  the effective number of samples N=sum(w); \cr
 #'  the sample sum xsum = colSums(x*w); \cr
 #'  the uncentered scatter matrix S = t(w*x)%*%x.
@@ -430,7 +430,7 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #' @seealso \code{\link{GaussianNIW}}, \code{\link{sufficientStatistics.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
 #' @param x, matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
-#' @param w numeric, sample weightes.
+#' @param w numeric, sample weights.
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
@@ -879,7 +879,7 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on. \cr
-#' The sufficient statistics of a set of samples (x,X) and weightes ware: \cr
+#' The sufficient statistics of a set of samples (x,X) and weights ware: \cr
 #'  the effective number of samples N=sum(w); \cr
 #'  the covariance of X and x SXx=t(w*X)%*%x \cr
 #'  the covariance of X SX=t(w*X)%*%X \cr
@@ -888,7 +888,7 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' @seealso \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics.GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
 #' @param x numeric, must satisfy length(x) = nrow(X).
-#' @param w numeric, sample weightes.
+#' @param w numeric, sample weights.
 #' @param X matrix, must satisfy length(x) = nrow(X).
 #' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each (x,X), otherwise will return the sufficient statistics as a whole.
 #' @param ... Additional arguments to be passed to other inherited types.

@@ -68,7 +68,6 @@ for(i in 1L:N){                         #initialize z k and u
 it <- 0                                 #iteration tracker
 pb <- txtProgressBar(min = 0,max = maxit,style = 3)
 while(TRUE){
-   tmp <- character(3)
    for(i in 1L:N){
        ##remove the sample from the posterior info
        posteriorDiscard(obj = obj,ss = ss[[i]],ss1=u[i],ss2=k[i],ss3 = z[i],m=ms[i],j=js[i])

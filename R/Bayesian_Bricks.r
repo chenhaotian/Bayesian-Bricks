@@ -196,7 +196,7 @@ dObservationDistribution <- function(obj,...) UseMethod("dObservationDistributio
 #' @param ... other parameters.
 rObservationDistribution <- function(obj,...) UseMethod("rObservationDistribution")
 
-#' Print the content of an BasicBasyeisn object
+#' Print the content of an BasicBasyesian object
 #' @param x An object of the target type.
 #' @param ... other parameters passed to print.
 #' @export
@@ -237,3 +237,13 @@ logsumexp <- function(x){
     log(rowSums(exp(x-a)))+a
 }
 
+#' @title additional release questions
+#' @description This is a list of additional questions you want devtools::release() to ask when releasing your package.
+release_questions <- function() {
+  c("Have you set the correct version number?",
+    "Have you removed the irrelevant code blocks?",
+    "Have you add {width=100%} to each inluded image?",
+    "Have you add all R files to DESCRIPTION?",
+    "Have you removed the unfinished lines from vignette?",
+    "Have you add all the references to README and function documentation?")
+}

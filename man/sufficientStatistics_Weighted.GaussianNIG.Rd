@@ -11,7 +11,7 @@
 
 \item{x}{numeric, must satisfy length(x) = nrow(X).}
 
-\item{w}{numeric, sample weightes.}
+\item{w}{numeric, sample weights.}
 
 \item{X}{matrix, must satisfy length(x) = nrow(X).}
 
@@ -29,7 +29,7 @@ For following Gaussian-NIG model structure: \cr
 where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on. \cr
-The sufficient statistics of a set of samples (x,X) and weightes ware: \cr
+The sufficient statistics of a set of samples (x,X) and weights ware: \cr
  the effective number of samples N=sum(w); \cr
  the covariance of X and x SXx=t(w*X)%*%x \cr
  the covariance of X SX=t(w*X)%*%X \cr

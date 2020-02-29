@@ -11,7 +11,7 @@
 
 \item{x, }{matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.}
 
-\item{w}{numeric, sample weightes.}
+\item{w}{numeric, sample weights.}
 
 \item{foreach}{logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.}
 
@@ -25,7 +25,7 @@ For following Gaussian-NIW model structure: \cr
      theta|gamma ~ NIW(gamma) \cr
      x|theta ~ Gaussian(theta) \cr
 where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
-The sufficient statistics of a set of samples x (each row of x is a sample) and weightes w are: \cr
+The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are: \cr
  the effective number of samples N=sum(w); \cr
  the sample sum xsum = colSums(x*w); \cr
  the uncentered scatter matrix S = t(w*x)%*%x.

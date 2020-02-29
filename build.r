@@ -36,7 +36,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: A class of frequently used Bayesian parametric and nonparametric model structures and the corresponding inference tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process and so on; Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates and so on.
+Description: A class of frequently used Bayesian parametric and nonparametric model structures,as well as tools for the analytical tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates ...
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
 BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
@@ -128,6 +128,9 @@ funs <- paste0("export(",funs,")")
 namespace <- c(namespace,setdiff(funs,namespace)) #don't use union()
 writeLines(namespace,"./NAMESPACE")
 
+## spell check
+spell_check()
+
 
 ## build the package
 ## remove stupid emacs tmp file before build()
@@ -166,7 +169,8 @@ release_questions <- function() {
     "Have you removed the irrelevant code blocks?",
     "Have you add {width=100%} to each inluded image?",
     "Have you add all R files to DESCRIPTION?",
-    "Have you removed the unfinished lines from vignette?")
+    "Have you removed the unfinished lines from vignette?",
+    "Have you add all the references?")
 }
 
 devtools::release()

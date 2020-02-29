@@ -55,7 +55,7 @@ dCategorical <- function(x,p){ stop("Error in dCategorical(): function not defin
 #'
 #' @seealso \code{\link{dDir}}
 #' @param n integer, number of samples.
-#' @param alpha numeric, dirichlet parameter.
+#' @param alpha numeric, Dirichlet parameter.
 #' @return A numeric matrix of n rows and length(alpha) columns.
 #' @export
 #' @examples

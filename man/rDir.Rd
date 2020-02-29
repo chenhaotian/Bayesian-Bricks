@@ -9,7 +9,7 @@ rDir(n, alpha)
 \arguments{
 \item{n}{integer, number of samples.}
 
-\item{alpha}{numeric, dirichlet parameter.}
+\item{alpha}{numeric, Dirichlet parameter.}
 }
 \value{
 A numeric matrix of n rows and length(alpha) columns.
