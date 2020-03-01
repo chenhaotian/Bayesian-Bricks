@@ -37,7 +37,8 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
   
   + [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
   
-  
+
+[3.References](#references)
 
 
 
@@ -146,7 +147,7 @@ sd(predictedSamples)
 
 ### Estimate Cancer Mortality Rates with Hierarchical Bayesian
 
-This is an example from Johson and Albert(Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
+This is an example from Johson and Albert(2006), where we want to estimate the cancer mortality rates of multiple cities with hierarchical Bayesian method.
 
 The model's graph structure is:
 
@@ -683,4 +684,22 @@ plot(x=x[,1],y=x[,2],col=uBest)
 #### Hierarchical Topic Modeling with HDP2
 
 If we want to extract topics from multiple corpus, and we want the corpus to share the same set of topics, this is a model called the "hierarchical topic model"(Griffiths, Thomas L., et al. "Hierarchical topic models and the nested chinese restaurant process." *Advances in neural information processing systems*. 2004.). A hierarchical topic model is a [Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies). The model can be built by simply replacing the `"GaussianNIW"` object with a `"CatDirichlet"` object in the previous R example.
+
+
+
+## References
+
+Andrieu, Christophe, et al. "An introduction to MCMC for machine learning." *Machine learning* 50.1-2 (2003): 5-43.
+
+Johnson, Valen E., and James H. Albert. *Ordinal data modeling*. Springer Science & Business Media, 2006.
+
+Li, Yuelin, Elizabeth Schofield, and Mithat Gönen. "A tutorial on Dirichlet process mixture modeling." *Journal of Mathematical Psychology* 91 (2019): 128-144.
+
+McLachlan, Geoffrey J., and Thriyambakam Krishnan. *The EM algorithm and extensions*. Vol. 382. John Wiley & Sons, 2007.
+
+Murphy, Kevin P. *Machine learning: a probabilistic perspective*. MIT press, 2012.
+
+Teh, Yee Whye. "Dirichlet Process." (2010): 280-287.
+
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." *Advances in neural information processing systems*. 2005.
 

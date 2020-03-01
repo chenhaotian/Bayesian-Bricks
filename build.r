@@ -18,7 +18,7 @@ devtools::document()
 
 ## add to .Rbuildignore to ignore non-package files
 ## "NEWS.md" is supported by CRAN, no need to exclude
-usethis::use_build_ignore(c("LICENSE.md","README.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md"))
+usethis::use_build_ignore(c("LICENSE.md","README.md",".travis.yml","build.r",".#build.r","README.raw.md","notes_pictures","cran-comments.md","index.html","CRAN-RELEASE"))
 ## usethis::use_build_ignore(c("README.md",".travis.yml","build.r",".#build.r","README.raw.md","cran-comments.md"))
 
 ## Edit DESCRIPTIONN
@@ -28,7 +28,7 @@ usethis::use_build_ignore(c("LICENSE.md","README.md",".travis.yml","build.r",".#
 ## add to Collate: when there's new files added
 Description <- paste0("Type: Package
 Package: bbricks
-Title: Bayesian methods and graphical model structures for statistical modeling
+Title: Bayesian Methods and Graphical Model Structures for Statistical Modeling
 Version: ",VERSION,"
 Authors@R: 
     person(given = \"Haotian\",
@@ -36,7 +36,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: A class of frequently used Bayesian parametric and nonparametric model structures,as well as tools for the analytical tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictives, calculating MAP estimates ...
+Description: A class of frequently used Bayesian parametric and nonparametric model structures,as well as tools for the analytical tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ... See Murphy (2012)(<doi:10.1080/09332480.2014.914768>), Koller and Friedman (2009)(<doi:10.1017/s0269888910000275>) and Andrieu, de Freitas, Doucet and Jordan (2003)(<doi:10.1023/A:1020281327116>) for more information.
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
 BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
@@ -53,6 +53,8 @@ Collate:
     'testData.r'
 ")
 write(Description,file = "DESCRIPTION")
+
+
 
 ## Add license, run this will update the corresponding line in DESCRIPTION automatically
 use_mit_license(name="Haotian Chen")
@@ -107,6 +109,9 @@ knitr::opts_chunk$set(
 system("rm .#* *~")
 build_vignettes()
 
+## copy the vignette to github page:
+system("cp doc/bbricks-getting-started.html index.html")
+
 ## very important step, must make sure there's no  warnings and errors
 ## remove stupic emacs tmp file before check()
 system("rm .#* *~")
@@ -154,8 +159,6 @@ check_rhub()
 
 ## check from win builder
 check_win_devel()
-check_win_release()
-check_win_oldrelease()
 
 ## If you are ready to sumit it to CRAN, run relsease, release will do following things:
 ## • Confirm that the package passes ‘R CMD check’ on relevant
@@ -164,14 +167,15 @@ check_win_oldrelease()
 ## • Build the package
 ## • Submit the package to CRAN, using comments in
 ##    "cran-comments.md"
-release_questions <- function() {
-  c("Have you set the correct version number?",
-    "Have you removed the irrelevant code blocks?",
-    "Have you add {width=100%} to each inluded image?",
-    "Have you add all R files to DESCRIPTION?",
-    "Have you removed the unfinished lines from vignette?",
-    "Have you add all the references?")
-}
+## release_questions <- function() {
+##   c("Have you set the correct version number?",
+##     "Have you removed the irrelevant code blocks?",
+##     "Have you add {width=100%} to each inluded image?",
+##     "Have you add all R files to DESCRIPTION?",
+##     "Have you removed the unfinished lines from vignette?",
+##     "Have you add all the references?",
+##     "Have you built README.md from README.raw.md?")
+## }
 
 devtools::release()
 

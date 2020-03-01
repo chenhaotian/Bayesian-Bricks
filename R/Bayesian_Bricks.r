@@ -245,5 +245,7 @@ release_questions <- function() {
     "Have you add {width=100%} to each inluded image?",
     "Have you add all R files to DESCRIPTION?",
     "Have you removed the unfinished lines from vignette?",
-    "Have you add all the references to README and function documentation?")
+    "Have you add all the references to README and function documentation?",
+    "Have you add all the references?",
+    "Have you built README.md from README.raw.md?")
 }
