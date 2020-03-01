@@ -36,7 +36,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: A class of frequently used Bayesian parametric and nonparametric model structures,as well as tools for the analytical tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ... See Murphy (2012)(<doi:10.1080/09332480.2014.914768>), Koller and Friedman (2009)(<doi:10.1017/s0269888910000275>) and Andrieu, de Freitas, Doucet and Jordan (2003)(<doi:10.1023/A:1020281327116>) for more information.
+Description: A class of frequently used Bayesian parametric and nonparametric model structures,as well as a set of tools for common analytical tasks. Structures include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ... See Murphy (2012)(<doi:10.1080/09332480.2014.914768>), Koller and Friedman (2009)(<doi:10.1017/s0269888910000275>) and Andrieu, de Freitas, Doucet and Jordan (2003)(<doi:10.1023/A:1020281327116>) for more information. See <https://chenhaotian.github.io/Bayesian-Bricks/> to get started.
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
 BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues
@@ -111,13 +111,14 @@ build_vignettes()
 
 ## copy the vignette to github page:
 system("cp doc/bbricks-getting-started.html index.html")
+## make sure github language detector won't detect html
+writeLines("index.html linguist-generated
+",".gitattributes")
 
 ## very important step, must make sure there's no  warnings and errors
 ## remove stupic emacs tmp file before check()
 system("rm .#* *~")
 devtools::check()
-
-
 
 ## somehow the S3 methods are not exported... export them mannually
 ## have to be after check(), otherwise it will be overwritten
