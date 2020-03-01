@@ -89,6 +89,8 @@ readme[picsNotInline] <- paste0(readme[picsNotInline],"{width=100%}")
 
 readme <- gsub("```R","```{r,eval=FALSE}",readme)
 
+readme <- readme[-1]                    #remove the additional title
+
 writeLines(c("---
 title: \"bbricks-getting-started\"
 output: rmarkdown::html_vignette
