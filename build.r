@@ -113,6 +113,14 @@ build_vignettes()
 
 ## copy the vignette to github page:
 system("cp doc/bbricks-getting-started.html index.html")
+indexPage <- readLines("index.html")
+headidx <- grep("^<head>",indexPage)+1L
+## addd google search verify code to the html file
+indexPage <- c(indexPage[1L:headidx],
+               "<meta name=\"google-site-verification\" content=\"IemNx-2nFSn77OM1b1z4TL3ZqkPboC1yCsfHrCTJfRs\" />",
+               indexPage[(headidx+1L):length(indexPage)])
+writeLines(indexPage,"index.html")
+
 ## make sure github language detector won't detect html
 writeLines("index.html linguist-generated
 ",".gitattributes")
