@@ -714,8 +714,12 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
                         replicate(n = j-length(obj$Z2),expr = integer(0),simplify = FALSE))
     }
     posterior(obj = obj$Z2[[j]],ss=ss2,w=w)
-    if(isTRUE(obj$Z2[[j]]$gamma$nk[ss2]==w) | isTRUE(obj$Z2[[j]]$gamma$nk[ss2]==1)){
-        posterior(obj = obj$Z1,ss=ss1,w=w)
+
+    isTRUE(!is.null(w) & obj$Z2[[j]]$gamma$nk[ss2]==w) | isTRUE(is.null(w) & obj$Z2[[j]]$gamma$nk[ss2]==1)
+
+    if(is.null(w)) w <- 1
+    if(obj$Z2[[j]]$gamma$nk[ss2]==w){
+        posterior(obj = obj$Z1,ss=ss1)
         obj$Z12map[[j]][ss2] <- ss1
     }
 }
@@ -754,7 +758,7 @@ posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
     if(missing(ss1)|missing(ss2)|missing(j)) stop("'ss1','ss2' and 'j'  must all be specified")
     posteriorDiscard(obj = obj$Z2[[j]],ss=ss2,w=w)
     if(obj$Z2[[j]]$gamma$nk[ss2]==0){
-        posteriorDiscard(obj = obj$Z1,ss=ss1,w=w)
+        posteriorDiscard(obj = obj$Z1,ss=ss1)
         obj$Z12map[[j]][ss2] <- as.integer(NA) #very important step
     }
 }
@@ -982,8 +986,10 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
                         replicate(n = m-length(obj$Z2),expr = integer(0),simplify = FALSE))
     }
     posterior.CatHDP(obj = obj$Z2[[m]],ss1 = ss2,ss2=ss3,w=w,j=j)
-    if(isTRUE(obj$Z2[[m]]$Z1$gamma$nk[ss2]==w) | isTRUE(obj$Z2[[m]]$Z1$gamma$nk[ss2]==1)){
-        posterior(obj = obj$Z1,ss=ss1,w=w)
+
+    if(is.null(w)) w <- 1
+    if(obj$Z2[[m]]$Z1$gamma$nk[ss2]==w){
+        posterior(obj = obj$Z1,ss=ss1)
         obj$Z12map[[m]][ss2] <- ss1
     }
 }
@@ -1028,7 +1034,7 @@ posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     if(missing(ss1)|missing(ss2)|missing(ss3)|missing(m)|missing(j)) stop("'ss1','ss2', 'ss3', 'm' and 'j'  must all be specified")
     posteriorDiscard.CatHDP(obj = obj$Z2[[m]],ss1=ss2,ss2=ss3,j=j,w=w)
     if(obj$Z2[[m]]$Z1$gamma$nk[ss2]==0){
-        posteriorDiscard(obj = obj$Z1,ss=ss1,w=w)
+        posteriorDiscard(obj = obj$Z1,ss=ss1)
         obj$Z12map[[m]][ss2] <- as.integer(NA) #very important step
     }
 }
