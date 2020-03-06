@@ -714,9 +714,6 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
                         replicate(n = j-length(obj$Z2),expr = integer(0),simplify = FALSE))
     }
     posterior(obj = obj$Z2[[j]],ss=ss2,w=w)
-
-    isTRUE(!is.null(w) & obj$Z2[[j]]$gamma$nk[ss2]==w) | isTRUE(is.null(w) & obj$Z2[[j]]$gamma$nk[ss2]==1)
-
     if(is.null(w)) w <- 1
     if(obj$Z2[[j]]$gamma$nk[ss2]==w){
         posterior(obj = obj$Z1,ss=ss1)
@@ -987,8 +984,7 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     }
     posterior.CatHDP(obj = obj$Z2[[m]],ss1 = ss2,ss2=ss3,w=w,j=j)
 
-    if(is.null(w)) w <- 1
-    if(obj$Z2[[m]]$Z1$gamma$nk[ss2]==w){
+    if(obj$Z2[[m]]$Z1$gamma$nk[ss2]==1){
         posterior(obj = obj$Z1,ss=ss1)
         obj$Z12map[[m]][ss2] <- ss1
     }

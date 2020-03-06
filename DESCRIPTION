@@ -1,7 +1,7 @@
 Type: Package
 Package: bbricks
 Title: Bayesian Methods and Graphical Model Structures for Statistical Modeling
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: 
     person(given = "Haotian",
            family = "Chen",
