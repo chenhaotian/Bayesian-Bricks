@@ -1,10 +1,3 @@
-## Resubmission
-This is a resubmission. In this version I have:
-
-* Converted the DESCRIPTION title to title case.
-
-* Add referenced publishions and the corresponding DOIs to the DESCRIPTION.
-
 ## Test environments
 * local Ubuntu 16.04, R 3.6.2
 * local Mac OS 10.10, R. 3.6.2

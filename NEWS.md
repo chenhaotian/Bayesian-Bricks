@@ -1,3 +1,10 @@
+# bbricks 0.1.1 (2020-03-07)
+Fix bug.
+
+## Bug fixes
+Fixed bug: posterior.CatHDP, posteriorDiscard.CatHDP, posterior.CatHDP2,posteriorDiscard.CatHDP2 update posterior improperly when sample weight "w" is not NULL. 
+
+
 # bbricks 0.1.0 (2020-02-28)
 This is the first release of bbricks.
 
