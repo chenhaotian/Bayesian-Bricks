@@ -147,6 +147,13 @@ writeLines(namespace,"./NAMESPACE")
 ## spell check
 spell_check()
 
+## check if all Rd files has \value
+rdn <- dir("man",full.names = TRUE)
+rdf <- sapply(rdn,function(f){
+    paste(readLines(f),collapse = " ")
+})
+idx <- grep("\\value",rdf,invert = TRUE)
+if(length(idx)>0) cat(paste(c("\\value tag do not exist in following functions:",rdn[idx]),collapse = "\n"),"\n")
 
 ## build the package
 ## remove stupid emacs tmp file before build()
