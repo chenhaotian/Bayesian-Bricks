@@ -33,6 +33,9 @@ sufficientStatistics(obj=obj,x=x)       #return the counts of each unique label
 sufficientStatistics_Weighted(obj=obj,x=x,w=w) #return the weighted counts of each unique lable
 sufficientStatistics(obj=obj,x=x,foreach = TRUE) #return the sample itself
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 \code{\link{CatDirichlet}}, \code{\link{sufficientStatistics_Weighted.CatDirichlet}}
 }

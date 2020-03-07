@@ -30,6 +30,9 @@ This object will be used as a place for recording and accumulating information i
 obj <- CatDirichlet(gamma=list(alpha=c(1,2,1),uniqueLabels = letters[1:3]))
 obj #print the content
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 \code{\link{posterior.CatDirichlet}},\code{\link{posteriorDiscard.CatDirichlet}},\code{\link{MAP.CatDirichlet}},\code{\link{marginalLikelihood.CatDirichlet}} ...
 }

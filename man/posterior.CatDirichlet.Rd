@@ -39,6 +39,9 @@ obj
 posteriorDiscard(obj=obj,ss=x,w=w)
 obj
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 \code{\link{CatDirichlet}},\code{\link{posteriorDiscard.CatDirichlet}}
 }

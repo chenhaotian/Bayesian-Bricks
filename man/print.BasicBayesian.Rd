@@ -11,6 +11,9 @@
 
 \item{...}{other parameters passed to print.}
 }
+\value{
+None.
+}
 \description{
 Print the content of an BasicBasyesian object
 }

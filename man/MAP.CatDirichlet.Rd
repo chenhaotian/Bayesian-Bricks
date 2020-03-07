@@ -28,6 +28,9 @@ w <- runif(20)
 posterior(obj=obj,ss=x,w=w)
 MAP(obj)
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 \code{\link{CatDirichlet}}
 }

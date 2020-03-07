@@ -13,8 +13,14 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+None. the gamma stored in "obj" will be updated based on "ss".
+}
 \description{
 Update the prior Dirichlet distribution with sample sufficient statistics
+}
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
 \code{\link{posteriorDiscard}}

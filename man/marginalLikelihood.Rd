@@ -18,7 +18,7 @@ numeric, the marginal likelihood
 This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
-get p(X|gamma)
+Marginal likelihood is p(X|gamma), p() is the probability density/mass function for contunious/discrete X.
 }
 \seealso{
 \code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorical-DP conjugate structure ...

@@ -32,6 +32,9 @@ marginalLikelihood(obj=obj,x=x,LOG = TRUE) #marginal likelihood
 ss <- sufficientStatistics(obj = obj,x=x)
 marginalLikelihood_bySufficientStatistics(obj=obj,ss = ss,LOG = TRUE)
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 @seealso \code{\link{CatDirichlet}}, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}}
 }

@@ -35,6 +35,9 @@ w <- runif(20)
 sufficientStatistics(obj=obj,x=x)       #return the counts of each unique label
 sufficientStatistics_Weighted(obj=obj,x=x,w=w) #return the weighted counts of each unique lable
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 @seealso \code{\link{sufficientStatistics.CatDirichlet}} \code{\link{CatDirichlet}}
 }

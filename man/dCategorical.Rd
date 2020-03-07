@@ -18,7 +18,7 @@ A numeric vector of the same length of 'x'.
 Calculate probability masses for integer valued Categorical random samples.
 }
 \examples{
-\dontrun{
+\donttest{
 dCategorical(x=c(1L,2L,1L),p=c(1,2))
 }
 }

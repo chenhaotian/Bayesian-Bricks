@@ -13,6 +13,12 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+None. the model stored in "obj" will be updated based on "ss".
+}
 \description{
 Update a "CatDP" object with sample sufficient statistics
+}
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }

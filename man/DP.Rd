@@ -32,9 +32,9 @@ In essence, An "DP" object is a combination of a "CatDP" object and an object of
 The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }
 \examples{
-\dontrun{
+\donttest{
 
-## This is an example of Gibbs sampling on Gaussian mixture models, using DP.
+## This is an example of Gibbs sampling on Gaussian mixture models, using Dirichlet Process.
 
 ## generate some Gaussian mixture samples for demo purpose
 x <- rbind(
@@ -87,6 +87,11 @@ col <- apply(z,1,function(l){
 plot(x=x[,1],y=x[,2],col=col)
 }
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+
+Li, Yuelin, Elizabeth Schofield, and Mithat Gönen. "A tutorial on Dirichlet process mixture modeling." Journal of Mathematical Psychology 91 (2019): 128-144.
+}
 \seealso{
-\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatDP}},\code{\link{posterior.DP}},\code{\link{posteriorDiscard.DP}},\code{\link{MAP.DP}},\code{\link{marginalLikelihood.DP}} ...
+\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatDP}},\code{\link{posterior.DP}},\code{\link{posteriorDiscard.DP}},\code{\link{marginalLikelihood.DP}} ...
 }

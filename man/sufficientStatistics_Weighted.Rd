@@ -21,7 +21,7 @@ This is a generic function that will generate the weighted sufficient statistics
 get the weighted sufficient statistics T(X)
 }
 \examples{
-\dontrun{
+\donttest{
 x <- rGaussian(10,mu = 1,Sigma = 1)
 w <- runif(10)
 obj <- GaussianNIW()                    #an GaussianNIW object

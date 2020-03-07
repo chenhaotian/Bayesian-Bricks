@@ -38,6 +38,9 @@ where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concent
 In the case of CatHDP2, u, z and k can only be positive integers. \cr
 Update the prior knowledge by adding the information of newly observed samples u, z and k. The model structure and prior parameters are stored in a "CatHDP2" object, the prior parameters in this object will be updated after running this function.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
-\code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}},\code{\link{sufficientStatistics.CatHDP2}}
+\code{\link{CatHDP2}},\code{\link{posteriorDiscard.CatHDP2}}
 }

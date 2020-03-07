@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+numeric, the marginal likelihood.
+}
 \description{
 Marginallikelihood for HDP2
 }

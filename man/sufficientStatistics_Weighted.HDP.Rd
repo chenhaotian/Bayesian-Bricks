@@ -31,6 +31,9 @@ where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "con
 In the case of HDP, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{HDP}}, \code{\link{sufficientStatistics.HDP}}
 }

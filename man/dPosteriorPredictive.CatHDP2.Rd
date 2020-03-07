@@ -39,6 +39,9 @@ In the case of CatHDP2, u, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatHDP" object. \cr
 Posterior predictive is a distribution of u,z,k|alpha,gamm,eta,U,G_mj,G_m.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
-@seealso \code{\link{CatHDP}}, \code{\link{dPosteriorPredictive.CatHDP}}, \code{\link{marginalLikelihood.CatHDP}}
+@seealso \code{\link{CatHDP}}, \code{\link{dPosteriorPredictive.CatHDP}}
 }

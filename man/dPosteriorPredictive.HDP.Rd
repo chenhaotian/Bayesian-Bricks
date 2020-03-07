@@ -37,6 +37,9 @@ In the case of HDP, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "HDP" object. \cr
 Posterior predictive is a distribution of x,z,k|gamma,alpha,psi or z,k|gamma,alpha,psi,x.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 @seealso \code{\link{HDP}}, \code{\link{dPosteriorPredictive.HDP}}, \code{\link{marginalLikelihood.HDP}}
 }

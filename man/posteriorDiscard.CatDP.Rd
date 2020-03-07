@@ -45,6 +45,9 @@ obj
 obj2
 obj3
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{CatDP}},\code{\link{posterior.CatDP}}
 }

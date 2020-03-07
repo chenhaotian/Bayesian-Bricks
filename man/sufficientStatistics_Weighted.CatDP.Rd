@@ -38,6 +38,9 @@ sufficientStatistics_Weighted(obj=obj,x=x,w=w)
 ## return x itself, no matter what w is
 sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{CatDP}}, \code{\link{sufficientStatistics.CatDP}}
 }

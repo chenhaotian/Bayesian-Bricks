@@ -16,7 +16,7 @@ numeric, the logsumexp of each row of x.
 For each row l of a matrix x, calculate log(sum(exp(l))).
 }
 \examples{
-\dontrun{
+\donttest{
 ## Normalize the rows of x to make them sum up to 1
 x <- matrix(runif(6,-1000,-20),nrow=2)
 x <- x-logsumexp(x)

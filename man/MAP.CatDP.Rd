@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{MAP.CatDP}
 \alias{MAP.CatDP}
-\title{MAP estimate of a "CatDP" object}
+\title{Maximum A Posteriori(MAP) estimate of a "CatDP" object}
 \usage{
 \method{MAP}{CatDP}(obj, ...)
 }
@@ -28,6 +28,9 @@ x <- sample(1L:10L,size = 40,replace = TRUE)
 obj <- CatDP()
 posterior(obj = obj,ss = x)
 MAP(obj)
+}
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
 \code{\link{CatDP}}

@@ -31,6 +31,11 @@ This object will be used as a place for recording and accumulating information i
 obj <- GaussianNIW(gamma=list(m=c(0,1),k=0.0001,v=2,S=diag(2)))
 obj #print the content
 }
+\references{
+Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+
+Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
+}
 \seealso{
 \code{\link{posterior.GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{MAP.GaussianNIW}},\code{\link{marginalLikelihood.GaussianNIW}} ...
 }

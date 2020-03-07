@@ -38,6 +38,9 @@ xnew <- rnorm(10)
 znew <- sample(1L:10L,size = 10,replace = TRUE)
 rPosteriorPredictive(obj = obj,n=1,x=xnew[5])
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 @seealso \code{\link{DP}}, \code{\link{dPosteriorPredictive.DP}}
 }

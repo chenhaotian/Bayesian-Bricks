@@ -34,6 +34,9 @@ ss <- sufficientStatistics(obj=obj,x=x,X=X,foreach=FALSE)
 marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss)
 marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss,LOG = FALSE)
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 @seealso \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
 }

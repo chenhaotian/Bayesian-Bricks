@@ -36,7 +36,7 @@ In the case of HDP2, u, z and k can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }
 \examples{
-\dontrun{
+\donttest{
 
 ## This is an example of Gibbs sampling on a hierarchical mixture model, using HDP2.
 
@@ -61,7 +61,7 @@ for(i in 1L:N){                         #initialize z k and u
    z[i] <- tmp["z"]
    k[i] <- tmp["k"]
    u[i] <- tmp["u"]
-   posterior.HDP2(obj = obj,ss = ss[[i]],ss1 = u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j = js[i])
+   posterior(obj = obj,ss = ss[[i]],ss1 = u[i],ss2 = k[i],ss3 = z[i],m=ms[i],j = js[i])
 }
 
 ## Step2: main Gibbs loop---------------------------------------------
@@ -86,6 +86,9 @@ while(TRUE){
 
 }
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
-\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP2}},\code{\link{posterior.HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{MAP.HDP2}},\code{\link{marginalLikelihood.HDP2}} ...
+\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP2}},\code{\link{posterior.HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{marginalLikelihood.HDP2}} ...
 }

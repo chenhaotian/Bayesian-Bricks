@@ -19,7 +19,7 @@ Generate the MPE of "pi" in following Categorical-Dirichlet structure: \cr
      pi|alpha ~ Dirichlet(alpha) \cr
      x|pi ~ Categorical(pi) \cr
 the model structure and prior parameters are stored in a "CatDirichlet" object. \cr
-MPE is pi_MPE = mean(pi|alpha,x).
+MPE is pi_MPE = E(pi|alpha,x), E() is the expectation function.
 }
 \examples{
 obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
@@ -27,6 +27,9 @@ x <- sample(letters,size = 20,replace = TRUE)
 w <- runif(20)
 posterior(obj=obj,ss=x,w=w)
 MPE(obj)
+}
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
 \code{\link{CatDirichlet}}

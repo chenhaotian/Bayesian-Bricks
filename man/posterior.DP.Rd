@@ -37,6 +37,9 @@ ss <- sufficientStatistics(obj = obj,x=x,foreach = TRUE) #must use foreach=TRUE
 for(i in 1L:length(z)) posterior(obj = obj,ss = ss[[i]],z=z[i])
 obj
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
 }

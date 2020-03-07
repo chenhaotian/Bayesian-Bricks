@@ -32,6 +32,9 @@ ss <- sufficientStatistics(obj=obj,x=x)
 posterior(obj = obj,ss = ss)
 rPosteriorPredictive(obj = obj,n=200L)
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 @seealso \code{\link{CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}
 }

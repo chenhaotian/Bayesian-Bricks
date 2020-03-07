@@ -39,6 +39,9 @@ x <- rnorm(20)+ X*0.3
 sufficientStatistics(obj = obj,X=X,x=x)
 sufficientStatistics(obj = obj,X=X,x=x,foreach = TRUE)
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics_Weighted.GaussianNIG}}
 }

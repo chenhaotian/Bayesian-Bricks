@@ -33,6 +33,9 @@ res1 <- dPosteriorPredictive(obj = obj,x=x,LOG = TRUE)
 res2 <- numeric(length(x))
 for(i in seq_along(x)) res2[i] <- marginalLikelihood(obj=obj,x=x[i],LOG = TRUE)
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 @seealso \code{\link{CatDirichlet}}, \code{\link{dPosteriorPredictive.CatDirichlet}}, \code{\link{marginalLikelihood.CatDirichlet}}
 }

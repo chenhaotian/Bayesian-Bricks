@@ -12,7 +12,7 @@ pdsInverse(S, returnUpper = FALSE)
 \item{returnUpper}{logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.}
 }
 \value{
-A matrix.
+A matrix, the inverse of "S".
 }
 \description{
 Use Cholesky decomposition to calculate the inverse where S = A'A, A is a upper diagonal matrix then inv(S) = inv(A)inv(A)'.

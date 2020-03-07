@@ -37,6 +37,9 @@ In the case of HDP2, u, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "HDP2" object. \cr
 This function will generate random samples from the distribution u,z,k|eta,gamma,alpha,psi,x.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 @seealso \code{\link{HDP2}}, \code{\link{dPosteriorPredictive.HDP2}}
 }

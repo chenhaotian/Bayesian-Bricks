@@ -56,7 +56,7 @@ sufficientStatistics <- function(obj,...) UseMethod("sufficientStatistics")
 #' @return An object of corresponding sufficient statistics class, such as "ssGaussian"
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- rGaussian(10,mu = 1,Sigma = 1)
 #' w <- runif(10)
 #' obj <- GaussianNIW()                    #an GaussianNIW object
@@ -67,6 +67,7 @@ sufficientStatistics_Weighted <- function(obj,...) UseMethod("sufficientStatisti
 #' update the prior distribution with sufficient statistics
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
+#' @return None, or an error message if the update fails.
 posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySufficientStatistics")
 
 #' update the prior distribution with sufficient statistics
@@ -86,6 +87,7 @@ posterior <- function(obj,...) UseMethod("posterior")
 #' update the prior distribution with sufficient statistics
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... other parameters.
+#' @return None, or an error message if the update fails.
 posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posteriorDiscard_bySufficientStatistics")
 
 #' update the prior distribution with sufficient statistics
@@ -102,12 +104,12 @@ posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posterio
 #' @export
 posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 
-#' Get the MAP estimate of a "BayesianBrick" object
+#' Get the Maximum A Posteriori(MAP) estimate of a "BayesianBrick" object
 #'
 #' This is a generic function that will generate the MAP estimate of a given "BayesianBrick" object. For the model structure:  \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' get theta_MAP
+#' MAP esitmate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
 #'
 #' @seealso \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -116,12 +118,12 @@ posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 #' @export
 MAP <- function(obj,...) UseMethod("MAP")
 
-#' Get the MPE estimate of a "BayesianBrick" object
+#' Get the Mean Posterior Estimate(MPE) of a "BayesianBrick" object
 #'
 #' This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' get theta_MPE
+#' MPE esitmate of theta is theta_MAP = E(theta|gamma,x), E() is the expectation function.
 #'
 #' @seealso \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -135,7 +137,7 @@ MPE <- function(obj,...) UseMethod("MPE")
 #' This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' get p(X|gamma)
+#' Marginal likelihood is p(X|gamma), p() is the probability density/mass function for contunious/discrete X.
 #'
 #' @seealso \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -149,7 +151,7 @@ marginalLikelihood_bySufficientStatistics <- function(obj,...) UseMethod("margin
 #' This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' get p(X|gamma)
+#' Marginal likelihood is p(X|gamma), p() is the probability density/mass function for contunious/discrete X.
 #'
 #' @seealso \code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -163,7 +165,7 @@ marginalLikelihood <- function(obj,...) UseMethod("marginalLikelihood")
 #' This is a generic function that will generate the the density value of the posterior predictive distribution. i.e. for the model structure: \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' get p(x_new|gamma)
+#' get the probability density/mass of the posterior predictive distribution of a new sample x_new: p(x_new|gamma).
 #'
 #' @seealso \code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -177,7 +179,7 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 #' This is a generic function that will generate random samples from the posterior predictive distribution. i.e. for the model structure: \cr
 #'      theta|gamma ~ H(gamma) \cr
 #'      X|theta ~ F(theta) \cr
-#' generate x_new from G(x|gamma), G() is the posterior predictive distribution
+#' generate x_new from the posterior predictive distribution of x|gamma.
 #'
 #' @seealso \code{\link{rPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{rPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{rPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{rPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
@@ -186,19 +188,12 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 #' @export
 rPosteriorPredictive <- function(obj,...) UseMethod("rPosteriorPredictive")
 
-#' the density of observation distribution
-#' @param obj An object of the target type.
-#' @param ... other parameters.
-dObservationDistribution <- function(obj,...) UseMethod("dObservationDistribution")
 
-#' random number generation of the observation distribution
-#' @param obj An object of the target type.
-#' @param ... other parameters.
-rObservationDistribution <- function(obj,...) UseMethod("rObservationDistribution")
 
 #' Print the content of an BasicBasyesian object
 #' @param x An object of the target type.
 #' @param ... other parameters passed to print.
+#' @return None.
 #' @export
 print.BasicBayesian <- function(x,...){
     cat("Prior distribution: ",x$H,"\n")
@@ -210,6 +205,7 @@ print.BasicBayesian <- function(x,...){
 #' a internal version of "is", only for this package
 #' @param object an object to be test with
 #' @param class2 the class you want to test
+#' @return logical, return TRUE if 'class2' is in 'class(object)'.
 .is <- function(object,class2){
     isTRUE(class2 %in% class(object))
 }
@@ -222,7 +218,7 @@ print.BasicBayesian <- function(x,...){
 #' @return numeric, the logsumexp of each row of x.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ## Normalize the rows of x to make them sum up to 1
 #' x <- matrix(runif(6,-1000,-20),nrow=2)
 #' x <- x-logsumexp(x)
@@ -242,7 +238,6 @@ logsumexp <- function(x){
 release_questions <- function() {
   c("Have you set the correct version number?",
     "Have you removed the irrelevant code blocks?",
-    "Have you add {width=100%} to each inluded image?",
     "Have you add all R files to DESCRIPTION?",
     "Have you removed the unfinished lines from vignette?",
     "Have you add all the references to README and function documentation?",

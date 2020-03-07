@@ -44,6 +44,9 @@ obj
 for(sss in ssEach) posteriorDiscard(obj = obj,ss = sss)
 obj
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 \code{\link{GaussianNIG}},\code{\link{posterior.GaussianNIG}}
 }

@@ -13,31 +13,12 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+None. the gamma stored in "obj" will be updated based on "ss".
+}
 \description{
 Update a "CatDirichlet" object with sample sufficient statistics
 }
-\examples{
-\dontrun{
-obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
-x <- sample(letters,size = 20,replace = TRUE)
-w <- runif(20)
-posterior(obj=obj,ss=x)
-obj
-posteriorDiscard(obj=obj,ss=x)
-obj
-## by sufficient statistics
-ss <- sufficientStatistics(obj = obj,x=x)
-posterior_bySufficientStatistics(obj = obj,ss=ss)
-obj
-## weighted sample
-posterior(obj=obj,ss=x,w=w)
-obj$gamma$a
-posteriorDiscard(obj=obj,ss=x,w=w)
-obj$gamma$a
-## by sufficient statistics
-posterior_bySufficientStatistics(obj = obj,ss=ss)
-obj$gamma$a
-posteriorDiscard_bySufficientStatistics(obj = obj,ss=ss)
-obj$gamma$a
-}
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }

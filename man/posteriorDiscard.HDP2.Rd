@@ -42,6 +42,9 @@ where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concent
 In the case of HDP2, u, z and k can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{HDP2}},\code{\link{posteriorDiscard.HDP2}},\code{\link{sufficientStatistics.HDP2}}
 }

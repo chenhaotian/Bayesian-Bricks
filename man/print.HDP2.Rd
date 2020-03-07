@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+None.
+}
 \description{
 print the content of a "HDP2" object
 }

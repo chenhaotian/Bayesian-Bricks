@@ -11,6 +11,9 @@
 
 \item{class2}{the class you want to test}
 }
+\value{
+logical, return TRUE if 'class2' is in 'class(object)'.
+}
 \description{
 a internal version of "is", only for this package
 }

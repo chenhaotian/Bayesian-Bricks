@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+None.
+}
 \description{
 Print the content of an CatHDP2 object
 }

@@ -24,7 +24,7 @@ A numeric vector.
 Get the density of a set of  samples from a Gaussian distribution
 }
 \examples{
-\dontrun{
+\donttest{
 plot(
    dGaussian(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
    ,type = "l"

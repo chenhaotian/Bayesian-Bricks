@@ -36,6 +36,9 @@ where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "con
 In the case of HDP, z and k can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{sufficientStatistics.HDP}}
 }

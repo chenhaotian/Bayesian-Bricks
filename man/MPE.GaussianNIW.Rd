@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{MPE.GaussianNIW}
 \alias{MPE.GaussianNIW}
-\title{MPE of a "GaussianNIW" object}
+\title{Mean Posterior Estimate(MPE) of a "GaussianNIW" object}
 \usage{
 \method{MPE}{GaussianNIW}(obj, ...)
 }
@@ -21,6 +21,11 @@ Generate the MPE of "theta" in following GaussianNIW structure: \cr
 where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 MPE is theta_MPE = mean_theta(theta|gamma,x)
+}
+\references{
+Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+
+Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }
 \seealso{
 \code{\link{GaussianNIW}}

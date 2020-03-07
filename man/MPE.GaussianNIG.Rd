@@ -20,7 +20,10 @@ Generate the MPE estimate of "theta" in following Gaussian-NIG structure: \cr
      x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
 where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-MPE is {beta,sigma^2}_MPE = mean(beta,sigma^2|gamma,x,X).
+MPE is {beta,sigma^2}_MPE = E(beta,sigma^2|gamma,x,X), E() is the expectation function.
+}
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{marginalLikelihood.DP}
 \alias{marginalLikelihood.DP}
-\title{Marginallikelihood for DP}
+\title{Marginallikelihood for Dirichlet Process(DP)}
 \usage{
 \method{marginalLikelihood}{DP}(obj, ...)
 }
@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
+\value{
+numeric, the marginal likelihood.
+}
 \description{
-Marginallikelihood for DP
+Marginallikelihood for Dirichlet Process(DP)
 }

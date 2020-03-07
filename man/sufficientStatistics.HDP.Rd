@@ -44,6 +44,9 @@ sufficientStatistics(obj = obj1,x=x1,foreach = TRUE)
 sufficientStatistics(obj = obj1,x=x1,foreach = FALSE)
 sufficientStatistics(obj = obj2,x=x2,foreach = FALSE)
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{HDP}}, \code{\link{sufficientStatistics_Weighted.HDP}}
 }

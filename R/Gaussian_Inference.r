@@ -11,7 +11,7 @@
 #' @description Use Cholesky decomposition to calculate the inverse where S = A'A, A is a upper diagonal matrix then inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.
 #' @param returnUpper logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.
-#' @return A matrix.
+#' @return A matrix, the inverse of "S".
 #' @export
 #' @examples
 #' Sigma = matrix(c(2,1,1,2),2,2)      # some positive definite symmetric matrix
@@ -113,81 +113,6 @@ linearGaussian <- function(x2,mu1,Sigma1=NULL,Precision1=NULL,A,b,Sigma21=NULL,P
     )
 }
 
-#' Sufficient statistics for Gaussian samples
-#'
-#' For a design matrix x(each row is a sample), the sufficient statistics are: \cr
-#'  the effective number of samples N=nrow(x); \cr
-#'  the sample sum xsum = colSums(x); \cr
-#'  the uncentered scatter matrix S = t(x)%*%x. \cr
-#'
-#' @param x, matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
-#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
-#' @examples
-#' \dontrun{
-#' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
-#' sufficientStatisticsGaussian(x,foreach = FALSE)
-#' sufficientStatisticsGaussian(x,foreach = TRUE)
-#' }
-sufficientStatisticsGaussian <- function(x,foreach=FALSE){
-    if(missing(x)) stop("'x' not specified!")
-    if(is.vector(x)){
-        x <- matrix(x,ncol = 1)
-    }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
-    }
-    if(foreach){
-        sapply(1:nrow(x),function(i){
-            list(N=1,
-                 xsum=x[i,,drop=TRUE],
-                 S=t(x[i,,drop=FALSE])%*%x[i,,drop=FALSE])
-        },simplify = FALSE,USE.NAMES = FALSE)
-    }else{
-        list(N=nrow(x),
-             xsum=colSums(x),
-             S = t(x)%*%x)
-    }
-}
-
-#' Sufficient statistics for Gaussian samples
-#'
-#' for a design matrix x(each row is a samples), the sufficient statistics are \cr
-#'  the effective number of samples N=nrow(x) \cr
-#'  the sample sum xsum = colSums(x) \cr
-#'  the uncentered scatter matrix S = t(x)%*%x
-#'
-#' @param x, matrix, Gaussian samples, when x is a matrix, each row is an sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1
-#' @param w numeric, sample weights
-#' @param foreach logical, if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole
-#' @return if foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole
-#' @examples
-#' \dontrun{
-#' x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))
-#' w <- runif(10)
-#' sufficientStatisticsGaussian_Weighted(x,w,foreach = FALSE)
-#' sufficientStatisticsGaussian(x,foreach = TRUE)
-#' }
-sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
-    if(missing(x)|missing(w)) stop("'x' or 'w' not specified!")
-    if(is.vector(x)){
-        x <- matrix(x,ncol = 1)
-    }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
-    }
-    if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
-    if(foreach){
-        sapply(1:nrow(x),function(i){
-            list(N=w[i],
-                 xsum=x[i,,drop=TRUE]*w[i],
-                 S=t(w[i]*x[i,,drop=FALSE])%*%x[i,,drop=FALSE])
-        },simplify = FALSE,USE.NAMES = FALSE)
-    }else{
-        list(N=sum(w),
-             xsum=colSums(x*w),
-             S = t(w*x)%*%x)
-    }
-}
-
 #' Random generation for Gaussian distribution
 #'
 #' Generate random samples from a Gaussian distribution.
@@ -200,7 +125,7 @@ sufficientStatisticsGaussian_Weighted<- function(x,w,foreach=FALSE){
 #' @return A matrix of n rows and length(mu) columns.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 #' plot(x)
 #' }
@@ -229,7 +154,7 @@ rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
 #' @return A numeric vector.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' plot(
 #'    dGaussian(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
 #'    ,type = "l"
@@ -267,7 +192,7 @@ dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
 #' @return A matrix of n rows and length(mu) columns, each row is a sample.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- rT(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
 #' plot(x)
 #' }
@@ -300,7 +225,7 @@ rT <- function(n,mu,Sigma=NULL,A=NULL,df=1){
 #' @return A numeric vector, the probability densities.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' plot(
 #'    dT(x=seq(-5,5,length.out = 1000),mu = 0,Sigma = 1,LOG = FALSE)
 #'    ,type = "l"
@@ -349,6 +274,8 @@ dT <- function(x,mu,Sigma=NULL,A=NULL,df=1,LOG=TRUE){
 #' @examples
 #' obj <- GaussianNIW(gamma=list(m=c(0,1),k=0.0001,v=2,S=diag(2)))
 #' obj #print the content
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
@@ -392,6 +319,8 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' obj <- GaussianNIW()                    #an GaussianNIW object
 #' sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' sufficientStatistics(obj=obj,x=x,foreach = TRUE)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
     if(missing(x)) stop("'x' must be specified")
     if(is.vector(x)){
@@ -441,6 +370,8 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #' w <- runif(10)
 #' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = FALSE)
 #' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
     if(missing(x)|missing(x)) stop("'x' or 'w' not specified!")
     if(is.vector(x)){
@@ -489,6 +420,8 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss = ss[[i]])
 #' obj
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -502,13 +435,6 @@ posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
     obj$gamma$v <- obj$gamma$v+ss$N
     obj$gamma$S <- obj$gamma$S+ss$S+(k0*m0)%*%t(m0)-(obj$gamma$k*obj$gamma$m)%*%t(obj$gamma$m)
 }
-
-#' Update a "GaussianNIW" object with sample sufficient statistics
-#' @param obj A "GaussianNIW" object.
-#' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
-#' @param ... Additional arguments to be passed to other inherited types.
-posterior_bySufficientStatistics.GaussianNIW <- posterior.GaussianNIW
 
 #' Update a "GaussianNIW" object with sample sufficient statistics
 #'
@@ -543,6 +469,8 @@ posterior_bySufficientStatistics.GaussianNIW <- posterior.GaussianNIW
 #' obj
 #' posteriorDiscard(obj = obj,ss = ssAll)
 #' obj
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -556,14 +484,7 @@ posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
     obj$gamma$S <- obj$gamma$S-ss$S-(obj$gamma$k*obj$gamma$m)%*%t(obj$gamma$m)+(kN*mN)%*%t(mN)
 }
 
-#' Update a "GaussianNIW" object with sample sufficient statistics
-#' @param obj A "GaussianNIW" object.
-#' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights,default NULL.
-#' @param ... Additional arguments to be passed to other inherited types.
-posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.GaussianNIW
-
-#' MAP estimate of a "GaussianNIW" object
+#' Maximum A Posteriori(MAP) estimate of a "GaussianNIW" object
 #'
 #' Generate the MAP estimate of "theta" in following Gaussian-NIW structure: \cr
 #'      theta|gamma ~ NIW(gamma) \cr
@@ -585,13 +506,15 @@ posteriorDiscard_bySufficientStatistics.GaussianNIW <- posteriorDiscard.Gaussian
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
 #' MAP(obj)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 MAP.GaussianNIW <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
     list(muMAP=obj$gamma$m,
          sigmaMAP=obj$gamma$S/(obj$gamma$v+D+2))
 }
 
-#' MPE of a "GaussianNIW" object
+#' Mean Posterior Estimate(MPE) of a "GaussianNIW" object
 #'
 #' Generate the MPE of "theta" in following GaussianNIW structure: \cr
 #'      theta|gamma ~ NIW(gamma) \cr
@@ -605,6 +528,8 @@ MAP.GaussianNIW <- function(obj,...){
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of "theta".
 #' @export
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 MPE.GaussianNIW <- function(obj,...){
     stop("MPE method for class 'GaussianNIW' is not implemented yet")
 }
@@ -632,6 +557,8 @@ MPE.GaussianNIW <- function(obj,...){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
     if(is.vector(x)){
@@ -666,6 +593,8 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
@@ -685,7 +614,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
     
     
     obj2 <- GaussianNIW(objCopy = obj) #copy obj to obj2
-    posterior_bySufficientStatistics.GaussianNIW(obj = obj2,ss=ss) #update the posteriors
+    posterior.GaussianNIW(obj = obj2,ss=ss) #update the posteriors
     
     D <- length(obj2$gamma$m)                     #dimension
     
@@ -720,6 +649,8 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' for(i in 1:nrow(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i,,drop=FALSE],LOG = TRUE)
 #' max(abs(out1-out2))
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
     if(is.vector(x)){
@@ -753,18 +684,12 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' @examples
 #' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
 #' rPosteriorPredictive(obj=obj,20)
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
     if(obj$gamma$v-length(obj$gamma$m)+1 < 0) stop("In the parameters of NIW, 'v' must be greater than p-1, where p is the dimension of the Gaussian variable. This error can be resolved by setting a larger 'v' when initializing the GaussianNIW object.")
     d <- length(obj$gamma$m)
     rT(n=n,mu=obj$gamma$m,Sigma = (obj$gamma$k+1)/obj$gamma$k/(obj$gamma$v-d+1)*obj$gamma$S,df = obj$gamma$v-d+1)
-}
-
-dObservationDistribution.GaussianNIW <- function(obj,x,mu,Sigma=NULL,A=NULL,LOG=TRUE,...){
-    dGaussian(x=x,mu=mu,Sigma = Sigma,A = A,LOG = LOG)
-}
-
-rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL,...){
-    rGaussian(n=n,mu=mu,Sigma=Sigma,A=A)
 }
 
 #' Create objects of type "GaussianNIG".
@@ -782,7 +707,7 @@ rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL,...)
 #' @return An object of class "GaussianNIG".
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' X <- 1:20                               #generate some linear data
 #' x <- rnorm(20)+ X*0.3                   #generate some linear data
 #' obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
@@ -792,6 +717,7 @@ rObservationDistribution.GaussianNIW <- function(obj,n,mu,Sigma=NULL,A=NULL,...)
 #' ## print the whole content, "invV" and "mVm" in the output are temporary variables.
 #' obj
 #' }
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
@@ -841,6 +767,7 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' x <- rnorm(20)+ X*0.3
 #' sufficientStatistics(obj = obj,X=X,x=x)
 #' sufficientStatistics(obj = obj,X=X,x=x,foreach = TRUE)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
@@ -901,6 +828,7 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' w <- runif(20)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...){
     if(missing(x)|missing(w)|missing(X)) stop("'x', 'w' and 'X' must be specified")
     if(!is.vector(w)) w <- as.vector(w)
@@ -957,6 +885,7 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' obj
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 posterior.GaussianNIG <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -972,13 +901,6 @@ posterior.GaussianNIG <- function(obj,ss,w=NULL,...){
     obj$gamma$b <- drop(obj$gamma$b+0.5*(mVm0 + ss$Sy - obj$gamma$mVm)) #remove dimension, otherwise there will be an error in rPosteriorPredictive
 
 }
-
-#' Update a "GaussianNIG" object with sample sufficient statistics
-#' @param obj A "GaussianNIG" object.
-#' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
-#' @param ... Additional arguments to be passed to other inherited types.
-posterior_bySufficientStatistics.GaussianNIG <- posterior.GaussianNIG
 
 #' Update a "GaussianNIG" object with sample sufficient statistics
 #'
@@ -1013,6 +935,7 @@ posterior_bySufficientStatistics.GaussianNIG <- posterior.GaussianNIG
 #' obj
 #' for(sss in ssEach) posteriorDiscard(obj = obj,ss = sss)
 #' obj
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -1028,13 +951,6 @@ posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
     obj$gamma$b <- drop(obj$gamma$b-0.5*(obj$gamma$mVm + ss$Sy - mVmN)) #remove dimension, otherwise there will be an error in rPosteriorPredictive
 
 }
-
-#' Update a "GaussianNIG" object with sample sufficient statistics
-#' @param obj A "GaussianNIG" object.
-#' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights,default NULL.
-#' @param ... Additional arguments to be passed to other inherited types.
-posteriorDiscard_bySufficientStatistics.GaussianNIG <- posteriorDiscard.GaussianNIG
 
 #' MAP estimate of a "GaussianNIG" object
 #'
@@ -1057,6 +973,7 @@ posteriorDiscard_bySufficientStatistics.GaussianNIG <- posteriorDiscard.Gaussian
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' MAP(obj)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 MAP.GaussianNIG <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
     list(betaMAP=obj$gamma$m,
@@ -1070,13 +987,14 @@ MAP.GaussianNIG <- function(obj,...){
 #'      x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
 #' where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-#' MPE is {beta,sigma^2}_MPE = mean(beta,sigma^2|gamma,x,X).
+#' MPE is {beta,sigma^2}_MPE = E(beta,sigma^2|gamma,x,X), E() is the expectation function.
 #'
 #' @seealso \code{\link{GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of beta and sigma^2.
 #' @export
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 MPE.GaussianNIG <- function(obj,...){
     stop("MPE method for class 'GaussianNIG' is not implemented yet")
 }
@@ -1104,6 +1022,7 @@ MPE.GaussianNIG <- function(obj,...){
 #' x <- rnorm(20)+ X*0.3
 #' marginalLikelihood(obj = obj,x = x, X = X)
 #' marginalLikelihood(obj = obj,x = x, X = X,LOG = FALSE)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
@@ -1140,6 +1059,7 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' ss <- sufficientStatistics(obj=obj,x=x,X=X,foreach=FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss,LOG = FALSE)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
@@ -1152,7 +1072,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
     }
     
     obj2 <- GaussianNIG(objCopy = obj) #copy obj to obj2
-    posterior_bySufficientStatistics.GaussianNIG(obj = obj2,ss=ss) #update the posteriors
+    posterior.GaussianNIG(obj = obj2,ss=ss) #update the posteriors
 
     logp <- log(det(obj2$gamma$V))/2 + lgamma(obj2$gamma$a) - obj2$gamma$a*log(obj2$gamma$b) -
         (log(det(obj$gamma$V))/2 + lgamma(obj$gamma$a) - obj$gamma$a*log(obj$gamma$b))-
@@ -1190,6 +1110,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' for(i in 1:length(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i],X=X[i],LOG = TRUE)
 #' max(abs(out1-out2))
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
@@ -1225,6 +1146,7 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' obj <- GaussianNIG(gamma=list(m=c(1,1),V=diag(2),a=1,b=1))
 #' X <- matrix(runif(20),ncol=2)
 #' rPosteriorPredictive(obj=obj,n=3,X=X)
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 rPosteriorPredictive.GaussianNIG <- function(obj,n,X,...){
     if(missing(X)) stop("'X' not specified!")
     if(!.is(X,"matrix")){

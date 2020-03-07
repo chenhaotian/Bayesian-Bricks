@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{MAP.GaussianNIW}
 \alias{MAP.GaussianNIW}
-\title{MAP estimate of a "GaussianNIW" object}
+\title{Maximum A Posteriori(MAP) estimate of a "GaussianNIW" object}
 \usage{
 \method{MAP}{GaussianNIW}(obj, ...)
 }
@@ -30,6 +30,11 @@ obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
 ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
 MAP(obj)
+}
+\references{
+Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+
+Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }
 \seealso{
 \code{\link{GaussianNIW}}

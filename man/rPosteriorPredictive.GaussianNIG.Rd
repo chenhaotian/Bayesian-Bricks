@@ -31,6 +31,9 @@ obj <- GaussianNIG(gamma=list(m=c(1,1),V=diag(2),a=1,b=1))
 X <- matrix(runif(20),ncol=2)
 rPosteriorPredictive(obj=obj,n=3,X=X)
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 @seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Bayesian_Bricks.r
 \name{MPE}
 \alias{MPE}
-\title{Get the MPE estimate of a "BayesianBrick" object}
+\title{Get the Mean Posterior Estimate(MPE) of a "BayesianBrick" object}
 \usage{
 MPE(obj, ...)
 }
@@ -18,7 +18,7 @@ A list of MPE estimates
 This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
-get theta_MPE
+MPE esitmate of theta is theta_MAP = E(theta|gamma,x), E() is the expectation function.
 }
 \seealso{
 \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...

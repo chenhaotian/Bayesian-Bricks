@@ -33,6 +33,9 @@ where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concent
 In the case of HDP2, u, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{HDP2}}, \code{\link{sufficientStatistics.HDP2}}
 }

@@ -34,9 +34,10 @@ In the case of HDP, z and k can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }
 \examples{
-\dontrun{
+\donttest{
     
-## This is an example of Gibbs sampling on an hierarchical mixture model, using HDP.
+## This is an example of Gibbs sampling on an hierarchical mixture model,
+## using Hierarchical Dirichlet Process.
 
 ## load some hierarchical mixture data, check ?mmhData for details.
 data(mmhData)
@@ -82,6 +83,9 @@ while(TRUE){
 
 }
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
-\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP}},\code{\link{posterior.HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{MAP.HDP}},\code{\link{marginalLikelihood.HDP}} ...
+\code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatHDP}},\code{\link{posterior.HDP}},\code{\link{posteriorDiscard.HDP}},\code{\link{marginalLikelihood.HDP}} ...
 }

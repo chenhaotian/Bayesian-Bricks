@@ -27,6 +27,9 @@ posterior predictive is a distribution of x|alpha
 obj <- CatDirichlet(gamma=list(alpha=runif(26,1,2),uniqueLabels = letters))
 rPosteriorPredictive(obj=obj,n=200)
 }
+\references{
+Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+}
 \seealso{
 @seealso \code{\link{CatDirichlet}}, \code{\link{dPosteriorPredictive.CatDirichlet}}
 }

@@ -11,6 +11,9 @@ posterior_bySufficientStatistics(obj, ...)
 
 \item{...}{further arguments passed to or from other methods.}
 }
+\value{
+None, or an error message if the update fails.
+}
 \description{
 update the prior distribution with sufficient statistics
 }

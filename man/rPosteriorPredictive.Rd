@@ -18,7 +18,7 @@ a matrix or vector of random samples
 This is a generic function that will generate random samples from the posterior predictive distribution. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
      X|theta ~ F(theta) \cr
-generate x_new from G(x|gamma), G() is the posterior predictive distribution
+generate x_new from the posterior predictive distribution of x|gamma.
 }
 \seealso{
 \code{\link{rPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{rPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{rPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{rPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...

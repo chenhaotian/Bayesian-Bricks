@@ -28,6 +28,9 @@ This object will be used as a place for recording and accumulating information i
 obj <- CatDP(gamma=list(alpha=2))
 obj #print the content
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
 \code{\link{posterior.CatDP}},\code{\link{posteriorDiscard.CatDP}},\code{\link{MAP.CatDP}},\code{\link{marginalLikelihood.CatDP}} ...
 }

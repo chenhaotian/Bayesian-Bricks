@@ -11,6 +11,9 @@ posteriorDiscard_bySufficientStatistics(obj, ...)
 
 \item{...}{other parameters.}
 }
+\value{
+None, or an error message if the update fails.
+}
 \description{
 update the prior distribution with sufficient statistics
 }

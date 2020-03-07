@@ -25,7 +25,7 @@ Generate the the density value of the posterior predictive distribution of the f
 where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
 In the case of CatDP, x can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatDP" object. \cr
-Posterior predictive is a distribution of x|alpha.
+Posterior predictive is the distribution of x|alpha.
 }
 \examples{
 x <- sample(1L:10L,size = 40,replace = TRUE)
@@ -33,6 +33,9 @@ obj <- CatDP()
 ss <- sufficientStatistics(obj=obj,x=x)
 posterior(obj = obj,ss = ss)
 dPosteriorPredictive(obj = obj,x=1L:11L,LOG = FALSE)
+}
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
 @seealso \code{\link{CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}, \code{\link{marginalLikelihood.CatDP}}

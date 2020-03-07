@@ -35,6 +35,9 @@ x <- rnorm(20)+ X*0.3
 marginalLikelihood(obj = obj,x = x, X = X)
 marginalLikelihood(obj = obj,x = x, X = X,LOG = FALSE)
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 @seealso \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}}
 }

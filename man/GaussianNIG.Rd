@@ -28,7 +28,7 @@ where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a num
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
 }
 \examples{
-\dontrun{
+\donttest{
 X <- 1:20                               #generate some linear data
 x <- rnorm(20)+ X*0.3                   #generate some linear data
 obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
@@ -38,6 +38,9 @@ MAP(obj)                                        #get the MAP estimate of beta an
 ## print the whole content, "invV" and "mVm" in the output are temporary variables.
 obj
 }
+}
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}} ...

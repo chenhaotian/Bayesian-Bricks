@@ -34,6 +34,9 @@ ss <- sufficientStatistics(obj = obj,X=X,x=x)
 posterior(obj = obj,ss = ss)
 obj
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 \code{\link{GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{sufficientStatistics.GaussianNIG}}
 }

@@ -39,6 +39,9 @@ for(i in 1:length(x))
 out2[i] <- marginalLikelihood(obj,x=x[i],X=X[i],LOG = TRUE)
 max(abs(out1-out2))
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 @seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
 }

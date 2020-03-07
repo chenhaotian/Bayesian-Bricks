@@ -32,6 +32,9 @@ where DP(gamma,U) is a Dirichlet Process on integers, gamma is the concentration
 In the case of CatHDP, z and k can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
+}
 \seealso{
-\code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}},\code{\link{sufficientStatistics.CatHDP}}
+\code{\link{CatHDP}},\code{\link{posteriorDiscard.CatHDP}}
 }

@@ -43,6 +43,9 @@ w <- runif(20)
 sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
 }
+\references{
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+}
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics.GaussianNIG}}
 }

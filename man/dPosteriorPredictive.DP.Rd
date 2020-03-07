@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{dPosteriorPredictive.DP}
 \alias{dPosteriorPredictive.DP}
-\title{Posterior predictive density function of a "DP" object}
+\title{Posterior predictive density function of a Dirichlet Process object}
 \usage{
 \method{dPosteriorPredictive}{DP}(obj, x, z, LOG = TRUE, ...)
 }
@@ -39,6 +39,9 @@ for(i in 1L:length(x)) posterior(obj = obj,ss=ss[[i]],z=z[i])
 xnew <- rnorm(10)
 znew <- sample(1L:10L,size = 10,replace = TRUE)
 dPosteriorPredictive(obj = obj,x=xnew,z=znew)
+}
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
 @seealso \code{\link{DP}}, \code{\link{dPosteriorPredictive.DP}}, \code{\link{marginalLikelihood.DP}}

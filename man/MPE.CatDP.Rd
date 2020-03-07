@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{MPE.CatDP}
 \alias{MPE.CatDP}
-\title{MPE estimate of a "CatDP" object}
+\title{Mean Posterior Estimate(MPE) of a "CatDP" object}
 \usage{
 \method{MPE}{CatDP}(obj, ...)
 }
@@ -21,13 +21,16 @@ Generate the MPE estimate of "pi" in following model structure: \cr
 where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
 In the case of CatDP, x can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatDP" object. \cr
-MPE is pi_MPE = mean(pi|alpha,x).
+MPE is pi_MPE = E(pi|alpha,x), E() is the expectation function.
 }
 \examples{
 x <- sample(1L:10L,size = 40,replace = TRUE)
 obj <- CatDP()
 posterior(obj = obj,ss = x)
 MPE(obj)
+}
+\references{
+Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
 \code{\link{CatDP}}
