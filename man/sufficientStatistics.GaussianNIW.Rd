@@ -35,7 +35,7 @@ sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 sufficientStatistics(obj=obj,x=x,foreach = TRUE)
 }
 \references{
-Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 
 Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }

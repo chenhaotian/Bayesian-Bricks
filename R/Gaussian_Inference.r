@@ -274,7 +274,7 @@ dT <- function(x,mu,Sigma=NULL,A=NULL,df=1,LOG=TRUE){
 #' @examples
 #' obj <- GaussianNIW(gamma=list(m=c(0,1),k=0.0001,v=2,S=diag(2)))
 #' obj #print the content
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S=1)){
     object <- BasicBayesian(ENV = ENV)
@@ -319,7 +319,7 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' obj <- GaussianNIW()                    #an GaussianNIW object
 #' sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' sufficientStatistics(obj=obj,x=x,foreach = TRUE)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
     if(missing(x)) stop("'x' must be specified")
@@ -370,7 +370,7 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #' w <- runif(10)
 #' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = FALSE)
 #' sufficientStatistics_Weighted(obj=obj,x=x,w=w,foreach = TRUE)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
     if(missing(x)|missing(x)) stop("'x' or 'w' not specified!")
@@ -420,7 +420,7 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss = ss[[i]])
 #' obj
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
     
@@ -469,7 +469,7 @@ posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
 #' obj
 #' posteriorDiscard(obj = obj,ss = ssAll)
 #' obj
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
     
@@ -506,7 +506,7 @@ posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
 #' ss <- sufficientStatistics_Weighted(obj = obj,x=x,w=w,foreach = TRUE)
 #' for(i in 1L:length(ss)) posterior(obj = obj,ss=ss[[i]])
 #' MAP(obj)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 MAP.GaussianNIW <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
@@ -528,7 +528,7 @@ MAP.GaussianNIW <- function(obj,...){
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of "theta".
 #' @export
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 MPE.GaussianNIW <- function(obj,...){
     stop("MPE method for class 'GaussianNIW' is not implemented yet")
@@ -557,7 +557,7 @@ MPE.GaussianNIW <- function(obj,...){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
@@ -593,7 +593,7 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' ## or...
 #' ss <- sufficientStatistics(obj=obj,x=x,foreach = FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss=ss)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
@@ -649,7 +649,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' for(i in 1:nrow(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i,,drop=FALSE],LOG = TRUE)
 #' max(abs(out1-out2))
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(missing(x)) stop("'x' not specified!")
@@ -684,7 +684,7 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' @examples
 #' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
 #' rPosteriorPredictive(obj=obj,20)
-#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.2σ2 (2007): 16.
+#' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
     if(obj$gamma$v-length(obj$gamma$m)+1 < 0) stop("In the parameters of NIW, 'v' must be greater than p-1, where p is the dimension of the Gaussian variable. This error can be resolved by setting a larger 'v' when initializing the GaussianNIW object.")
