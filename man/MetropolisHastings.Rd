@@ -26,7 +26,7 @@ sample xhat from the target distribution p(xhat), with given proposal distributi
 where dp() is the density function of the target distribution, dq() the the density function of the proposal distribution. A new sample xhat is drawn from the sampler of the proposal distribution rq(). See examples.
 }
 \examples{
-\dontrun{
+\donttest{
 
 ## example1: independent Metropolis-Hastings algorithm, get 5000 samples from Beta(2.7,6.3)
 ## with independent uniform proposal U(0,1), and independent normal proposal N(0.5,1).

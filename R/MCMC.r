@@ -15,7 +15,7 @@
 #' @return a matrix of nsamples rows.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' ## example1: independent Metropolis-Hastings algorithm, get 5000 samples from Beta(2.7,6.3)
 #' ## with independent uniform proposal U(0,1), and independent normal proposal N(0.5,1).
