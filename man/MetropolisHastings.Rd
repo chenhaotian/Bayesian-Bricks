@@ -44,11 +44,10 @@ X2 <- MetropolisHastings(nsamples = 5000,xini = runif(1,0,1),dp=dp,dq=dq2,rq=rq2
 sum(diff(X1)!=0)/nrow(X1)                 #the acceptance rate of uniform proposal
 sum(diff(X2)!=0)/nrow(X2)                 #the acceptance rate of normal proposal
 ## Clearly Uniform, compare to Normal, can better resemble Beta, so the acceptance rate is higher
-par(mfcol = c(1,3))
+## plot the results
 hist(X1)
 hist(X2)
 hist(rbeta(5000,2.7,6.3))
-dev.off()
 
 ## example2: independent Metropolis-Hastings algorithm, sample from an improper distribution
 ## p(x) = -|x|+1, where -1<x<1, with independent uniform proposal U(-1,1)
@@ -80,11 +79,11 @@ X2 <- MetropolisHastings(nsamples = 50000,xini = rnorm(1),dp=dp,dq=dq,rq=rq2)
 ## step3: plot the result, calculate acceptance rate
 sum(diff(X1)!=0)/nrow(X1)
 sum(diff(X2)!=0)/nrow(X2)
-par(mfcol = c(1,3))
+## plot the results
 hist(X1,xlim = c(-10,5))
 hist(X2,xlim = c(-10,5))
 hist(c(rnorm(1000,1,1),rnorm(4000,-5,1)),xlim = c(-10,5))
-dev.off()
+
 ## note that X1 has a higher acceptance rate comparing to X2, though it performs poorer.
 ## So we use Kolmogorov-Smirnov to test the real performance of X1 and X2:
 ks.test(jitter(X1),c(rnorm(1000,1,1),rnorm(4000,-5,1))) #ks.test() assumes continuous
@@ -109,10 +108,10 @@ rq <- function(x) if(runif(1)<0.7) runif(1,x-0.1,x+0.1) else runif(1,x-3,x+3)
 X <- MetropolisHastings(nsamples = 5000,xini = rnorm(1),dp=dp,dq=dq,rq=rq)
 ## step3: plot the result, calculate acceptance rate
 sum(diff(X)!=0)/nrow(X)
-par(mfcol = c(1,2))
+## plot the results
 hist(X,xlim = c(-10,5))
 hist(c(rnorm(1000,1,1),rnorm(4000,-5,1)),xlim = c(-10,5))
-dev.off()
+
 ## perform the KS test again, this time it says there's no significance difference between the MH
 ## and the real samples. ks.test() assumes continuous samples doesn't contain equal values,
 ## otherwise there will be a warning.so use jitter() to remove the equals
