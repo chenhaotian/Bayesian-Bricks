@@ -19,10 +19,11 @@
 numeric, the marginal likelihood.
 }
 \description{
-Generate the marginal likelihood of the following model structure: \cr
-     pi|alpha ~ Dirichlet(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-the model structure and prior parameters are stored in a "CatDirichlet" object. \cr
+Generate the marginal likelihood of the following model structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 Marginal likelihood is the likelihood of x|alpha.
 }
 \examples{
@@ -36,5 +37,5 @@ marginalLikelihood_bySufficientStatistics(obj=obj,ss = ss,LOG = TRUE)
 Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
-@seealso \code{\link{CatDirichlet}}, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}}
+\code{\link{CatDirichlet}}, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}}
 }

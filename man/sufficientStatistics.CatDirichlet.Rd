@@ -11,7 +11,7 @@
 
 \item{x}{numeric,integer or character, samples of the Categorical distribution.}
 
-\item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+\item{foreach}{logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
@@ -19,11 +19,14 @@
 An object of class "ssCat", the sufficient statistics of a set of categorical samples. Or an object of the same class as x if foreach=TRUE.
 }
 \description{
-For following Categorical-Dirichlet model structure: \cr
-     pi|alpha ~ Dir(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-the sufficient statistics of a set of samples x is the effective counts of each uniqueLabel in x. i.e. T(x)[i] = sum(uniqueLabels[i]%in%x). \cr
-Unique values of x must be in obj$gamma$uniqueLabels, where "obj" is a "CatDirichlet" object, see examples below.
+For following Categorical-Dirichlet model structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The sufficient statistics of a set of samples x is: \cr
+\itemize{
+ \item the effective counts of each unique label in x. i.e. T(x)[i] = sum(uniqueLabels[i]%in%x). Unique values of x must be in obj$gamma$uniqueLabels, where "obj" is a "CatDirichlet" object, see examples below.
+}
 }
 \examples{
 obj <- CatDirichlet(gamma=list(alpha=runif(26,1,2),uniqueLabels = letters))

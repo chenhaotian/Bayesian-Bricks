@@ -19,13 +19,13 @@
 A numeric vector, the posterior predictive density.
 }
 \description{
-Generate the the density value of the posterior predictive distribution of the following structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     x|pi ~ Categorical(pi) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
+Generate the the density value of the posterior predictive distribution of the following structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{x|pi ~ Categorical(pi)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatDP" object. \cr
-Posterior predictive is the distribution of x|alpha.
+Posterior predictive density is p(x|alpha).
 }
 \examples{
 x <- sample(1L:10L,size = 40,replace = TRUE)
@@ -38,5 +38,5 @@ dPosteriorPredictive(obj = obj,x=1L:11L,LOG = FALSE)
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
-@seealso \code{\link{CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}, \code{\link{marginalLikelihood.CatDP}}
+\code{\link{CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}, \code{\link{marginalLikelihood.CatDP}}
 }

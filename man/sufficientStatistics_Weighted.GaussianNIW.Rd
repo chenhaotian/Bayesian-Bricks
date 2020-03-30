@@ -21,14 +21,16 @@
 If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
 }
 \description{
-For following Gaussian-NIW model structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
-The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are: \cr
- the effective number of samples N=sum(w); \cr
- the sample sum xsum = colSums(x*w); \cr
- the uncentered scatter matrix S = t(w*x)%*%x.
+For following Gaussian-NIW model structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
+The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are:
+\itemize{
+ \item the effective number of samples N=sum(w)
+ \item the sample sum xsum = colSums(x*w)
+ \item the uncentered scatter matrix S = t(w*x)%*%x
+}
 }
 \examples{
 x <- rGaussian(10,mu = c(-1.5,1.5),Sigma = matrix(c(0.1,0.03,0.03,0.1),2,2))

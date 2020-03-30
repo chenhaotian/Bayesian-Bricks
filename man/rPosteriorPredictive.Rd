@@ -4,21 +4,70 @@
 \alias{rPosteriorPredictive}
 \title{Generate random samples from the posterior predictive distribution}
 \usage{
-rPosteriorPredictive(obj, ...)
+rPosteriorPredictive(obj, n, ...)
 }
 \arguments{
 \item{obj}{A "BayesianBrick" object used to select a method.}
 
+\item{n}{integer, specify the number of samples to be generated.}
+
 \item{...}{further arguments passed to or from other methods.}
 }
 \value{
-a matrix or vector of random samples
+a matrix or vector or list of random samples, depends on the type of 'obj'.
 }
 \description{
 This is a generic function that will generate random samples from the posterior predictive distribution. i.e. for the model structure: \cr
      theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
+     x|theta ~ F(theta) \cr
 generate x_new from the posterior predictive distribution of x|gamma.
+For a given Bayesian bricks object obj, \code{rPosteriorPredictive()} will generate random samples from different model structures:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,Sigma
+See \code{?rPosteriorPredictive.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known.
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|mu,v,S
+See \code{?rPosteriorPredictive.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|m,k,v,S
+See \code{?rPosteriorPredictive.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\code{rPosteriorPredictive()} will generate samples from the distribution of x,X|m,V,a,b
+See \code{?rPosteriorPredictive.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
+See \code{?rPosteriorPredictive.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
+See \code{?rPosteriorPredictive.CatDP} for details.
+}
 }
 \seealso{
 \code{\link{rPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{rPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{rPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{rPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...

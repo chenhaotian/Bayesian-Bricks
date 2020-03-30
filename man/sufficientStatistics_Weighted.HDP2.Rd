@@ -19,19 +19,34 @@
 Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
 }
 \description{
-For following model structure: \cr
-Create an object of type "HDP2", which represents the model structure: \cr
-     G_m |eta ~ DP(eta,U), m = 1:M \cr
-     G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m \cr
-     pi_mj|G_mj,alpha ~ DP(alpha,G_mj) \cr
-     z|pi_mj ~ Categorical(pi_mj) \cr
-     k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj \cr
-     u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
-     theta_u|psi ~ H0(psi) \cr
-     x|theta_u,u ~ F(theta_u) \cr
-where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
+For following model structure:
+     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
+     \deqn{z|pi_mj ~ Categorical(pi_mj)}
+     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi ~ H0(psi)}
+     \deqn{x|theta_u,u ~ F(theta_u)}
+where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 In the case of HDP2, u, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
+}
+\examples{
+## a HDP2 with Gaussian NIW observations
+obj1 <- HDP2(gamma=list(gamma=1,alpha=1,j=2,m=2,
+                        H0aF="GaussianNIW",
+                        parH0=list(m=0,k=1,v=2,S=1)))
+## a HDP2 with Categorical-Dirichlet observations
+obj2 <- HDP2(gamma=list(gamma=1,alpha=1,j=2,m=2,
+                        H0aF="CatDirichlet",
+                        parH0=list(alpha=1,uniqueLabels=letters[1:3])))
+x1 <- rnorm(100)
+x2 <- sample(letters[1:3],100,replace = TRUE)
+w <- runif(100)
+sufficientStatistics_Weighted(obj = obj1,x=x1,w=w,foreach = FALSE)
+sufficientStatistics_Weighted(obj = obj2,x=x2,w=w,foreach = FALSE)
+sufficientStatistics_Weighted(obj = obj1,x=x1,w=w,foreach = TRUE)
 }
 \references{
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.

@@ -22,14 +22,13 @@ DP(
 An object of class "DP".
 }
 \description{
-Create an object of type "DP", which represents the Dirichlet-Process model structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     z|pi ~ Categorical(pi) \cr
-     theta_z|psi ~ H0(psi) \cr
-     x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
-In essence, An "DP" object is a combination of a "CatDP" object and an object of any "BasicBayesian" types(such as "GaussianNIG", "GaussianNIW", "CatDirichlet", and event "CatDP"). H0() and F() will be different based on different specification of the "BasicBayesian" object. \cr
-The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
+Create an object of type "DP", which represents the Dirichlet-Process model structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{z|pi ~ Categorical(pi)}
+     \deqn{theta_z|psi ~ H0(psi)}
+     \deqn{x|theta_z,z ~ F(theta_z)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
+The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
 \examples{
 \donttest{

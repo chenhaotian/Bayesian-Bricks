@@ -19,12 +19,13 @@
 A matrix of n rows and nrow(X) columns, each row is a sample.
 }
 \description{
-Generate random samples from the posterior predictive distribution of the following structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+Generate random samples from the posterior predictive distribution of the following structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-Posterior predictive is a distribution of x|gamma,X.
+Posterior predictive is a distribution of x|m,V,a,b,X
 }
 \examples{
 obj <- GaussianNIG(gamma=list(m=c(1,1),V=diag(2),a=1,b=1))
@@ -32,8 +33,8 @@ X <- matrix(runif(20),ncol=2)
 rPosteriorPredictive(obj=obj,n=3,X=X)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
-@seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}
+\code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}
 }

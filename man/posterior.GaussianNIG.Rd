@@ -19,12 +19,13 @@
 None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
-For the model structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+For the model structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-Update gamma by adding the information of newly observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
+Update (m,V,a,b) by adding the information of newly observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
 }
 \examples{
 obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0))
@@ -35,7 +36,7 @@ posterior(obj = obj,ss = ss)
 obj
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{sufficientStatistics.GaussianNIG}}

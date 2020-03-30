@@ -19,7 +19,9 @@ rGaussian(n, mu, Sigma = NULL, A = NULL)
 A matrix of n rows and length(mu) columns.
 }
 \description{
-Generate random samples from a Gaussian distribution.
+Generate random samples from a Gaussian distribution. For a random vector x, the density function of a (multivariate) Gaussian distribution is defined as:
+   \deqn{sqrt(2 pi^p |Sigma|)^{-1} exp(-1/2 (x-mu )^T Sigma^{-1} (x-mu))}
+where p is the dimension of x.
 }
 \examples{
 \donttest{

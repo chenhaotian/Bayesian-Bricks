@@ -19,12 +19,12 @@
 integer, the categorical samples.
 }
 \description{
-Generate random samples from the posterior predictive distribution of the following structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     z|pi ~ Categorical(pi) \cr
-     theta_z|psi ~ H0(psi) \cr
-     x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
+Generate random samples from the posterior predictive distribution of the following structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{z|pi ~ Categorical(pi)}
+     \deqn{theta_z|psi ~ H0(psi)}
+     \deqn{x|theta_z,z ~ F(theta_z)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 The model structure and prior parameters are stored in a "DP" object. \cr
 This function will generate random samples from the distribution  z|alpha,psi,x.
 }
@@ -42,5 +42,5 @@ rPosteriorPredictive(obj = obj,n=1,x=xnew[5])
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
-@seealso \code{\link{DP}}, \code{\link{dPosteriorPredictive.DP}}
+\code{\link{DP}}, \code{\link{dPosteriorPredictive.DP}}
 }

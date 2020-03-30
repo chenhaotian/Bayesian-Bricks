@@ -15,7 +15,9 @@ rDir(n, alpha)
 A numeric matrix of n rows and length(alpha) columns.
 }
 \description{
-Generate random samples from Dirichlet distribution.
+Generate random samples from Dirichlet distribution. For a random vector x, the density function is Dirichlet distribution is defined as:
+  1/Beta(alpha) prod_{i=1:p}  x_i^{alpha_i -1}
+Where Beta() is the beta function. p is the dimension of x.
 }
 \examples{
 rDir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)

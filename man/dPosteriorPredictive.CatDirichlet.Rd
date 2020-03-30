@@ -19,10 +19,11 @@
 A numeric vector, the posterior predictive density.
 }
 \description{
-Generate the the density value of the posterior predictive distribution of the following structure: \cr
-     pi|alpha ~ Dirichlet(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-the model structure and prior parameters are stored in a "CatDirichlet" object. \cr
+Generate the the density value of the posterior predictive distribution of the following structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 Posterior predictive is a distribution of x|alpha.
 }
 \examples{
@@ -37,5 +38,5 @@ for(i in seq_along(x)) res2[i] <- marginalLikelihood(obj=obj,x=x[i],LOG = TRUE)
 Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
-@seealso \code{\link{CatDirichlet}}, \code{\link{dPosteriorPredictive.CatDirichlet}}, \code{\link{marginalLikelihood.CatDirichlet}}
+\code{\link{CatDirichlet}}, \code{\link{dPosteriorPredictive.CatDirichlet}}, \code{\link{marginalLikelihood.CatDirichlet}}
 }

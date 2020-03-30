@@ -13,7 +13,7 @@
 
 \item{w}{numeric, sample weights.}
 
-\item{foreach}{logical, specifying whether to return the sufficient staistics for each observation. Default FALSE.}
+\item{foreach}{logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
@@ -21,11 +21,12 @@
 An object of class "ssCat", the sufficient statistics of a set of categorical samples. Or an object of the same class as x if foreach=TRUE.
 }
 \description{
-For following Categorical-Dirichlet model structure: \cr
-     pi|alpha ~ Dir(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
+For following Categorical-Dirichlet model structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 the sufficient statistics of a set of samples x and weights w are: \cr
-  the effective counts (in this case the sum of the weight w) of each uniqueLabel in x \cr
+  the effective counts (in this case the sum of the weight w) of each unique label in x \cr
 Unique values of x must be in obj$gamma$uniqueLabels, where "obj" is a "CatDirichlet" object, see examples below.
 }
 \examples{
@@ -39,5 +40,5 @@ sufficientStatistics_Weighted(obj=obj,x=x,w=w) #return the weighted counts of ea
 Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
-@seealso \code{\link{sufficientStatistics.CatDirichlet}} \code{\link{CatDirichlet}}
+\code{\link{sufficientStatistics.CatDirichlet}} \code{\link{CatDirichlet}}
 }

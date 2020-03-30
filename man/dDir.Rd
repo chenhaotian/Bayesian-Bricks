@@ -17,7 +17,9 @@ dDir(x, alpha, LOG = FALSE)
 A numeric vector of density values.
 }
 \description{
-Calculate the densities of a given set of Dirichlet samples.
+Calculate the densities of a given set of Dirichlet samples. For a random vector x, the density function is defined as:
+  1/Beta(alpha) prod_{i=1:p}  x_i^{alpha_i -1}
+Where Beta() is the beta function. p is the dimension of x.
 }
 \examples{
 x <- rDir(5,c(1,2,3)) #generate 5 samples with parameters c(1,2,3)

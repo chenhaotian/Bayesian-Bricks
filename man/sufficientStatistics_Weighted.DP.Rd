@@ -19,14 +19,23 @@
 Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
 }
 \description{
-For following model structure: \cr
-Create an object of type "DP", which represents the Dirichlet-Process model structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     z|pi ~ Categorical(pi) \cr
-     theta_z|psi ~ H0(psi) \cr
-     x|theta_z,z ~ F(theta_z) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_z correspondingly. \cr
+For following model structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{z|pi ~ Categorical(pi)}
+     \deqn{theta_z|psi ~ H0(psi)}
+     \deqn{x|theta_z,z ~ F(theta_z)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
+}
+\examples{
+obj1 <- DP(gamma=list(alpha=1,H0aF="GaussianNIW",parH0=list(m=1,k=1,v=1,S=1)))
+obj2 <- DP(gamma=list(alpha=1,H0aF="CatDirichlet",parH0=list(alpha=1,uniqueLabels=letters)))
+x1 <- rnorm(100)
+x2 <- sample(letters,100,replace = TRUE)
+w <- runif(100)
+sufficientStatistics_Weighted(obj = obj1,x=x1,w=w)
+sufficientStatistics_Weighted(obj = obj2,x=x2,w=w)
+sufficientStatistics_Weighted(obj = obj1,x=x1,w=w,foreach = TRUE)
 }
 \references{
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.

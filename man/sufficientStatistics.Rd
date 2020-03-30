@@ -4,10 +4,12 @@
 \alias{sufficientStatistics}
 \title{Get sample sufficient statistics}
 \usage{
-sufficientStatistics(obj, ...)
+sufficientStatistics(obj, x, ...)
 }
 \arguments{
-\item{obj}{A "BayesianBrick" object used to select a method.}
+\item{obj}{a "BayesianBrick" object used to select a method.}
+
+\item{x}{a set of samples.}
 
 \item{...}{further arguments passed to or from other methods.}
 }
@@ -15,11 +17,109 @@ sufficientStatistics(obj, ...)
 An object of corresponding sufficient statistics class, such as "ssGaussian"
 }
 \description{
-This is a generic function that will generate the sufficient statistics of a given Bayesian bricks object. i.e.
-for the model structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-get the sufficient statistics T(X)
+This is a generic function that will generate the sufficient statistics of a given Bayesian bricks object. i.e. \cr
+for the model structure:
+     \deqn{theta|gamma ~ H(gamma)}
+     \deqn{x|theta ~ F(theta)}
+get the sufficient statistics T(x). \cr
+For a given sample set x, each row of x is an observation, and a Bayesian bricks object obj. \code{sufficientStatistics()} return the sufficient statistics for different model structures:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+The sufficient statistics are:
+\itemize{
+\item N: the effective number of samples.
+\item xsum: the row sums of the samples.
+}
+See \code{?sufficientStatistics.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known. \cr
+The sufficient statistics are:
+\itemize{
+\item N: the effective number of samples.
+\item xsum: the sample scatter matrix centered on the mean vector.
+}
+See \code{?sufficientStatistics.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+The sufficient statistics are:
+\itemize{
+\item N: the effective number of samples.
+\item xsum: the row sums of the samples.
+\item S: the uncentered sample scatter matrix.
+}
+See \code{?sufficientStatistics.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+The sufficient statistics are:
+\itemize{
+\item N: the effective number of samples.
+\item SXx: covariance of X and x
+\item SX: the uncentered sample scatter matrix.
+\item Sx: the variance of x
+}
+See \code{?sufficientStatistics.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+The sufficient statistics of CatDirichlet object can either be x itself, or the counts of the unique labels in x.\cr
+See \code{?sufficientStatistics.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+The sufficient statistics of CatDP object can either be x itself, or the counts of the unique labels in x.\cr
+See \code{?sufficientStatistics.CatDP} for details.
+}
+\subsection{class(obj)="DP"}{
+Where
+     \deqn{pi|alpha ~ DP(alpha,U)}
+    \deqn{z|pi ~ Categorical(pi)}
+     \deqn{theta_z|psi ~ H0(psi)}
+     \deqn{x|theta_z,z ~ F(theta_z)}
+The sufficient statistics of "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP".
+See \code{?sufficientStatistics.DP} for details.
+}
+\subsection{class(obj)="HDP"}{
+Where
+     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
+     \deqn{z|pi_j ~ Categorical(pi_j)}
+     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{theta_k|psi ~ H0(psi)}
+The sufficient statistics of "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP".
+See \code{?sufficientStatistics.HDP} for details.
+}
+\subsection{class(obj)="HDP2"}{
+Where
+     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
+     \deqn{z|pi_mj ~ Categorical(pi_mj)}
+     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi ~ H0(psi)}
+     \deqn{x|theta_u,u ~ F(theta_u)}
+The sufficient statistics of "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2".
+See \code{?sufficientStatistics.HDP2} for details.
+}
 }
 \examples{
 x <- rGaussian(10,mu = 1,Sigma = 1)
@@ -27,5 +127,5 @@ obj <- GaussianNIW()                    #an GaussianNIW object
 sufficientStatistics(obj=obj,x=x)
 }
 \seealso{
-\code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{sufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 }

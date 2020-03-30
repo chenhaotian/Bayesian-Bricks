@@ -16,6 +16,9 @@ A numeric vector of the same length of 'x'.
 }
 \description{
 Calculate probability masses for integer valued Categorical random samples.
+For a random variable x, the density function of categorical distribution is defined as
+  \deqn{prod_{k in 1:K} p_k^{I(x=k)}}
+Where K is the number of unique values.
 }
 \examples{
 \donttest{

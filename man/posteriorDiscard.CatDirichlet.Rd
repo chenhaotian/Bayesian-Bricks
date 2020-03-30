@@ -19,10 +19,11 @@
 None. the prior parameters stored in "obj" will be updated with the information in "ss".
 }
 \description{
-Contrary to posterior(), this function will update alpha by removing the information of observed samples x for the model structure: \cr
-     pi|alpha ~ Dirichlet(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-the model structure and prior parameters are stored in a "CatDirichlet" object, the prior parameters in this object will be updated after running this function.
+Contrary to posterior(), this function will update alpha by removing the information of observed samples x for the model structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The model structure and prior parameters are stored in a "CatDirichlet" object, the prior parameters in this object will be updated after running this function.
 }
 \examples{
 obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))

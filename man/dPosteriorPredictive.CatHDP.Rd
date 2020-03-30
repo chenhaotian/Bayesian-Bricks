@@ -23,19 +23,19 @@
 A numeric vector, the posterior predictive density.
 }
 \description{
-Generate the the density value of the posterior predictive distribution of the following structure: \cr
-     G_j|gamma ~ DP(gamma,U), j = 1:J \cr
-     pi_j|G_j,alpha ~ DP(alpha,G_j) \cr
-     z|pi_j ~ Categorical(pi_j) \cr
-     k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
-where DP(gamma,U) is a Dirichlet Process on integers, gamma is the concentration parameter of the Dirichlet Process. DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. \cr
+Generate the the density value of the posterior predictive distribution of the following structure:
+     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
+     \deqn{z|pi_j ~ Categorical(pi_j)}
+     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatHDP, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatHDP" object. \cr
-Posterior predictive is a distribution of z,k|alpha,gamm,U,G_j.
+Posterior predictive density = p(z,k|alpha,gamm,U,G_j)
 }
 \references{
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
-@seealso \code{\link{CatHDP}}, \code{\link{dPosteriorPredictive.CatHDP}}
+\code{\link{CatHDP}}, \code{\link{dPosteriorPredictive.CatHDP}}
 }

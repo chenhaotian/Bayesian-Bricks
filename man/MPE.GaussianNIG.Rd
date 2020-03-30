@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{MPE.GaussianNIG}
 \alias{MPE.GaussianNIG}
-\title{MPE estimate of a "GaussianNIG" object}
+\title{Mean Posterior Estimate (MPE) of a "GaussianNIG" object}
 \usage{
 \method{MPE}{GaussianNIG}(obj, ...)
 }
@@ -15,15 +15,16 @@
 A named list, the MPE estimate of beta and sigma^2.
 }
 \description{
-Generate the MPE estimate of "theta" in following Gaussian-NIG structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+Generate the MPE estimate of (beta,sigma^2) in following Gaussian-NIG structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-MPE is {beta,sigma^2}_MPE = E(beta,sigma^2|gamma,x,X), E() is the expectation function.
+The MPEs are E(beta,sigma^2|m,V,a,b,X,x)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}

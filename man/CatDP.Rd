@@ -17,12 +17,12 @@ CatDP(objCopy = NULL, ENV = parent.frame(), gamma = list(alpha = 1))
 An object of class "CatDP".
 }
 \description{
-Create an object of type "CatDP", which represents the Categorical-Dirichlet-Process(Multinomial-Dirichlet-Process) conjugate structure on positive integers: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     x|pi ~ Categorical(pi) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
+Create an object of type "CatDP", which represents the Categorical-Dirichlet-Process(Multinomial-Dirichlet-Process) conjugate structure on positive integers:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{x|pi ~ Categorical(pi)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
+This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
 \examples{
 obj <- CatDP(gamma=list(alpha=2))
@@ -32,5 +32,5 @@ obj #print the content
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
-\code{\link{posterior.CatDP}},\code{\link{posteriorDiscard.CatDP}},\code{\link{MAP.CatDP}},\code{\link{marginalLikelihood.CatDP}} ...
+\code{\link{posterior.CatDP}},\code{\link{posteriorDiscard.CatDP}},\code{\link{MAP.CatDP}},\code{\link{marginalLikelihood.CatDP}}, \code{\link{dPosteriorPredictive.CatDP}}, \code{\link{rPosteriorPredictive.CatDP}}
 }

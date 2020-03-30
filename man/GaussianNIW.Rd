@@ -21,11 +21,11 @@ GaussianNIW(
 An object of class "GaussianNIW".
 }
 \description{
-Create an object of type "GaussianNIW", which represents the Gaussian-Normal-Inverse-Wishart (Gaussian-NIW) conjugate structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
+Create an object of type "GaussianNIW", which represents the Gaussian-Normal-Inverse-Wishart (Gaussian-NIW) conjugate structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
+This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
 \examples{
 obj <- GaussianNIW(gamma=list(m=c(0,1),k=0.0001,v=2,S=diag(2)))
@@ -37,5 +37,5 @@ Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def
 Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }
 \seealso{
-\code{\link{posterior.GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{MAP.GaussianNIW}},\code{\link{marginalLikelihood.GaussianNIW}} ...
+\code{\link{posterior.GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{MAP.GaussianNIW}},\code{\link{MPE.GaussianNIW}},\code{\link{marginalLikelihood.GaussianNIW}},\code{\link{rPosteriorPredictive.GaussianNIW}},\code{\link{dPosteriorPredictive.GaussianNIW}} ...
 }

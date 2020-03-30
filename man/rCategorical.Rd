@@ -9,13 +9,15 @@ rCategorical(n, p)
 \arguments{
 \item{n}{integer, number of samples.}
 
-\item{p}{numeric, probabilities.}
+\item{p}{numeric, probabilities. length(p)=K.}
 }
 \value{
 An integer vector of length n.
 }
 \description{
-Generate random integer samples from a Categorical distribution.
+Generate random integer samples from a Categorical distribution. For a random variable x, the density function of categorical distribution is defined as
+  \deqn{prod_{k in 1:K} p_k^{I(x=k)}}
+Where K is the number of unique values.
 }
 \examples{
 rCategorical(n=20,p=c(1,2))

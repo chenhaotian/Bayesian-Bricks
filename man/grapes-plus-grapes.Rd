@@ -12,8 +12,8 @@ e1 \%plus\% e2
 \item{e2}{numeric}
 }
 \value{
-numeric, the sum of "e1" and "e2". The length of the returned vector is the same length as the longeset of "e1" or "e2".
+numeric, the sum of "e1" and "e2". The length of the returned vector is the same length as the longest of "e1" or "e2".
 }
 \description{
-make NA+NA=0 and NA+nonNA=0 instead of NA+NA=NA and NA+nonNA=NA
+make NA+NA=0 and NA+(not NA)=0 instead of NA+NA=NA and NA+(not NA)=NA
 }

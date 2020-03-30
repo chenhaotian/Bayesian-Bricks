@@ -15,13 +15,13 @@
 numeric.
 }
 \description{
-Generate the MAP estimate of "pi" in following model structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     x|pi ~ Categorical(pi) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
+Generate the MAP estimate of "pi" in following model structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{x|pi ~ Categorical(pi)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatDP" object. \cr
-MAP is pi_MAP = argmax_pi p(pi|alpha,x).
+The MAP estimate of pi is pi_MAP = argmax_pi p(pi|alpha,x).
 }
 \examples{
 x <- sample(1L:10L,size = 40,replace = TRUE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{marginalLikelihood.HDP2}
 \alias{marginalLikelihood.HDP2}
-\title{Marginallikelihood for HDP2}
+\title{Marginal likelihood for HDP2}
 \usage{
 \method{marginalLikelihood}{HDP2}(obj, ...)
 }
@@ -15,5 +15,5 @@
 numeric, the marginal likelihood.
 }
 \description{
-Marginallikelihood for HDP2
+Marginal likelihood for HDP2
 }

@@ -72,7 +72,7 @@
 #' hist(X1,xlim = c(-10,5))
 #' hist(X2,xlim = c(-10,5))
 #' hist(c(rnorm(1000,1,1),rnorm(4000,-5,1)),xlim = c(-10,5))
-#' 
+#'
 #' ## note that X1 has a higher acceptance rate comparing to X2, though it performs poorer.
 #' ## So we use Kolmogorov-Smirnov to test the real performance of X1 and X2:
 #' ks.test(jitter(X1),c(rnorm(1000,1,1),rnorm(4000,-5,1))) #ks.test() assumes continuous

@@ -697,7 +697,7 @@ plot(x=x[,1],y=x[,2],col=uBest)
 
 #### Hierarchical Topic Modeling with HDP2
 
-If we want to extract topics from multiple corpus, and we want the corpus to share the same set of topics, this is a model called the "hierarchical topic model"(Griffiths, Thomas L., et al. "Hierarchical topic models and the nested chinese restaurant process." *Advances in neural information processing systems*. 2004.). A hierarchical topic model is a [Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies). The model can be built by simply replacing the `"GaussianNIW"` object with a `"CatDirichlet"` object in the previous R example.
+If we want to extract topics from multiple corpus, and we want the corpus to share the same set of topics, this is a model called the "hierarchical topic model"(Griffiths, Thomas L., et al. "Hierarchical topic models and the nested Chinese restaurant process." *Advances in neural information processing systems*. 2004.). A hierarchical topic model is a [Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies). The model can be built by simply replacing the `"GaussianNIW"` object with a `"CatDirichlet"` object in the previous R example.
 
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{MAP.GaussianNIW}
 \alias{MAP.GaussianNIW}
-\title{Maximum A Posteriori(MAP) estimate of a "GaussianNIW" object}
+\title{Maximum A Posteriori (MAP) estimate of a "GaussianNIW" object}
 \usage{
 \method{MAP}{GaussianNIW}(obj, ...)
 }
@@ -12,15 +12,18 @@
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
-A named list, the MAP estimate of "theta".
+A named list, the MAP estimate of mu and Sigma.
 }
 \description{
-Generate the MAP estimate of "theta" in following Gaussian-NIW structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
+Generate the MAP estimate of (mu,Sigma) in following Gaussian-NIW structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
-MAP is theta_MAP = argmax_theta p(theta|gamma,x).
+The MAP estimates are:
+\itemize{
+  \item (mu_MAP,Sigma_MAP) = argmax p(mu,Sigma|m,k,v,S,x)
+}
 }
 \examples{
 ## update the piror with new observations then calculate the MAP estimate

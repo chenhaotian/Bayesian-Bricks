@@ -17,9 +17,56 @@ A list of the MAP estimates
 \description{
 This is a generic function that will generate the MAP estimate of a given "BayesianBrick" object. For the model structure:  \cr
      theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-MAP esitmate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
+     x|theta ~ F(theta) \cr
+MAP estimate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
+For a given Bayesian bricks object obj, the MAP estimate will be:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+\code{MAP()} will return the MAP estimate of mu.
+See \code{?MAP.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known.
+\code{MAP()} will return the MAP estimate of Sigma.
+See \code{?MAP.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+\code{MAP()} will return the MAP estimate of mu and Sigma.
+See \code{?MAP.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\code{MAP()} will return the MAP estimate of beta and sigma^2.
+See \code{?MAP.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+\code{MAP()} will return the MAP estimate of pi.
+See \code{?MAP.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+\code{MAP()} will return the MAP estimate of pi.
+See \code{?MAP.CatDP} for details.
+}
 }
 \seealso{
-\code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{MAP.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MAP.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
 }

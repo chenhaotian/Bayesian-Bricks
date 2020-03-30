@@ -15,17 +15,18 @@ GaussianNIG(
 
 \item{ENV}{environment, specify in which environment the object will be created}
 
-\item{gamma}{list, a named list of NIG parameters, gamma=list(m,V,a,b). Where gamma$m is a numeric "location" parameter; gamma$V is a symmetric positive definite matrix representing the "scale" parameters; gamma$a and gamma$b are the "shape" and "rate" parameter of the Inverse Gamma distribution.}
+\item{gamma}{list, a named list of NIG parameters, gamma=list(m,V,a,b). Where gamma$m is a numeric "location" parameter; gamma$V is a symmetric positive definite matrix representing the "scale" parameters; gamma$a and gamma$b are the "shape" and "scale" parameter of the Inverse Gamma distribution.}
 }
 \value{
 An object of class "GaussianNIG".
 }
 \description{
-Create an object of type "GaussianNIG", which represents the Gaussian-Normal-Inverse-Gamma (Gaussian-NIG) conjugate structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X * beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
+Create an object of type "GaussianNIG", which represents the Gaussian and Normal-Inverse-Gamma (Gaussian-NIG) conjugate structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
 \examples{
 \donttest{
@@ -40,8 +41,8 @@ obj
 }
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
-\code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}} ...
+\code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{MPE.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}},\code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{rPosteriorPredictive.GaussianNIG}} ...
 }

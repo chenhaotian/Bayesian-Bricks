@@ -21,13 +21,17 @@
 An object of class "ssCatDP", the sufficient statistics of a set of categorical samples. Or an integer vector same as x if foreach=TRUE.
 }
 \description{
-For following model structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     x|pi ~ Categorical(pi) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
+For following model structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{x|pi ~ Categorical(pi)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatDP" object. \cr
-The sufficient statistics of a set of samples x is the effective counts of the unique positive integers.
+The sufficient statistics of a set of samples x is:
+\itemize{
+   \item unique positive integer values
+   \item effective counts of the unique positive integers
+}
 }
 \examples{
 x <- sample(1L:10L,size = 4,replace = TRUE)

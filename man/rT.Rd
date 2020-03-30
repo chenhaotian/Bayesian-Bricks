@@ -11,7 +11,7 @@ rT(n, mu, Sigma = NULL, A = NULL, df = 1)
 
 \item{mu}{numeric, mean vector.}
 
-\item{Sigma}{matrix, covariance matrix, one of Sigma and A should be non-NULL.}
+\item{Sigma}{matrix, Sigma is proportional to the covariance matrix of x, one of Sigma and A should be non-NULL.}
 
 \item{A}{matrix, the Cholesky decomposition of Sigma, an upper triangular matrix, one of Sigma and A should be non-NULL.}
 
@@ -21,7 +21,9 @@ rT(n, mu, Sigma = NULL, A = NULL, df = 1)
 A matrix of n rows and length(mu) columns, each row is a sample.
 }
 \description{
-Generate random samples from a (multivariate) t distribution
+Generate random samples from a (multivariate) t distribution. For a random vector x, the density function is defined as:
+    \deqn{Gamma((df + p)/2) / (Gamma(df/2)df^{p/2} pi ^{p/2} |Sigma|^{1/2}) [1+1/df (x-df)^T Sigma^{-1} (x-df)]^{-(df +p)/2}}
+Where p is the dimension of x.
 }
 \examples{
 \donttest{

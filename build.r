@@ -49,6 +49,7 @@ Collate:
     'Gaussian_Inference.r'
     'Dirichlet_Process.r'
     'MCMC.r'
+    'Gamma_Inference.r'
     'bbricks-package.R'
     'testData.r'
 ")

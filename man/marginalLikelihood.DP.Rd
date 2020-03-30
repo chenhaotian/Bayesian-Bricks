@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{marginalLikelihood.DP}
 \alias{marginalLikelihood.DP}
-\title{Marginallikelihood for Dirichlet Process(DP)}
+\title{Marginal likelihood for Dirichlet Process(DP)}
 \usage{
 \method{marginalLikelihood}{DP}(obj, ...)
 }
@@ -15,5 +15,5 @@
 numeric, the marginal likelihood.
 }
 \description{
-Marginallikelihood for Dirichlet Process(DP)
+Marginal likelihood for Dirichlet Process(DP)
 }

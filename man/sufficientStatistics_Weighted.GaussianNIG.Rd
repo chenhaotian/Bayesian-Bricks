@@ -23,17 +23,20 @@
 If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficient statistics of (x,X) as a whole.
 }
 \description{
-For following Gaussian-NIG model structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+For following Gaussian-NIG model structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on. \cr
-The sufficient statistics of a set of samples (x,X) and weights ware: \cr
- the effective number of samples N=sum(w); \cr
- the covariance of X and x SXx=t(w*X)%*%x \cr
- the covariance of X SX=t(w*X)%*%X \cr
- the covariance of x Sx=t(w*x)%*%x
+This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. \cr
+The sufficient statistics of a set of samples (x,X) and weights ware:
+\itemize{
+ \item the effective number of samples N=sum(w); \cr
+ \item the covariance of X and x SXx=t(w*X)%*%x \cr
+ \item the covariance of X SX=t(w*X)%*%X \cr
+ \item the covariance of x Sx=t(w*x)%*%x
+}
 }
 \examples{
 obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0))
@@ -44,7 +47,7 @@ sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics.GaussianNIG}}

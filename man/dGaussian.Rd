@@ -21,7 +21,9 @@ dGaussian(x, mu, Sigma = NULL, A = NULL, LOG = TRUE)
 A numeric vector.
 }
 \description{
-Get the density of a set of  samples from a Gaussian distribution
+Get the density of a set of samples from a (multivariate) Gaussian distribution. For a random vector x, the density function is defined as:
+   \deqn{sqrt(2 pi^p |Sigma|)^{-1} exp(-1/2 (x-mu )^T Sigma^{-1} (x-mu))}
+where p is the dimension of x.
 }
 \examples{
 \donttest{

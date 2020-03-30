@@ -15,11 +15,90 @@ posteriorDiscard(obj, ...)
 None, or an error message if the update fails.
 }
 \description{
-Contrary to posterior(), posteriorDiscard() a generic function that will update the prior distribution of a "BayesianBrick" object by removing the information provided by the observation's sufficient statistics. i.e. for the model structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-update gamma to gamma_posterior by removing the information of X from gamma
+Contrary to posterior(), posteriorDiscard() a generic function that will update the prior distribution of a "BayesianBrick" object by removing the information provided by the observation's sufficient statistics. i.e. for the model structure:
+     \deqn{theta|gamma ~ H(gamma)}
+     \deqn{x|theta ~ F(theta)}
+update gamma to gamma_posterior by removing the information of x from gamma.
+For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posteriorDiscard()} will update the posterior parameters in obj for different model structures:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+\code{posteriorDiscard()} will update m and S in obj.
+See \code{?posteriorDiscard.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known.
+\code{posteriorDiscard()} will update v and S in obj.
+See \code{?posteriorDiscard.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+\code{posteriorDiscard()} will update m, k, v and S in obj.
+See \code{?posteriorDiscard.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\code{posteriorDiscard()} will update m, V, a and b in obj.
+See \code{?posteriorDiscard.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+\code{posteriorDiscard()} will update alpha in obj.
+See \code{?posteriorDiscard.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+\code{posteriorDiscard()} will update alpha in obj.
+See \code{?posteriorDiscard.CatDP} for details.
+}
+\subsection{class(obj)="DP"}{
+Where
+     \deqn{pi|alpha ~ DP(alpha,U)}
+    \deqn{z|pi ~ Categorical(pi)}
+     \deqn{theta_z|psi ~ H0(psi)}
+     \deqn{x|theta_z,z ~ F(theta_z)}
+\code{posteriorDiscard()} will update alpha and psi in obj.
+See \code{?posteriorDiscard.DP} for details.
+}
+\subsection{class(obj)="HDP"}{
+Where
+     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
+     \deqn{z|pi_j ~ Categorical(pi_j)}
+     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{theta_k|psi ~ H0(psi)}
+\code{posteriorDiscard()} will update gamma, alpha and psi in obj.
+See \code{?posteriorDiscard.HDP} for details.
+}
+\subsection{class(obj)="HDP2"}{
+Where
+     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
+     \deqn{z|pi_mj ~ Categorical(pi_mj)}
+     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi ~ H0(psi)}
+     \deqn{x|theta_u,u ~ F(theta_u)}
+\code{posteriorDiscard()} will update eta, gamma, alpha and psi in obj.
+See \code{?posteriorDiscard.HDP2} for details.
+}
 }
 \seealso{
-\code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{posteriorDiscard.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posteriorDiscard.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posteriorDiscard.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posteriorDiscard.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posteriorDiscard.CatDP}} for Categorical-DP conjugate structure ...
 }

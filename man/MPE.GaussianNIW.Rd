@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{MPE.GaussianNIW}
 \alias{MPE.GaussianNIW}
-\title{Mean Posterior Estimate(MPE) of a "GaussianNIW" object}
+\title{Mean Posterior Estimate (MPE) of a "GaussianNIW" object}
 \usage{
 \method{MPE}{GaussianNIW}(obj, ...)
 }
@@ -12,15 +12,18 @@
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
-A named list, the MPE estimate of "theta".
+A named list, the MPE estimate of mu and Sigma.
 }
 \description{
-Generate the MPE of "theta" in following GaussianNIW structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
+Generate the MPE of (mu,Sigma) in following GaussianNIW structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
-MPE is theta_MPE = mean_theta(theta|gamma,x)
+The MPE estimates are:
+\itemize{
+  \item (mu_MPE,Sigma_MPE) = E(mu,Sigma|m,k,v,S,x)
+}
 }
 \references{
 Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.

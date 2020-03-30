@@ -9,22 +9,22 @@
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
 
-\item{x}{numeric/integer/character vector, observed Categorical samples.}
+\item{x}{matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
 
 \item{...}{Additional arguments to be passed to other inherited types.}
 }
 \value{
-A numeric vector, the posterior predictive density.
+A numeric vector of the same length as nrow(x), the posterior predictive density.
 }
 \description{
-Generate the the density value of the posterior predictive distribution of the following structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
+Generate the the density value of the posterior predictive distribution of the following structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
-Posterior predictive is a distribution of x|gamma.
+Posterior predictive density is p(x|m,k,v,S).
 }
 \examples{
 x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
@@ -42,5 +42,5 @@ Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def
 Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }
 \seealso{
-@seealso \code{\link{GaussianNIW}}, \code{\link{dPosteriorPredictive.GaussianNIW}}, \code{\link{marginalLikelihood.GaussianNIW}}
+\code{\link{GaussianNIW}}, \code{\link{dPosteriorPredictive.GaussianNIW}}, \code{\link{marginalLikelihood.GaussianNIW}}
 }

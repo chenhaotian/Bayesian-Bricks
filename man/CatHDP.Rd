@@ -21,14 +21,14 @@ CatHDP(
 An object of class "CatHDP".
 }
 \description{
-Create an object of type "CatHDP", which represents the Categorical-Hierarchical-Dirichlet-Process(Multinomial-Hierarchical-Dirichlet-Process) conjugate structure on positive integers: \cr
-     G_j|gamma ~ DP(gamma,U), j = 1:J \cr
-     pi_j|G_j,alpha ~ DP(alpha,G_j) \cr
-     z|pi_j ~ Categorical(pi_j) \cr
-     k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. \cr
+Create an object of type "CatHDP", which represents the Categorical-Hierarchical-Dirichlet-Process(Multinomial-Hierarchical-Dirichlet-Process) conjugate structure on positive integers:
+     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
+     \deqn{z|pi_j ~ Categorical(pi_j)}
+     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatHDP, z and k can only be positive integers. \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
+This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), rPosteriorPredictive() and so on.
 }
 \examples{
 obj <- CatHDP(gamma=list(gamma=1,alpha=1,j=2))

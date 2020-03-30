@@ -15,10 +15,11 @@
 A numeric vector, the MPE of "pi".
 }
 \description{
-Generate the MPE of "pi" in following Categorical-Dirichlet structure: \cr
-     pi|alpha ~ Dirichlet(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-the model structure and prior parameters are stored in a "CatDirichlet" object. \cr
+Generate the MPE of "pi" in following Categorical-Dirichlet structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 MPE is pi_MPE = E(pi|alpha,x), E() is the expectation function.
 }
 \examples{

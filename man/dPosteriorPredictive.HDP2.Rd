@@ -29,23 +29,23 @@
 A numeric vector, the posterior predictive density.
 }
 \description{
-Generate the the density value of the posterior predictive distribution of the following structure: \cr
-     G_m |eta ~ DP(eta,U), m = 1:M \cr
-     G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m \cr
-     pi_mj|G_mj,alpha ~ DP(alpha,G_mj) \cr
-     z|pi_mj ~ Categorical(pi_mj) \cr
-     k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj \cr
-     u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m \cr
-     theta_u|psi ~ H0(psi) \cr
-     x|theta_u,u ~ F(theta_u) \cr
-where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_u correspondingly. \cr
+Generate the the density value of the posterior predictive distribution of the following structure:
+     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
+     \deqn{z|pi_mj ~ Categorical(pi_mj)}
+     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi ~ H0(psi)}
+     \deqn{x|theta_u,u ~ F(theta_u)}
+where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 In the case of HDP2, u, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "HDP2" object. \cr
-Posterior predictive is a distribution of x,u,z,k|eta,gamma,alpha,psi or u,z,k|eta,gamma,alpha,psi,x.
+Posterior predictive density = p(u,z,k,x|eta,gamma,alpha,psi) when x is not NULL, or p(u,z,k|eta,gamma,alpha,psi) when x is NULL.
 }
 \references{
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
 }
 \seealso{
-@seealso \code{\link{HDP2}}, \code{\link{dPosteriorPredictive.HDP2}}, \code{\link{marginalLikelihood.HDP2}}
+\code{\link{HDP2}}, \code{\link{dPosteriorPredictive.HDP2}}, \code{\link{marginalLikelihood.HDP2}}
 }

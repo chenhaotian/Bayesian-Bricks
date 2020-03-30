@@ -19,10 +19,10 @@
 None. the model stored in "obj" will be updated with the information in "ss".
 }
 \description{
-For the model structure: \cr
-     pi|alpha ~ DP(alpha,U) \cr
-     x|pi ~ Categorical(pi) \cr
-where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers. \cr
+For the model structure:
+     \deqn{pi|alpha ~ DP(alpha,U)}
+     \deqn{x|pi ~ Categorical(pi)}
+where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }

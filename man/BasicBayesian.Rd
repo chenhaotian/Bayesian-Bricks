@@ -10,14 +10,14 @@ BasicBayesian(ENV = parent.frame())
 \item{ENV}{The environment where you want to create the BasicBayesian object}
 }
 \value{
-An object of class "BasicBayesian"
+An object of class "BasicBayesian".
 }
 \description{
-A Basic Bayesian Object is with following conditional dependency structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP" are all "BasicBayesian"s.
+A Basic Bayesian Object is with following conditional dependency structure: 
+     \deqn{theta|gamma ~ H(gamma)}
+     \deqn{X|theta ~ F(theta)}
+Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP" are all "BasicBayesian"s.
 }
 \seealso{
-\code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
 }

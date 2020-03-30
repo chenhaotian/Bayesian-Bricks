@@ -16,10 +16,57 @@ numeric, the marginal likelihood
 }
 \description{
 This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-Marginal likelihood is p(X|gamma), p() is the probability density/mass function for contunious/discrete X.
+     \deqn{theta|gamma ~ H(gamma)}
+     \deqn{x|theta ~ F(theta)}
+Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
+For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood_bySufficientStatistics()} will calculate the marginal likelihood for different model structures:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,Sigma)
+See \code{?marginalLikelihood_bySufficientStatistics.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known.
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|mu,v,S)
+See \code{?marginalLikelihood_bySufficientStatistics.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,k,v,S)
+See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x,X|m,V,a,b)
+See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
+See \code{?marginalLikelihood_bySufficientStatistics.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
+See \code{?marginalLikelihood_bySufficientStatistics.CatDP} for details.
+}
 }
 \seealso{
-\code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 }

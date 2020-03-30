@@ -16,10 +16,57 @@ A list of MPE estimates
 }
 \description{
 This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     X|theta ~ F(theta) \cr
-MPE esitmate of theta is theta_MAP = E(theta|gamma,x), E() is the expectation function.
+     \deqn{theta|gamma ~ H(gamma)}
+     \deqn{x|theta ~ F(theta)}
+MPE estimate of theta is theta_MPE = E(theta|gamma,x), E() is the expectation function.
+For a given Bayesian bricks object obj, the MPE estimate will be:
+\subsection{class(obj)="GaussianGaussian"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{mu ~ Gaussian(m,S)}
+Sigma is known.
+\code{MPE()} will return the MPE estimate of mu.
+See \code{?MPE.GaussianGaussian} for details.
+}
+\subsection{class(obj)="GaussianInvWishart"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+mu is known.
+\code{MPE()} will return the MPE estimate of Sigma.
+See \code{?MPE.GaussianInvWishart} for details.
+}
+\subsection{class(obj)="GaussianNIW"}{
+Where
+\deqn{x ~ Gaussian(mu,Sigma)}
+\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{mu ~ Gaussian(m,Sigma/k)}
+\code{MPE()} will return the MPE estimate of mu and Sigma.
+See \code{?MPE.GaussianNIW} for details.
+}
+\subsection{class(obj)="GaussianNIG"}{
+Where
+\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{sigma^2 ~ InvGamma(a,b)}
+\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\code{MPE()} will return the MPE estimate of beta and sigma^2.
+See \code{?MPE.GaussianNIG} for details.
+}
+\subsection{class(obj)="CatDirichlet"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ Dirichlet(alpha)}
+\code{MPE()} will return the MPE estimate of pi.
+See \code{?MPE.CatDirichlet} for details.
+}
+\subsection{class(obj)="CatDP"}{
+Where
+\deqn{x ~ Categorical(pi)}
+\deqn{pi ~ DirichletProcess(alpha)}
+\code{MPE()} will return the MPE estimate of pi.
+See \code{?MPE.CatDP} for details.
+}
 }
 \seealso{
-\code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{MPE.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MPE.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
 }

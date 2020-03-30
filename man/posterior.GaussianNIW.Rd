@@ -19,11 +19,11 @@
 None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
-For the model structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
-Update gamma by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianNIW" object, the prior parameters in this object will be updated after running this function.
+For the model structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
+Update (m,k,v,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianNIW" object, the prior parameters in this object will be updated after running this function.
 }
 \examples{
 x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))

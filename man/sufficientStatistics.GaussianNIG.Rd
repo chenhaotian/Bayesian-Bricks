@@ -21,16 +21,19 @@
 If foreach=TRUE, will return a list of sufficient statistics for each row of (x,X), otherwise will return the sufficient statistics of (x,X) as a whole.
 }
 \description{
-For following Gaussian-NIG model structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+For following Gaussian-NIG model structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-The sufficient statistics of a set of samples (x,X) are: \cr
- the effective number of samples N=nrow(X) or length(x); \cr
- the covariance of X and x SXx=t(X)%*%x \cr
- the covariance of X SX=t(X)%*%X \cr
- the covariance of x Sx=t(x)%*%x
+The sufficient statistics of a set of samples (x,X) are:
+\itemize{
+ \item the effective number of samples N=nrow(X) or length(x)
+ \item the covariance of X and x SXx=t(X)%*%x
+ \item the covariance of X SX=t(X)%*%X
+ \item the covariance of x Sx=t(x)%*%x
+}
 }
 \examples{
 obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0))
@@ -40,7 +43,7 @@ sufficientStatistics(obj = obj,X=X,x=x)
 sufficientStatistics(obj = obj,X=X,x=x,foreach = TRUE)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics_Weighted.GaussianNIG}}

@@ -17,15 +17,14 @@
 Return the sufficient statistics of the corresponding BasicBayesian type, see examples.
 }
 \description{
-For following model structure: \cr
-Create an object of type "HDP", which represents the Dirichlet-Process model structure: \cr
-     G_j|gamma ~ DP(gamma,U), j = 1:J \cr
-     pi_j|G_j,alpha ~ DP(alpha,G_j) \cr
-     z|pi_j ~ Categorical(pi_j) \cr
-     k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G \cr
-     theta_k|psi ~ H0(psi) \cr
-     x|theta_k,k ~ F(theta_k) \cr
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be arbitrary, they are distributions of x and theta_k correspondingly. \cr
+For following model structure:
+     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
+     \deqn{z|pi_j ~ Categorical(pi_j)}
+     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{theta_k|psi ~ H0(psi)}
+     \deqn{x|theta_k,k ~ F(theta_k)}
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 In the case of HDP, z and k can only be positive integers. \cr
 The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
 }

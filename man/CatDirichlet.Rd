@@ -15,16 +15,17 @@ CatDirichlet(
 
 \item{ENV}{environment, specify where the object will be created.}
 
-\item{gamma}{list, a named list of parameters, gamma=list(alpha,uniqueLabels). Where gamma$alpha is a numeric vector specifying the parameters of the Dirichlet distribution, gamma$uniqueLables is a integer/character vector specifying the unique category labels of the Categorical distribution.}
+\item{gamma}{list, a named list of parameters, gamma=list(alpha,uniqueLabels). Where gamma$alpha is a numeric vector specifying the parameters of the Dirichlet distribution, gamma$uniqueLabels is a integer/character vector specifying the unique category labels of the Categorical distribution.}
 }
 \value{
 An object of class "CatDirichlet".
 }
 \description{
-Create an object of type "CatDirichlet", which represents the Categorical-Dirichlet(Multinomial-Dirichlet) conjugate structure: \cr
-     pi|alpha ~ Dir(alpha) \cr
-     x|pi ~ Categorical(pi) \cr
-This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on. A categorical distribution is defined on a set of unique labels, usually these labels are integers, they can also be characters and factors.
+Create an object of type "CatDirichlet", which represents the Categorical (Multinomial) and Dirichlet conjugate structure:
+     \deqn{pi|alpha ~ Dir(alpha)}
+     \deqn{x|pi ~ Categorical(pi)}
+Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. A categorical distribution is defined on a set of unique labels, usually these labels are integers, they can also be characters and factors.
 }
 \examples{
 obj <- CatDirichlet(gamma=list(alpha=c(1,2,1),uniqueLabels = letters[1:3]))
@@ -34,5 +35,5 @@ obj #print the content
 Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
 }
 \seealso{
-\code{\link{posterior.CatDirichlet}},\code{\link{posteriorDiscard.CatDirichlet}},\code{\link{MAP.CatDirichlet}},\code{\link{marginalLikelihood.CatDirichlet}} ...
+\code{\link{posterior.CatDirichlet}},\code{\link{posteriorDiscard.CatDirichlet}},\code{\link{MAP.CatDirichlet}},\code{\link{MPE.CatDirichlet}},\code{\link{marginalLikelihood.CatDirichlet}},\code{\link{rPosteriorPredictive.CatDirichlet}},\code{\link{dPosteriorPredictive.CatDirichlet}} ...
 }

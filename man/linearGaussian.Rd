@@ -16,7 +16,7 @@ linearGaussian(
 )
 }
 \arguments{
-\item{x2}{numberic, an sample of x2, length(x2)=d2.}
+\item{x2}{numeric, an sample of x2, length(x2)=d2.}
 
 \item{mu1}{numeric, marginal mean of x1, length(m1)=d1.}
 
@@ -36,10 +36,10 @@ linearGaussian(
 A named list containing the conditional mean and covariance matrix.
 }
 \description{
-For the model structure \cr
-   x1 ~ Gaussian(mu1,Sigma1) \cr
-   x2 ~ Gaussian(Ax1+b,Sigma21) \cr
-   x1|x2,mu1,Sigma1,A,b,Sigma21 ~ Gaussian(mu12,Sigma12)
+For the model structure:
+   \deqn{x1 ~ Gaussian(mu1,Sigma1)}
+   \deqn{x2 ~ Gaussian(Ax1+b,Sigma21)}
+   \deqn{x1|x2,mu1,Sigma1,A,b,Sigma21 ~ Gaussian(mu12,Sigma12)}
 }
 \examples{
 x2 <- rGaussian(1,mu = c(0,0.2),Sigma = diag(2))

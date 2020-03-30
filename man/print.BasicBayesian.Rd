@@ -2,7 +2,7 @@
 % Please edit documentation in R/Bayesian_Bricks.r
 \name{print.BasicBayesian}
 \alias{print.BasicBayesian}
-\title{Print the content of an BasicBasyesian object}
+\title{Print the content of an BasicBayesian object}
 \usage{
 \method{print}{BasicBayesian}(x, ...)
 }
@@ -15,5 +15,5 @@
 None.
 }
 \description{
-Print the content of an BasicBasyesian object
+Print the content of an BasicBayesian object
 }

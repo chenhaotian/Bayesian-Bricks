@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{marginalLikelihood_bySufficientStatistics.GaussianNIG}
 \alias{marginalLikelihood_bySufficientStatistics.GaussianNIG}
-\title{Marginal likelihood of a "GaussianNIG" object, usnig sufficient statistics}
+\title{Marginal likelihood of a "GaussianNIG" object, using sufficient statistics}
 \usage{
 \method{marginalLikelihood_bySufficientStatistics}{GaussianNIG}(obj, ss, LOG = TRUE, ...)
 }
@@ -19,12 +19,13 @@
 numeric, the marginal likelihood.
 }
 \description{
-Generate the marginal likelihood of a set of observations of the following model structure: \cr
-     beta,sigma^2|gamma ~ NIG(gamma) \cr
-     x|beta,sigma^2,X ~ Gaussian(X%*%beta,sigma^2) \cr
-where gamma = (m,V,a,b) is the Normal-Inverse-Gamma(NIG) parameter, "m" is a numeric "location" parameter; "V" is a symmetric positive definite matrix representing the "scale" parameters; "a" and "b" are the "shape" and "rate" parameter of the Inverse Gamma distribution. \cr
+Generate the marginal likelihood of a set of observations of the following model structure:
+   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{sigma^2 ~ InvGamma(a,b)}
+   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
-Marginal likelihood is the likelihood of x|gamma,X.
+Marginal likelihood = p(x|m,V,a,b,X)
 }
 \examples{
 obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=1))
@@ -35,8 +36,8 @@ marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss)
 marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss,LOG = FALSE)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Dowloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
 }
 \seealso{
-@seealso \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
+\code{\link{GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
 }

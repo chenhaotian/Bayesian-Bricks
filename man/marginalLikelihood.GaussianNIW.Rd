@@ -9,7 +9,7 @@
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
 
-\item{x}{matrix, or the ones that can be converted to matrix. each row of x is an observationobservation matrix, or the ones that can be converted to matrix. each row of x is an observation}
+\item{x}{matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix. each row of x is an observation}
 
 \item{LOG}{Return the log density if set to "TRUE".}
 
@@ -19,12 +19,12 @@
 numeric, the marginal likelihood.
 }
 \description{
-Generate the marginal likelihood of the following model structure: \cr
-     theta|gamma ~ NIW(gamma) \cr
-     x|theta ~ Gaussian(theta) \cr
-where theta = (mu,Sigma) is the Gaussian parameter, gamma = (m,k,v,S) is the Normal-Inverse-Wishart(NIW) parameter. \cr
+Generate the marginal likelihood of the following model structure:
+     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
-Marginal likelihood is the likelihood of x|gamma.
+Marginal likelihood = p(x|m,k,v,S)
 }
 \examples{
 x <- rGaussian(1000,mu = c(1,1),Sigma = matrix(c(1,0.5,0.5,3),2,2))
@@ -40,5 +40,5 @@ Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def
 Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
 }
 \seealso{
-@seealso \code{\link{GaussianNIW}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}}
+\code{\link{GaussianNIW}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}}
 }
