@@ -8,5 +8,7 @@
 ^cran-comments\.md$
 ^index\.html$
 ^CRAN-RELEASE$
+^.*~$
+^.*#$
 ^doc$
 ^Meta$

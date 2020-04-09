@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 [bbricks](https://github.com/chenhaotian/Bayesian-Bricks) provides a collection of frequently used Bayesian parametric and nonparametric model *structures*, as well as a set of tools for common analytical *tasks*.
 
-+ *Structures* include Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
++ *Structures* include Gaussian and Gaussian conjugate structure, Gaussian and Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
 + *Tasks* include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ...
 
 See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples) to get started.
@@ -111,6 +111,14 @@ A Bayesian linear regression model has the following graph structure:
 The CPDs are:
 $$
 \begin{align}
+x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2) \\
+\beta & \sim Gaussian(m,\sigma^2 V) \\
+\sigma^2 & \sim InvGamma(a,b)
+\end{align}
+$$
+Since the combination of "Gaussian" and "InvGamma" is a commonly used conjugate structure in Bayesian linear regression, people named the combination as "Normal-Inverse-Gamma" (NIG) distribution. With NIG, the CPDs are usually represented as:
+$$
+\begin{align}
 \beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
 x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
 \end{align}
@@ -158,6 +166,22 @@ sd(predictedSamples)
 ```
 
 
+
+### Hierarchical Bayesian Linear Regression
+
+This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from 100 different schools.
+$$
+\begin{align}
+x | \beta_j , \sigma^2,X & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\
+\beta_j & \sim Gaussian(m,S)\text{, } j = 1:J\\
+\sigma^2 & \sim InvGamma(a,b)
+\end{align}
+$$
+
+
+Data: p143
+
+Example: p199
 
 ### Estimate Cancer Mortality Rates with Hierarchical Bayesian
 
@@ -706,6 +730,8 @@ If we want to extract topics from multiple corpus, and we want the corpus to sha
 Andrieu, Christophe, et al. "An introduction to MCMC for machine learning." *Machine learning* 50.1-2 (2003): 5-43.
 
 Johnson, Valen E., and James H. Albert. *Ordinal data modeling*. Springer Science & Business Media, 2006.
+
+Hoff, Peter D. *A first course in Bayesian statistical methods*. Vol. 580. New York: Springer, 2009.
 
 Li, Yuelin, Elizabeth Schofield, and Mithat Gönen. "A tutorial on Dirichlet process mixture modeling." *Journal of Mathematical Psychology* 91 (2019): 128-144.
 
