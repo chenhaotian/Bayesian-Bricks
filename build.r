@@ -18,7 +18,7 @@ devtools::document()
 
 ## add to .Rbuildignore to ignore non-package files
 ## "NEWS.md" is supported by CRAN, no need to exclude
-usethis::use_build_ignore(c("^LICENSE\\.md$","^README\\.md$","^\\.travis\\.yml$","^build\\.r$","^\\.#build\\.r$","^README\\.raw\\.md$","^notes_pictures$","^cran-comments\\.md$","^index\\.html$","^CRAN-RELEASE$","^.*~$","^.*#$"),escape = FALSE)
+usethis::use_build_ignore(c("^LICENSE\\.md$","^README\\.md$","^\\.travis\\.yml$","^build\\.r$","^\\.#build\\.r$","^README\\.raw\\.md$","^notes_pictures$","^cran-comments\\.md$","^index\\.html$","^CRAN-RELEASE$","^.*~$","^.*#$","^WORDLIST$","^inst$"),escape = FALSE)
 ## usethis::use_build_ignore(c("README.md",".travis.yml","build.r",".#build.r","README.raw.md","cran-comments.md"))
 
 ## Edit DESCRIPTIONN
@@ -146,7 +146,7 @@ namespace <- c(namespace,setdiff(funs,namespace)) #don't use union()
 writeLines(namespace,"./NAMESPACE")
 
 ## spell check
-spell_check()
+spell_check(use_wordlist = TRUE)        #ignore the words in file inst/WORDLIST
 
 ## check if all Rd files has \value
 rdn <- dir("man",full.names = TRUE)

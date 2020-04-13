@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{rPosteriorPredictive.GaussianNIW}
 \alias{rPosteriorPredictive.GaussianNIW}
-\title{Posterior predictive random generation of a "GaussianNIW" object}
+\title{Generate random samples from the posterior predictive distribution of a "GaussianNIW" object}
 \usage{
 \method{rPosteriorPredictive}{GaussianNIW}(obj, n, ...)
 }

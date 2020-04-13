@@ -9,7 +9,7 @@
 \arguments{
 \item{obj}{A "GaussianNIW" object.}
 
-\item{x}{matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.}
+\item{x}{matrix, or the ones that can be converted to matrix, each row of x is an observation.}
 
 \item{LOG}{Return the log density if set to "TRUE".}
 

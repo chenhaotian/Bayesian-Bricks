@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{rPosteriorPredictive.CatHDP2}
 \alias{rPosteriorPredictive.CatHDP2}
-\title{Posterior predictive random generation of a "CatHDP2" object}
+\title{Generate random samples from the posterior predictive distribution of a "CatHDP2" object}
 \usage{
 \method{rPosteriorPredictive}{CatHDP2}(obj, n = 1L, m, j, ...)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{rPosteriorPredictive.GaussianInvWishart}
 \alias{rPosteriorPredictive.GaussianInvWishart}
-\title{Posterior predictive random generation of a "GaussianInvWishart" object}
+\title{Generate random samples from the posterior predictive distribution of a "GaussianInvWishart" object}
 \usage{
 \method{rPosteriorPredictive}{GaussianInvWishart}(obj, n, ...)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Categorical_Inference.r
 \name{rPosteriorPredictive.CatDirichlet}
 \alias{rPosteriorPredictive.CatDirichlet}
-\title{Posterior predictive random generation of a "CatDirichlet" object}
+\title{Generate random samples from the posterior predictive distribution of a "CatDirichlet" object}
 \usage{
 \method{rPosteriorPredictive}{CatDirichlet}(obj, n, ...)
 }

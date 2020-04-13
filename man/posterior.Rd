@@ -20,6 +20,12 @@ This is a generic function that will update the prior distribution of a "Bayesia
      \deqn{x|theta ~ F(theta)}
 update gamma to gamma_posterior by adding the information of x to gamma.\cr
 For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posterior()} will update the posterior parameters in obj for different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{posterior()} will update m and S in obj.
+See \code{?posterior.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,9 +52,10 @@ See \code{?posterior.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{posterior()} will update m, V, a and b in obj.
 See \code{?posterior.GaussianNIG} for details.
 }
@@ -100,5 +107,5 @@ See \code{?posterior.HDP2} for details.
 }
 }
 \seealso{
-\code{\link{posterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{posterior.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{posterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
 }

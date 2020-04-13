@@ -2,7 +2,7 @@
 % Please edit documentation in R/Gaussian_Inference.r
 \name{rPosteriorPredictive.GaussianNIG}
 \alias{rPosteriorPredictive.GaussianNIG}
-\title{Posterior predictive random generation of a "GaussianNIG" object}
+\title{Generate random samples from the posterior predictive distribution of a "GaussianNIG" object}
 \usage{
 \method{rPosteriorPredictive}{GaussianNIG}(obj, n, X, ...)
 }
@@ -20,10 +20,10 @@ A matrix of n rows and nrow(X) columns, each row is a sample.
 }
 \description{
 Generate random samples from the posterior predictive distribution of the following structure:
-   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{x ~ Gaussian(X beta,sigma^2)}
    \deqn{sigma^2 ~ InvGamma(a,b)}
    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 Posterior predictive is a distribution of x|m,V,a,b,X
 }

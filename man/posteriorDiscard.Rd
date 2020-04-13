@@ -20,6 +20,12 @@ Contrary to posterior(), posteriorDiscard() a generic function that will update 
      \deqn{x|theta ~ F(theta)}
 update gamma to gamma_posterior by removing the information of x from gamma.
 For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posteriorDiscard()} will update the posterior parameters in obj for different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{posteriorDiscard()} will update m and S in obj.
+See \code{?posteriorDiscard.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,7 +52,7 @@ See \code{?posteriorDiscard.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
 \code{posteriorDiscard()} will update m, V, a and b in obj.
@@ -100,5 +106,5 @@ See \code{?posteriorDiscard.HDP2} for details.
 }
 }
 \seealso{
-\code{\link{posteriorDiscard.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posteriorDiscard.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posteriorDiscard.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posteriorDiscard.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posteriorDiscard.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{posteriorDiscard.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posteriorDiscard.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posteriorDiscard.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posteriorDiscard.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posteriorDiscard.CatDP}} for Categorical-DP conjugate structure ...
 }

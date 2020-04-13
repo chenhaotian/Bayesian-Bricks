@@ -16,8 +16,8 @@ An object of class "BasicBayesian".
 A Basic Bayesian Object is with following conditional dependency structure: 
      \deqn{theta|gamma ~ H(gamma)}
      \deqn{X|theta ~ F(theta)}
-Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP" are all "BasicBayesian"s.
+Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "LinearGaussianGaussian", "GaussianGaussian", "GaussianInvWishart", "GaussianNIW", "GaussianNIG", "CatDirichlet" and "CatDP" are all "BasicBayesian"s.
 }
 \seealso{
-\code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
 }

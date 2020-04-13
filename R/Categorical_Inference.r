@@ -416,6 +416,52 @@ MPE.CatDirichlet <- function(obj,...){
     obj$gamma$alpha/sum(obj$gamma$alpha)
 }
 
+#' @title Density function of the posterior distribution of a "CatDirichlet" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'      \deqn{pi|alpha ~ Dir(alpha)}
+#'      \deqn{x|pi ~ Categorical(pi)}
+#' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+#' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
+#' Posterior density is the density function of Dir(pi|alpha).
+#' @seealso \code{\link{CatDirichlet}}, \code{\link{rPosterior.CatDirichlet}}
+#' @param obj A "CatDirichlet" object.
+#' @param pi matrix or a numeric vector. When pi is a matrix, each row is an observation. When pi is a vector, it will be treated as only one observation.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric vector, the posterior densities for each row of pi.
+#' @export
+#' @examples
+#' obj <- CatDirichlet(gamma=list(alpha=runif(26),uniqueLabels = letters))
+#' dPosterior(obj = obj,pi = runif(26))
+#' dPosterior(obj = obj,pi = matrix(runif(26*10),nrow = 10))
+dPosterior.CatDirichlet <- function(obj,pi,LOG=TRUE,...){
+    if(is.vector(pi)) pi <- matrix(pi,nrow=1)
+    if(ncol(pi)!=length(obj$gamma$alpha)) stop("Dimensions of pi and obj$gamma$alpha don't match!")
+    dDir(x=pi,alpha = obj$gamma$alpha,LOG = LOG)
+}
+
+#' @title Generate ramdom samples from the posterior distribution of a "CatDirichlet" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#'      \deqn{pi|alpha ~ Dir(alpha)}
+#'      \deqn{x|pi ~ Categorical(pi)}
+#' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
+#' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
+#' Posterior distribution is Dir(pi|alpha).
+#' @seealso \code{\link{CatDirichlet}}, \code{\link{dPosterior.CatDirichlet}}
+#' @param obj A "CatDirichlet" object.
+#' @param n integer, the number of samples to be generated.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A matrix, each row is a sample of pi.
+#' @export
+#' @examples
+#' obj <- CatDirichlet(gamma=list(alpha=rep(1,26),uniqueLabels = letters))
+#' rPosterior(obj = obj,n=3)
+rPosterior.CatDirichlet <- function(obj,n=1,...){
+    rDir(n=n,alpha = obj$gamma$alpha)
+}
+
 #' @title Marginal likelihood of a "CatDirichlet" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
@@ -514,7 +560,7 @@ dPosteriorPredictive.CatDirichlet <- function(obj,x,LOG=TRUE,...){
     out
 }
 
-#' @title Posterior predictive random generation of a "CatDirichlet" object
+#' @title Generate random samples from the posterior predictive distribution of a "CatDirichlet" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{pi|alpha ~ Dir(alpha)}

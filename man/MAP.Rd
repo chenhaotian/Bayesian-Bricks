@@ -20,6 +20,13 @@ This is a generic function that will generate the MAP estimate of a given "Bayes
      x|theta ~ F(theta) \cr
 MAP estimate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
 For a given Bayesian bricks object obj, the MAP estimate will be:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+Where
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{MAP()} will return the MAP estimate of z.
+See \code{?MAP.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,9 +53,10 @@ See \code{?MAP.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{MAP()} will return the MAP estimate of beta and sigma^2.
 See \code{?MAP.GaussianNIG} for details.
 }
@@ -68,5 +76,5 @@ See \code{?MAP.CatDP} for details.
 }
 }
 \seealso{
-\code{\link{MAP.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MAP.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{MAP.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{MAP.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MAP.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
 }

@@ -24,10 +24,10 @@ If foreach=TRUE, will return a list of sufficient statistics for each row of (x,
 }
 \description{
 For following Gaussian-NIG model structure:
-   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{x ~ Gaussian(X beta,sigma^2)}
    \deqn{sigma^2 ~ InvGamma(a,b)}
    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. \cr
 The sufficient statistics of a set of samples (x,X) and weights ware:

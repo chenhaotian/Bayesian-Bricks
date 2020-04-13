@@ -20,6 +20,13 @@ This is a generic function that will generate the marginal likelihood of a set o
      \deqn{x|theta ~ F(theta)}
 Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood_bySufficientStatistics()} will calculate the marginal likelihood for different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+Where
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,A,b,Sigma)
+See \code{?marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,9 +53,10 @@ See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x,X|m,V,a,b)
 See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIG} for details.
 }
@@ -68,5 +76,5 @@ See \code{?marginalLikelihood_bySufficientStatistics.CatDP} for details.
 }
 }
 \seealso{
-\code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 }

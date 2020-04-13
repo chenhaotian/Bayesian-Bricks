@@ -20,6 +20,13 @@ This is a generic function that will generate the the density value of the poste
      \deqn{x|theta ~ F(theta)}
 get the probability density/mass of the posterior predictive distribution of a new sample x_new: p(x_new|gamma).
 For a given Bayesian bricks object obj and a new sample x, \code{dPosteriorPredictive()} will calculate the marginal likelihood for different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+Where
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{dPosteriorPredictive()} will return p(x|m,S,A,b,Sigma)
+See \code{?dPosteriorPredictive.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,9 +53,10 @@ See \code{?dPosteriorPredictive.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{dPosteriorPredictive()} will return p(x,X|m,V,a,b)
 See \code{?dPosteriorPredictive.GaussianNIG} for details.
 }
@@ -68,5 +76,5 @@ See \code{?dPosteriorPredictive.CatDP} for details.
 }
 }
 \seealso{
-\code{\link{dPosteriorPredictive.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{dPosteriorPredictive.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
 }

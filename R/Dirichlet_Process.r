@@ -538,7 +538,7 @@ dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE,...){
     out
 }
 
-#' @title Posterior predictive random generation of a "CatDP" object
+#' @title Generate random samples from the posterior predictive distribution of a "CatDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{pi|alpha ~ DP(alpha,U)}
@@ -744,7 +744,7 @@ dPosteriorPredictive.CatHDP <- function(obj,z,k,j,LOG=TRUE,...){
     p
 }
 
-#' @title Posterior predictive random generation of a "CatHDP" object
+#' @title Generate random samples from the posterior predictive distribution of a "CatHDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
@@ -973,7 +973,7 @@ dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE,...){
     p
 }
 
-#' @title Posterior predictive random generation of a "CatHDP2" object
+#' @title Generate random samples from the posterior predictive distribution of a "CatHDP2" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
@@ -1319,7 +1319,7 @@ dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE,...){
     logp
 }
 
-#' @title Posterior predictive random generation of a "DP" object
+#' @title Generate random samples from the posterior predictive distribution of a "DP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{pi|alpha ~ DP(alpha,U)}
@@ -1693,7 +1693,7 @@ dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE,...){
     }
 }
 
-#' @title Posterior predictive random generation of a "HDP" object
+#' @title Generate random samples from the posterior predictive distribution of a "HDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
@@ -2069,7 +2069,7 @@ dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE,...){
     }
 }
 
-#' @title Posterior predictive random generation of a "HDP2" object
+#' @title Generate random samples from the posterior predictive distribution of a "HDP2" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}

@@ -16,10 +16,10 @@ A named list, the MAP estimate of beta and sigma^2.
 }
 \description{
 Generate the MAP estimate of (beta,sigma^2) in following Gaussian-NIG structure:
-   \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+   \deqn{x ~ Gaussian(X beta,sigma^2)}
    \deqn{sigma^2 ~ InvGamma(a,b)}
    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 The MAP estimates are:
 \itemize{

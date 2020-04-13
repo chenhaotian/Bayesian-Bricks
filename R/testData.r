@@ -60,6 +60,13 @@ if(FALSE){
     lrData <- list(x=x,X=X)
     save(lrData,file = "~/github/bbricks/data/lrData.RData")
 
+    system("wget http://www2.stat.duke.edu/~pdh10/FCBS/Replication/nelsSES.RData ~/Downloads/")
+    load("~/Downloads/nelsSES.RData")
+    hlrData <- list(mathScore=nels$stu_mathscore,
+                    socioeconomicStatus=nels$stu_ses,
+                    schoolID=as.integer(as.factor(nels$sch_id)))
+    save(hlrData,file = "~/github/bbricks/data/hlrData.RData")
+    
     farmads <- readLines("~/Dropbox (Mendix)/tmp/Mendix/UserProfiling/topic/farm-ads")
     farmads <- tolower(farmads)
     farmads <- gsub("[0-9]","",farmads)
@@ -217,3 +224,6 @@ if(FALSE){
 #' @format A list of 20 character vectors.
 #' @references Johnson, Valen E., and James H. Albert. Ordinal data modeling. Springer Science & Business Media, 2006.
 "cancerData"
+
+
+

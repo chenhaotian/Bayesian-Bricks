@@ -15,7 +15,7 @@
 numeric vector, the MPE estimate of "mu".
 }
 \description{
-Generate the MAP estimate of mu in following model structure:
+Generate the MPE estimate of mu in following model structure:
      \deqn{x ~ Gaussian(mu,Sigma)}
      \deqn{mu ~ Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr

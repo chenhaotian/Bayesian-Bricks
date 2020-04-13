@@ -11,7 +11,6 @@
 #' For the model structure
 #'    \deqn{x1,x2|mu,Sigma ~ Gaussian(mu,Sigma)}
 #'    \deqn{x1|x2,mu,Sigma ~ Gaussian(mu12,Sigma12)}
-#' @seealso \code{\link{linearGaussian}}
 #' @param x2 numeric, an sample of X2, satisfying length(x2)<D, D is the dimension of the joint distribution.
 #' @param mu numeric, length D mean vector. mu=c(mu_X1,mu_X2)/.
 #' @param Sigma DxD covariance matrix. At least one of Sigma and Precision should be non-NULL.
@@ -44,45 +43,6 @@ inferenceJointGaussian <- function(x2,mu,Sigma=NULL,Precision=NULL){
     list(mu12=mu12,Sigma12=Sigma12)
 }
 
-#' @title Linear Gaussian systems
-#' @description
-#' For the model structure:
-#'    \deqn{x1 ~ Gaussian(mu1,Sigma1)}
-#'    \deqn{x2 ~ Gaussian(Ax1+b,Sigma21)}
-#'    \deqn{x1|x2,mu1,Sigma1,A,b,Sigma21 ~ Gaussian(mu12,Sigma12)}
-#' @seealso \code{\link{inferenceJointGaussian}} 
-#' @param x2 numeric, an sample of x2, length(x2)=d2.
-#' @param mu1 numeric, marginal mean of x1, length(m1)=d1.
-#' @param Sigma1 matrix, marginal covariance matrix of x1. At least one of Sigma1 and Precision1 should be non-NULL.
-#' @param Precision1 marginal precision matrix of x1,satisfying Precision1 = inverse(Sigma1). At least one of Sigma1 and Precision1 should be non-NULL.
-#' @param A matrix, dim(A) = d1 x d2.
-#' @param b numeric, length(b)=d1.
-#' @param Sigma21 matrix, dim(Sigma21) = d1 x d1, either Precision21 or Sigma21 should be non-NULL.
-#' @param Precision21 matrix, satisfying Precision21 = inverse(Sigma21), either Precision21 or Sigma21 should be non-NULL.
-#' @return A named list containing the conditional mean and covariance matrix.
-#' @export
-#' @examples
-#' x2 <- rGaussian(1,mu = c(0,0.2),Sigma = diag(2))
-#' mu1 <- c(0,0); Sigma1 <- diag(2); A <- matrix(c(2,1,1,1),2,2); b <- runif(2); Sigma21 <- diag(2)*0.2
-#' linearGaussian(x2=x2,mu1 = mu1,Sigma1 = Sigma1,A=A,b=b,Sigma21 = Sigma21)
-linearGaussian <- function(x2,mu1,Sigma1=NULL,Precision1=NULL,A,b,Sigma21=NULL,Precision21=NULL){
-    if(missing(x2)|missing(mu1)) stop("'x2' or 'mu1' not specified!")
-    if(is.null(Sigma1) & is.null(Precision1)) stop("Error in linearGaussian(): At least one of Sigma1 and Precision1 should be non-NULL")
-    if(is.null(Precision1)) Precision1 <- pdsInverse(Sigma1)
-    if(is.null(Sigma1)) Sigma1 <- pdsInverse(Precision1)
-    if(is.null(Sigma21) & is.null(Precision21)) stop("Error in linearGaussian(): At least one of Sigma21 and Precision21 should be non-NULL")
-    if(is.null(Precision21)) Precision21 <- pdsInverse(Sigma21)
-
-    Precision12 <- Precision1 + t(A)%*%Precision21%*%A
-    Sigma12 <- pdsInverse(Precision12)
-    mu12 <- Sigma12 %*% (t(A)%*%Precision21%*%drop(x2-b) + Precision1%*%drop(mu1))
-
-    list(
-        mu12=mu12,
-        Sigma12=Sigma12## ,
-    )
-}
-
 #' @title Random generation for Gaussian distribution
 #' @description
 #' Generate random samples from a Gaussian distribution. For a random vector x, the density function of a (multivariate) Gaussian distribution is defined as:
@@ -103,6 +63,7 @@ linearGaussian <- function(x2,mu1,Sigma1=NULL,Precision1=NULL,A,b,Sigma21=NULL,P
 #' @import stats
 rGaussian <- function(n,mu,Sigma=NULL,A=NULL){
     if(missing(n)|missing(mu)) stop("'n' or 'mu' not specified!")
+    mu <- as.vector(mu)
     d <- length(mu)                     #dimension
     if(is.null(A) & !is.null(Sigma)) A <- chol(Sigma)
     if(is.null(A) & is.null(Sigma)) stop("Error in rGaussian(): at least one of 'Sigma' and 'A' should be non-NULL!")
@@ -138,8 +99,9 @@ dGaussian <- function(x,mu,Sigma=NULL,A=NULL,LOG=TRUE){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
+    mu <- as.vector(mu)
     if(ncol(x)!=length(mu)) stop("dimension of 'x' and 'mu' don't match")
 
     if(is.null(A) & !is.null(Sigma)) A <- chol(Sigma)
@@ -288,6 +250,725 @@ rNIW <- function(m,k,v,S){
     list(mu=mu,Sigma=Sigma)
 }
 
+#' @title Create objects of type "LinearGaussianGaussian".
+#' @description
+#' Create an object of type "LinearGaussianGaussian", which represents the Linear Gaussian and Gaussian conjugate structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{m x n} matrix, x is a \eqn{m x 1} random vector, z is a \eqn{n x 1} random vector, b is a \eqn{n x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
+#' @seealso \code{\link{posterior.LinearGaussianGaussian}},\code{\link{posteriorDiscard.LinearGaussianGaussian}},\code{\link{MAP.LinearGaussianGaussian}},\code{\link{MPE.LinearGaussianGaussian}},\code{\link{marginalLikelihood.LinearGaussianGaussian}},\code{\link{rPosteriorPredictive.LinearGaussianGaussian}},\code{\link{dPosteriorPredictive.LinearGaussianGaussian}}.
+#' @param objCopy an object of type "LinearGaussianGaussian". If "objCopy" is not NULL, the function create a new "LinearGaussianGaussian" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
+#' @param ENV environment, specify where the object will be created.
+#' @param gamma list, a named list of parameters, gamma=list(Sigma,m,S). Where gamma$Sigma is the known covariance matrix of x, gamma$m and gamma$S are the prior mean and covariance matrix of z.
+#' @return An object of class "LinearGaussianGaussian".
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                               m=c(0.2,0.5,0.3),S=diag(3)))
+#' obj #print the content
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+LinearGaussianGaussian <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(Sigma=1,m=0,S=1)){
+    object <- BasicBayesian(ENV = ENV)
+    if(!is.null(objCopy)){
+        if(!.is(objCopy,"LinearGaussianGaussian")) stop("'objCopy' must be of class 'LinearGaussianGaussian'")
+        object$gamma <- objCopy$gamma
+        object$H <- objCopy$H
+        object$F <- objCopy$F
+    }else{
+        if(!missing(gamma))
+            if((!is.list(gamma)) |
+               (!all(names(gamma) %in% c("Sigma","m","S"))))
+                stop("gamma must be of list(Sigma,m,S)")
+        if(!(length(gamma$S)==1 & length(gamma$m)==1)){
+            if(dim(gamma$S)[1] != length(gamma$m))
+                stop("Dimensions of gamma$S and gamma$m don't match!")
+        }
+        gamma$m <- as.vector(gamma$m)
+        if(length(gamma$Sigma)==1){
+            gamma$dimx <- 1L
+        }else{
+            gamma$dimx <- dim(gamma$Sigma)[1]
+        }
+
+        gamma$dimz <- length(gamma$m)
+        gamma$priorPrecision <- pdsInverse(gamma$S)
+        gamma$observedPrecision <- pdsInverse(gamma$Sigma)
+        object$gamma <- gamma
+        object$H <- "Gaussian"
+        object$F <- "LinearGaussian"
+    }
+    class(object) <- c("LinearGaussianGaussian",class(object))
+    return(object)
+}
+
+#' @title Sufficient statistics of a "LinearGaussianGaussian" object
+#' @description
+#' For following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' For one dimensional observations: x is a vector of length N, or a \eqn{N x 1} matrix, each row is an observation; A is a \eqn{N x dimz} matrix; b is a length N vector. The sufficient statistics are:
+#' \itemize{
+#'  \item  SA = \eqn{A^T A / Sigma}
+#'  \item SAx = \eqn{A^T (x-b) / Sigma}
+#' }
+#' For \eqn{dimx} dimensional observations: x must be a \eqn{N x m} matrix, each row is an observation; A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list; b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. The sufficient statistics are:
+#' \itemize{
+#'  \item   SA = \eqn{sum_{i=1:N} A_i^T Sigma^{-1} A_i}
+#'  \item  SAx = \eqn{sum_{i=1:N} A_i^T Sigma^{-1} (x_i-b_i)}
+#' }
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{sufficientStatistics_Weighted.LinearGaussianGaussian}} 
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param x matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
+#' @param A matrix or list. when x is a \eqn{N x 1} matrix, A must be a matrix of \eqn{N x dimz}, dimz is the dimension of z; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list
+#' @param b matrix, when x is a \eqn{N x 1} matrix, b must also be a \eqn{N x 1} matrix or length N vector; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. When b = NULL, it will be treated as a vector of zeros. Default NULL.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
+#' @export
+#' @examples
+#' ## create a LinearGaussianGaussian object
+#' ## where x is 2 dimensional, z is 3 dimensional
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                               m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' sufficientStatistics(obj,x=x,A=A,b=b)
+#' Alist <- replicate(100,A,simplify=FALSE)
+#' ## should print the same thing as above:
+#' sufficientStatistics(obj,x=x,A=Alist,b=b)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+sufficientStatistics.LinearGaussianGaussian <- function(obj,x,A,b=NULL,foreach=FALSE,...){
+    if(missing(x)|missing(A)) stop("'x' and 'A' must be specified")
+    if(is.vector(x)){
+        x <- matrix(x, ncol = 1)
+    }else if(!.is(x,"matrix")){
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
+    }
+    N <- nrow(x)                        #number of samples
+    if(obj$gamma$dimx!=ncol(x)) stop("Dimension of x doesn't match 'dimx' in obj")
+    if(ncol(x)==1){
+        if(any(dim(A)!=c(N,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+        if(!is.null(b) & length(b)!=N) stop("Length of b don't match the number of observations!")
+        if(!is.null(b)) x <- x-as.vector(b)
+        if(foreach){
+            sapply(1:nrow(x),function(i){
+                ss <- list(SA = crossprod(A[i,,drop=FALSE])/obj$gamma$Sigma,
+                           SAx = drop(t(A[i,,drop=FALSE])*x[i]/obj$gamma$Sigma))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            },simplify = FALSE,USE.NAMES = FALSE)
+        }else{
+            ss <- list(SA = crossprod(A)/obj$gamma$Sigma,
+                       SAx = drop(t(A)%*%x/obj$gamma$Sigma))
+            class(ss) <- "ssLinearGaussianGaussian"
+            ss
+        }
+    }else{
+        if(!is.null(b)){
+            if(is.matrix(b) & all(dim(b)==c(N,obj$gamma$dimx))){
+                x <- x-b
+            }else if(is.vector(b) & length(b)==obj$gamma$dimx){
+                x <- sweep(x,MARGIN = 2,STATS = b,FUN = "-")
+            }else{
+                stop("Dimension of b doesn't match number of observations and 'dimx' in obj")
+            }
+        }
+        if(is.matrix(A)){
+            if(any(dim(A)!=c(obj$gamma$dimx,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+            if(foreach){
+                SA1 <- t(A)%*%obj$gamma$observedPrecision
+                SA <- SA1%*%A
+                sapply(1:nrow(x),function(i){
+                    ss <- list(SA = SA,
+                               SAx = drop(SA1%*%t(x[i,,drop=FALSE])))
+                    class(ss) <- "ssLinearGaussianGaussian"
+                    ss
+                },simplify = FALSE,USE.NAMES = FALSE)
+            }else{
+                ss <- list(SA = (t(A)%*%obj$gamma$observedPrecision%*%A) * N,
+                           SAx = rowSums(t(A)%*%obj$gamma$observedPrecision%*%t(x)))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            }
+        }else if(is.list(A)){
+            if(length(A)!=N) stop("Length of A doesn't match number of observations")
+            idx <- which(vapply(A,function(a){
+                if(is.matrix(a)){
+                    any(dim(a)!=c(obj$gamma$dimx,obj$gamma$dimz))
+                }else{
+                    TRUE
+                }
+            },FUN.VALUE = TRUE,USE.NAMES = FALSE))
+            if(length(idx)>0) stop("The dimension of the ",paste(idx,collapse = ","),"th element of A doesn't match x and z!")
+            out <- sapply(1:nrow(x),function(i){
+                SA1 <- t(A[[i]])%*%obj$gamma$observedPrecision
+                ss <- list(SA=SA1%*%A[[i]],
+                           SAx = drop(SA1%*%t(x[i,,drop=FALSE])))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            },simplify = FALSE,USE.NAMES = FALSE)
+            if(foreach){
+                out
+            }else{
+                ss <- Reduce(function(a,b){
+                    list(SA=a$SA+b$SA,
+                         SAx=a$SAx+b$SAx)
+                },out)
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            }
+        }
+    }
+}
+
+#' @title Weighted sufficient statistics of a "LinearGaussianGaussian" object
+#' @description
+#' For following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' For weight vector w and one dimensional observations: x is a vector of length N, or a \eqn{N x 1} matrix, each row is an observation, must satisfy \eqn{nrow(x)=length(w)}; A is a \eqn{N x dimz} matrix; b is a length N vector. The sufficient statistics are:
+#' \itemize{
+#'  \item  SA = \eqn{A^T (A w) / Sigma}
+#'  \item SAx = \eqn{A^T ((x-b) w) / Sigma}
+#' }
+#' For weight vector w and \eqn{dimx} dimensional observations: x must be a \eqn{N x m} matrix, each row is an observation, must satisfy \eqn{nrow(x)=length(w)}; A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list; b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. The sufficient statistics are:
+#' \itemize{
+#'  \item   SA = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} A_i}
+#'  \item  SAx = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} (x_i-b_i)}
+#' }
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{sufficientStatistics.LinearGaussianGaussian}} 
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param  x matrix, Gaussian samples, when x is a matrix, each row is a sample of dimension ncol(x). when x is a vector, x is length(x) samples of dimension 1.
+#' @param w numeric, sample weights.
+#' @param A matrix or list. when x is a \eqn{N x 1} matrix, A must be a matrix of \eqn{N x dimz}, dimz is the dimension of z; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list
+#' @param b matrix, when x is a \eqn{N x 1} matrix, b must also be a \eqn{N x 1} matrix or length N vector; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. When b = NULL, it will be treated as a vector of zeros. Default NULL.
+#' @param foreach logical, specifying whether to return the sufficient statistics for each observation. Default FALSE.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return If foreach=TRUE, will return a list of sufficient statistics for each row of x, otherwise will return the sufficient statistics of x as a whole.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' w <- runif(100)
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' sufficientStatistics_Weighted(obj,x=x,w=w,A=A,b=b)
+#' sufficientStatistics_Weighted(obj,x=x,w=w,A=A,b=b,foreach = TRUE)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+sufficientStatistics_Weighted.LinearGaussianGaussian <- function(obj,x,w,A,b=NULL,foreach=FALSE,...){
+    if(missing(x)|missing(w)|missing(A)) stop("'x', 'w' and 'A' must be specified")
+    if(is.vector(x)){
+        x <- matrix(x, ncol = 1)
+    }else if(!.is(x,"matrix")){
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
+    }
+    N <- nrow(x)                        #number of samples
+    if(obj$gamma$dimx!=ncol(x)) stop("Dimension of x doesn't match 'dimx' in obj")
+    if(length(w)!=nrow(x)) stop("Length of w doesn't match number of samples in x")
+    if(ncol(x)==1){
+        if(any(dim(A)!=c(N,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+        if(!is.null(b) & length(b)!=N) stop("Length of b don't match the number of observations!")
+        if(!is.null(b)) x <- x-as.vector(b)
+        if(foreach){
+            sapply(1:nrow(x),function(i){
+                ss <- list(SA = w[i]*crossprod(A[i,,drop=FALSE])/obj$gamma$Sigma,
+                           SAx = drop(w[i]*t(A[i,,drop=FALSE])*x[i]/obj$gamma$Sigma))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            },simplify = FALSE,USE.NAMES = FALSE)
+        }else{
+            
+            ss <- list(SA = t(A)%*%(A*w)/obj$gamma$Sigma,
+                       SAx = drop(t(A)%*%(x*w)/obj$gamma$Sigma))
+            class(ss) <- "ssLinearGaussianGaussian"
+            ss
+        }
+    }else{
+        if(!is.null(b)){
+            if(is.matrix(b) & all(dim(b)==c(N,obj$gamma$dimx))){
+                x <- x-b
+            }else if(is.vector(b) & length(b)==obj$gamma$dimx){
+                x <- sweep(x,MARGIN = 2,STATS = b,FUN = "-")
+            }else{
+                stop("Dimension of b doesn't match number of observations and 'dimx' in obj")
+            }
+        }
+        if(is.matrix(A)){
+            if(any(dim(A)!=c(obj$gamma$dimx,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+            if(foreach){
+                SA1 <- t(A)%*%obj$gamma$observedPrecision
+                SA <- SA1%*%A
+                sapply(1:nrow(x),function(i){
+                    ss <- list(SA = w[i]*SA,
+                               SAx = drop(w[i]*SA1%*%t(x[i,,drop=FALSE])))
+                    class(ss) <- "ssLinearGaussianGaussian"
+                    ss
+                },simplify = FALSE,USE.NAMES = FALSE)
+            }else{
+                ss <- list(SA = (t(A)%*%obj$gamma$observedPrecision%*%A) * sum(w),
+                           SAx = rowSums(t(A)%*%obj$gamma$observedPrecision%*%t(x*w)))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            }
+        }else if(is.list(A)){
+            if(length(A)!=N) stop("Length of A doesn't match number of observations")
+            idx <- which(vapply(A,function(a){
+                if(is.matrix(a)){
+                    any(dim(a)!=c(obj$gamma$dimx,obj$gamma$dimz))
+                }else{
+                    TRUE
+                }
+            },FUN.VALUE = TRUE,USE.NAMES = FALSE))
+            if(length(idx)>0) stop("The dimension of the ",paste(idx,collapse = ","),"th element of A doesn't match x and z!")
+            out <- sapply(1:nrow(x),function(i){
+                SA1 <- t(A[[i]])%*%obj$gamma$observedPrecision
+                ss <- list(SA=SA1%*%A[[i]]*w[i],
+                           SAx = drop(SA1%*%t(x[i,,drop=FALSE])*w[i]))
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            },simplify = FALSE,USE.NAMES = FALSE)
+            if(foreach){
+                out
+            }else{
+                ss <- Reduce(function(a,b){
+                    list(SA=a$SA+b$SA,
+                         SAx=a$SAx+b$SAx)
+                },out)
+                class(ss) <- "ssLinearGaussianGaussian"
+                ss
+            }
+        }
+    }
+}
+
+#' @title Update a "LinearGaussianGaussian" object with sample sufficient statistics
+#' @description
+#' For following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' Update (m,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "LinearGaussianGaussian" object, the prior parameters in this object will be updated after running this function.
+#' @seealso \code{\link{LinearGaussianGaussian}},\code{\link{posteriorDiscard.LinearGaussianGaussian}},\code{\link{sufficientStatistics.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param ss Sufficient statistics of x. In LinearGaussian-Gaussian case the sufficient statistic of sample x is a object of type "ssLinearGaussianGaussian", it can be  generated by the function sufficientStatistics().
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return None. the gamma stored in "obj" will be updated based on "ss".
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                               m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' ss <- sufficientStatistics(obj,x=x,A=A,b=b)
+#' obj
+#' posterior(obj=obj,ss=ss)
+#' obj
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+posterior.LinearGaussianGaussian <- function(obj,ss,...){
+    if(missing(ss)) stop("'ss' not specified!")
+    if(!.is(ss,"ssLinearGaussianGaussian")) stop("'ss' must be of class 'ssLinearGaussianGaussian', you need to use sufficientStatistics() to generate 'ssLinearGaussianGaussian' objects")
+
+    tmp <- obj$gamma$priorPrecision + ss$SA
+    obj$gamma$S <- pdsInverse(S = tmp,returnUpper = FALSE)
+    obj$gamma$m <- drop(obj$gamma$S %*% (obj$gamma$priorPrecision%*%obj$gamma$m+ss$SAx))
+    obj$gamma$priorPrecision <- tmp
+}
+
+#' @title Update a "LinearGaussianGaussian" object with sample sufficient statistics
+#' @description
+#' For following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' Contrary to posterior(), this function will update (m,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "LinearGaussianGaussian" object, the prior parameters in this object will be updated after running this function.
+#' @seealso \code{\link{LinearGaussianGaussian}},\code{\link{posterior.LinearGaussianGaussian}},\code{\link{sufficientStatistics.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param ss Sufficient statistics of x. In Gaussian-Gaussian case the sufficient statistic of sample x is a object of type "ssLinearGaussianGaussian", it can be generated by the function sufficientStatistics().
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return None. the gamma stored in "obj" will be updated based on "ss".
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                               m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' ss <- sufficientStatistics(obj,x=x,A=A,b=b)
+#' obj
+#' ## update prior into posterior
+#' posterior(obj=obj,ss=ss)
+#' obj
+#' ## remove the information, back to prior
+#' posteriorDiscard(obj = obj,ss = ss)
+#' obj
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+posteriorDiscard.LinearGaussianGaussian <- function(obj,ss,...){
+    if(missing(ss)) stop("'ss' not specified!")
+    if(!.is(ss,"ssLinearGaussianGaussian")) stop("'ss' must be of class 'ssLinearGaussianGaussian', you need to use sufficientStatistics() to generate 'ssLinearGaussianGaussian' objects")
+    
+    tmp <- obj$gamma$priorPrecision
+    obj$gamma$priorPrecision <- obj$gamma$priorPrecision - ss$SA
+    obj$gamma$S <- pdsInverse(S = obj$gamma$priorPrecision,returnUpper = FALSE)
+    obj$gamma$m <- drop(obj$gamma$S %*% (tmp %*% obj$gamma$m - ss$SAx))
+}
+
+#' @title Maximum A Posteriori (MAP) estimate of a "LinearGaussianGaussian" object
+#' @description
+#' Generate the MAP estimate of mu in following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' The MAP estimates are:
+#' \itemize{
+#'   \item \eqn{z_MAP = argmax p(z|m,S,A,b,x,Sigma)}
+#' }
+#' @seealso \code{\link{LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric vector, the MAP estimate of "z".
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' ss <- sufficientStatistics(obj,x=x,A=A,b=b)
+#' ## update prior into posterior
+#' posterior(obj=obj,ss=ss)
+#' ## get the MAP estimate of z
+#' MAP(obj)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+MAP.LinearGaussianGaussian <- function(obj,...){
+    obj$gamma$m
+}
+
+#' @title Mean Posterior Estimate (MPE) of a "LinearGaussianGaussian" object
+#' @description
+#' Generate the MPE estimate of mu in following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' The MPE estimates is:
+#' \itemize{
+#'   \item z_MPE = E(z|m,S,A,b,x,Sigma)
+#' }
+#' @seealso \code{\link{LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric vector, the MPE estimate of "z".
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' ss <- sufficientStatistics(obj,x=x,A=A,b=b)
+#' ## update prior into posterior
+#' posterior(obj=obj,ss=ss)
+#' ## get the MAP estimate of z
+#' MPE(obj)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+MPE.LinearGaussianGaussian <- function(obj,...){
+    obj$gamma$m
+}
+
+#' @title Posterior density function of a "LinearGaussianGaussian" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Posterior density is the density function of Gaussian(z|m,S).
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{rPosterior.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param z  matrix, or the ones that can be converted to matrix. Each row of z is an sample.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A numeric vector of the same length as nrow(z), the posterior density.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' z <- rGaussian(10,mu = runif(3),Sigma = diag(3))
+#' dPosterior(obj = obj,z=z)
+#' dPosterior(obj = obj,z=z,LOG=FALSE)
+dPosterior.LinearGaussianGaussian <- function(obj,z,LOG=TRUE,...){
+    if(missing(z)) stop("'z' not specified!")
+    if(is.vector(z)){
+        z <- matrix(z,ncol = 1)
+    }else if(!.is(z,"matrix")){
+        stop("'z' must be a vector(univariate) or matrix(multivariate)!")
+    }
+    dGaussian(x=z,mu=obj$gamma$m,Sigma = obj$gamma$S,LOG = LOG)
+}
+
+#' @title Posterior random generation of a "LinearGaussianGaussian" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Posterior distribution is Gaussian(z|m,S).
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{dPosterior.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param n integer, number of samples.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A matrix of n rows, each row is a sample of z.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' rPosterior(obj = obj,n=20)
+rPosterior.LinearGaussianGaussian <- function(obj,n=1,...){
+    rGaussian(n=n,mu=obj$gamma$m,Sigma = obj$gamma$S)
+}
+
+#' @title Marginal likelihood of a "LinearGaussianGaussian" object
+#' @description
+#' Generate the marginal likelihood of the following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Marginal likelihood = p(x|m,S,A,b,Sigma)
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param x matrix, or the ones that can be converted to matrix. Each row of x is an observation.
+#' @param A matrix or list. when x is a \eqn{N x 1} matrix, A must be a matrix of \eqn{N x dimz}, dimz is the dimension of z; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list
+#' @param b matrix, when x is a \eqn{N x 1} matrix, b must also be a \eqn{N x 1} matrix or length N vector; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. When b = NULL, it will be treated as a vector of zeros. Default NULL.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric, the marginal likelihood.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' marginalLikelihood(obj = obj,x=x,A=A,b=b)
+#' marginalLikelihood(obj = obj,x=x,A=A,b=b,LOG=FALSE)
+#' @references Gelman, Andrew, et al. Bayesian data analysis. CRC press, 2013.
+marginalLikelihood.LinearGaussianGaussian <- function(obj,x,A,b=NULL,LOG=TRUE,...){
+    
+    if(missing(x)|missing(A)) stop("'x' or 'A' not specified!")
+    if(is.vector(x)){
+        x <- matrix(x,ncol = 1)
+    }else if(!.is(x,"matrix")){
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
+    }
+
+    N <- nrow(x)
+    ss <- sufficientStatistics.LinearGaussianGaussian(obj=obj,x=x,A=A,b=b,foreach = TRUE)
+    
+    if(obj$gamma$dimx!=ncol(x)) stop("Dimension of x doesn't match 'dimx' in obj")
+    if(ncol(x)==1){
+        if(any(dim(A)!=c(N,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+        if(!is.null(b) & length(b)!=N) stop("Length of b don't match the number of observations!")
+        if(!is.null(b)) b <- matrix(b,ncol=1)
+        A <- lapply(1L:N,function(i){A[i,,drop=FALSE]}) #make A a list
+    }else{
+        if(!is.null(b)){
+            if(is.matrix(b) & all(dim(b)==c(N,obj$gamma$dimx))){
+            }else if(is.vector(b) & length(b)==obj$gamma$dimx){
+                b <- t(replicate(N,b,simplify = "array"))
+            }else{
+                stop("Dimension of b doesn't match number of observations and 'dimx' in obj")
+            }
+        }
+        if(is.matrix(A)){
+            if(any(dim(A)!=c(obj$gamma$dimx,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+            A <- replicate(N,A,simplify=FALSE)
+        }else if(is.list(A)){
+            if(length(A)!=N) stop("Length of A doesn't match number of observations")
+            idx <- which(vapply(A,function(a){
+                if(is.matrix(a)){
+                    any(dim(a)!=c(obj$gamma$dimx,obj$gamma$dimz))
+                }else{
+                    TRUE
+                }
+            },FUN.VALUE = TRUE,USE.NAMES = FALSE))
+            if(length(idx)>0) stop("The dimension of the ",paste(idx,collapse = ","),"th element of A doesn't match x and z!")
+        }
+    }
+    obj2 <- LinearGaussianGaussian(objCopy = obj) #copy obj to obj2
+    logp <- numeric(nrow(x))
+    for(i in 1:nrow(x)){
+        logp[i] <- dPosteriorPredictive.LinearGaussianGaussian(obj = obj2,x=x[i,,drop=FALSE],A=A[[i]],b=b[i,],LOG = TRUE)
+        posterior.LinearGaussianGaussian(obj = obj2,ss=ss[[i]])
+    }
+
+    if(!LOG) prod(exp(logp))
+    else sum(logp)
+}
+
+#' @title Marginal likelihood of a "LinearGaussianGaussian" object, using sufficient statistics
+#' @description
+#' Generate the marginal likelihood of the following model structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Marginal likelihood = p(x|m,S,Sigma)
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{marginalLikelihood.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param ss Sufficient statistics of x. In Gaussian-Gaussian case the sufficient statistic of sample x is a object of type "ssGaussianMean", it can be  generated by the function sufficientStatistics().
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric, the marginal likelihood.
+#' @export
+marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian <- function(obj,ss,LOG=TRUE,...){
+    stop("marginalLikelihood_bySufficientStatistics() for class 'LinearGaussianGaussian' is not implemented yet, please use marginalLikelihood() instead.")
+    if(missing(ss)) stop("'ss' not specified!")
+    if(!.is(ss,"ssGaussianMean")) stop("'ss' must be of class 'ssGaussianMean', you need to use sufficientStatistics() to generate 'ssGaussianMean' objects")
+}
+
+#' @title Posterior predictive density function of a "LinearGaussianGaussian" object
+#' @description
+#' Generate the the density value of the posterior predictive distribution of the following structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Posterior predictive density is p(x|m,S,A,b,Sigma).
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{rPosteriorPredictive.LinearGaussianGaussian}}, \code{\link{marginalLikelihood.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param x  matrix, or the ones that can be converted to matrix. Each row of x is an observation.
+#' @param A matrix or list. when x is a \eqn{N x 1} matrix, A must be a matrix of \eqn{N x dimz}, dimz is the dimension of z; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list
+#' @param b matrix, when x is a \eqn{N x 1} matrix, b must also be a \eqn{N x 1} matrix or length N vector; When x is a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. When b = NULL, it will be treated as a vector of zeros. Default NULL.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A numeric vector of the same length as nrow(x), the posterior predictive density.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' x <- rGaussian(100,mu = runif(2),Sigma = diag(2))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' dPosteriorPredictive(obj = obj,x=x,A=A,b=b)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+dPosteriorPredictive.LinearGaussianGaussian <- function(obj,x,A,b=NULL,LOG=TRUE,...){
+    if(missing(x)|missing(A)) stop("'x' or 'A' not specified!")
+    if(is.vector(x)){
+        x <- matrix(x,ncol = 1)
+    }else if(!.is(x,"matrix")){
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
+    }
+    N <- nrow(x)
+    if(obj$gamma$dimx!=ncol(x)) stop("Dimension of x doesn't match 'dimx' in obj")
+    if(ncol(x)==1){
+        if(any(dim(A)!=c(N,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+        if(!is.null(b) & length(b)!=N) stop("Length of b don't match the number of observations!")
+        if(!is.null(b)) x <- x-as.vector(b)
+        vapply(1L:N,function(i){
+            dGaussian(x=x[i],mu=A[i,,drop=FALSE]%*%obj$gamma$m,Sigma = A[i,,drop=FALSE]%*%obj$gamma$S%*%t(A[i,,drop=FALSE])+obj$gamma$Sigma)
+        },numeric(1))
+    }else{
+        if(!is.null(b)){
+            if(is.matrix(b) & all(dim(b)==c(N,obj$gamma$dimx))){
+                x <- x-b
+            }else if(is.vector(b) & length(b)==obj$gamma$dimx){
+                x <- sweep(x,MARGIN = 2,STATS = b,FUN = "-")
+            }else{
+                stop("Dimension of b doesn't match number of observations and 'dimx' in obj")
+            }
+        }
+        if(is.matrix(A)){
+            if(any(dim(A)!=c(obj$gamma$dimx,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+            dGaussian(x=x,mu=A%*%obj$gamma$m,Sigma = A%*%obj$gamma$S%*%t(A)+obj$gamma$Sigma)
+        }else if(is.list(A)){
+            if(length(A)!=N) stop("Length of A doesn't match number of observations")
+            idx <- which(vapply(A,function(a){
+                if(is.matrix(a)){
+                    any(dim(a)!=c(obj$gamma$dimx,obj$gamma$dimz))
+                }else{
+                    TRUE
+                }
+            },FUN.VALUE = TRUE,USE.NAMES = FALSE))
+            if(length(idx)>0) stop("The dimension of the ",paste(idx,collapse = ","),"th element of A doesn't match x and z!")
+            vapply(1:N,function(i){
+                dGaussian(x=x[i,,drop=FALSE],mu=A[[i]]%*%obj$gamma$m,Sigma = A[[i]]%*%obj$gamma$S%*%t(A[[i]])+obj$gamma$Sigma)
+            },numeric(1))
+        }
+    }
+}
+
+#' @title Generate random samples from the posterior predictive distribution of a "LinearGaussianGaussian" object
+#' @description
+#' Generate random samples from the posterior predictive distribution of the following structure:
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
+#' Posterior predictive is a distribution of x|m,S,A,b,Sigma.
+#' @seealso \code{\link{LinearGaussianGaussian}}, \code{\link{dPosteriorPredictive.LinearGaussianGaussian}}
+#' @param obj A "LinearGaussianGaussian" object.
+#' @param n integer, number of samples.
+#' @param A matrix or list. when you want the random samples x to be a \eqn{n x 1} matrix, A must be a matrix of \eqn{n x dimz}, dimz is the dimension of z; When you want the random samples x to be a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, A can be either a list or a matrix. When A is a list, \eqn{A = {A_1,A_2,...A_N}} is a list of \eqn{dimx x dimz} matrices. If A is a single \eqn{dimx x dimz} matrix, it will be replicated N times into a length N list.
+#' @param b matrix, when you want the random samples x to be a \eqn{N x 1} matrix, b must also be a \eqn{N x 1} matrix or length N vector; When you want x to be a \eqn{N x dimx} matrix, where \eqn{dimx > 1}, b can be either a matrix or a vector. When b is a matrix, \eqn{b={b_1^T,...,b_N^T}} is a \eqn{N x dimx} matrix, each row is a transposed vector. When b is a length \eqn{dimx} vector, it will be transposed into a row vector and replicated N times into a \eqn{N x dimx} matrix. When b = NULL, it will be treated as a vector of zeros. Default NULL.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A matrix of n rows, each row is a sample.
+#' @export
+#' @examples
+#' obj <- LinearGaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),
+#'                                          m=c(0.2,0.5,0.6),S=diag(3)))
+#' A <- matrix(runif(6),2,3)
+#' b <- runif(2)
+#' rPosteriorPredictive(obj = obj,n=20,A=A,b=b)
+#' @references Murphy, Kevin P. Machine learning: a probabilistic perspective. MIT press, 2012.
+rPosteriorPredictive.LinearGaussianGaussian <- function(obj,n=1,A,b=NULL,...){
+    if(missing(A)) stop("'A' not specified!")
+    z <- rGaussian(n=n,mu=obj$gamma$m,Sigma = obj$gamma$S)
+    epsilon <- rGaussian(n=n,mu=rep(0,obj$gamma$dimx),Sigma = obj$gamma$Sigma)
+    if(obj$gamma$dimx==1L){
+        if(any(dim(A)!=c(n,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+        x <- epsilon+rowSums(A*z)
+        if(!is.null(b) & length(b)!=n) stop("Length of b don't match the number of observations!")
+        if(!is.null(b)) x <- x+b
+    }else{
+        if(is.matrix(A)){
+            if(any(dim(A)!=c(obj$gamma$dimx,obj$gamma$dimz))) stop("Dimension of A don't match x and z!")
+            x <- z%*%t(A) + epsilon
+        }else if(is.list(A)){
+            if(length(A)!=n) stop("Length of A doesn't match number of observations")
+            idx <- which(vapply(A,function(a){
+                if(is.matrix(a)){
+                    any(dim(a)!=c(obj$gamma$dimx,obj$gamma$dimz))
+                }else{
+                    TRUE
+                }
+            },FUN.VALUE = TRUE,USE.NAMES = FALSE))
+            if(length(idx)>0) stop("The dimension of the ",paste(idx,collapse = ","),"th element of A doesn't match x and z!")
+            x <- do.call(rbind,lapply(1:n,function(i){
+                drop(A[[i]]%*%z[i,,drop=TRUE])
+            },numeric(1)))
+            x <- x+epsilon
+        }
+        if(!is.null(b)){
+            if(is.matrix(b) & all(dim(b)==c(n,obj$gamma$dimx))){
+                x <- x+b
+            }else if(is.vector(b) & length(b)==obj$gamma$dimx){
+                x <- sweep(x,MARGIN = 2,STATS = b,FUN = "+")
+            }else{
+                stop("Dimension of b doesn't match number of observations and 'dimx' in obj")
+            }
+        }
+        x
+    }
+}
+
 #' @title Create objects of type "GaussianGaussian".
 #' @description
 #' Create an object of type "GaussianGaussian", which represents the Gaussian and Gaussian conjugate structure:
@@ -356,7 +1037,7 @@ sufficientStatistics.GaussianGaussian <- function(obj,x,foreach=FALSE,...){
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(foreach){
         sapply(1:nrow(x),function(i){
@@ -404,7 +1085,7 @@ sufficientStatistics_Weighted.GaussianGaussian<- function(obj,x,w,foreach=FALSE,
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
     if(foreach){
@@ -432,7 +1113,6 @@ sufficientStatistics_Weighted.GaussianGaussian<- function(obj,x,w,foreach=FALSE,
 #' @seealso \code{\link{GaussianGaussian}},\code{\link{posteriorDiscard.GaussianGaussian}},\code{\link{sufficientStatistics.GaussianGaussian}}
 #' @param obj A "GaussianGaussian" object.
 #' @param ss Sufficient statistics of x. In Gaussian-Gaussian case the sufficient statistic of sample x is a object of type "ssGaussianMean", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
@@ -444,7 +1124,7 @@ sufficientStatistics_Weighted.GaussianGaussian<- function(obj,x,w,foreach=FALSE,
 #' posterior(obj = obj,ss = ss)
 #' obj
 #' @references Gelman, Andrew, et al. Bayesian data analysis. CRC press, 2013.
-posterior.GaussianGaussian <- function(obj,ss,w=NULL,...){
+posterior.GaussianGaussian <- function(obj,ss,...){
     
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussianMean")) stop("'ss' must be of class 'ssGaussianMean', you need to use sufficientStatistics() to generate 'ssGaussianMean' objects")
@@ -523,7 +1203,7 @@ MAP.GaussianGaussian <- function(obj,...){
 
 #' @title Mean Posterior Estimate (MPE) of a "GaussianGaussian" object
 #' @description
-#' Generate the MAP estimate of mu in following model structure:
+#' Generate the MPE estimate of mu in following model structure:
 #'      \deqn{x ~ Gaussian(mu,Sigma)}
 #'      \deqn{mu ~ Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
@@ -550,6 +1230,56 @@ MPE.GaussianGaussian <- function(obj,...){
     obj$gamma$m
 }
 
+#' @title Density function of the posterior distribution of a "GaussianGaussian" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'      \deqn{x ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu ~ Gaussian(m,S)}
+#' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
+#' Posterior density is the density function of Gaussian(mu|m,S).
+#' @seealso \code{\link{GaussianGaussian}}, \code{\link{rPosterior.GaussianGaussian}}
+#' @param obj A "GaussianGaussian" object.
+#' @param mu  matrix, or the ones that can be converted to matrix. Each row of mu is an sample.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A numeric vector of the same length as nrow(mu), the posterior density.
+#' @export
+#' @examples
+#' obj <- GaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),m=c(0.2,0.5),S=diag(2)))
+#' mu <- rGaussian(10,mu=c(0,0),Sigma = diag(2))
+#' dPosterior(obj=obj,mu=mu)
+dPosterior.GaussianGaussian <- function(obj,mu,LOG=TRUE,...){
+    if(missing(mu)) stop("'mu' not specified!")
+    if(is.vector(mu)){
+        mu <- matrix(mu,ncol = 1)
+    }else if(!.is(mu,"matrix")){
+        stop("'mu' must be a vector(univariate) or matrix(multivariate)!")
+    }
+    dGaussian(x=mu,mu=obj$gamma$m,Sigma = obj$gamma$S,LOG = LOG)
+}
+
+#' @title Generate ramdom samples from the posterior distribution of a "GaussianGaussian" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#'      \deqn{x ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu ~ Gaussian(m,S)}
+#' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
+#' Posterior distribution is Gaussian(mu|m,S).
+#' @seealso \code{\link{GaussianGaussian}}, \code{\link{dPosterior.GaussianGaussian}}
+#' @param obj A "GaussianGaussian" object.
+#' @param n integer, number of samples.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return A matrix of n rows, each row is a sample of mu.
+#' @export
+#' @examples
+#' obj <- GaussianGaussian(gamma=list(Sigma=matrix(c(2,1,1,2),2,2),m=c(0.2,0.5),S=diag(2)))
+#' rPosterior(obj=obj,n=20)
+rPosterior.GaussianGaussian <- function(obj,n=1,...){
+    rGaussian(n=n,mu=obj$gamma$m,Sigma = obj$gamma$S)
+}
+
 #' @title Marginal likelihood of a "GaussianGaussian" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
@@ -560,7 +1290,7 @@ MPE.GaussianGaussian <- function(obj,...){
 #' Marginal likelihood = p(x|m,S,Sigma)
 #' @seealso \code{\link{GaussianGaussian}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}}
 #' @param obj A "GaussianGaussian" object.
-#' @param x matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.
+#' @param x matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
@@ -577,7 +1307,7 @@ marginalLikelihood.GaussianGaussian <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     ss <- sufficientStatistics.GaussianGaussian(obj=obj,x=x,foreach = TRUE)
     obj2 <- GaussianGaussian(objCopy = obj) #copy obj to obj2
@@ -622,7 +1352,7 @@ marginalLikelihood_bySufficientStatistics.GaussianGaussian <- function(obj,ss,LO
 #' Posterior predictive density is p(x|m,S,Sigma).
 #' @seealso \code{\link{GaussianGaussian}}, \code{\link{dPosteriorPredictive.GaussianGaussian}}, \code{\link{marginalLikelihood.GaussianGaussian}}
 #' @param obj A "GaussianGaussian" object.
-#' @param x  matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.
+#' @param x  matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector of the same length as nrow(x), the posterior predictive density.
@@ -638,12 +1368,12 @@ dPosteriorPredictive.GaussianGaussian <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     dGaussian(x=x,mu=obj$gamma$m,Sigma = obj$gamma$S+obj$gamma$Sigma,LOG = LOG)
 }
 
-#' @title Posterior predictive random generation of a "GaussianGaussian" object
+#' @title Generate random samples from the posterior predictive distribution of a "GaussianGaussian" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{x ~ Gaussian(mu,Sigma)}
@@ -733,7 +1463,7 @@ sufficientStatistics.GaussianInvWishart <- function(obj,x,foreach=FALSE,...){
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(foreach){
         sapply(1:nrow(x),function(i){
@@ -782,7 +1512,7 @@ sufficientStatistics_Weighted.GaussianInvWishart<- function(obj,x,w,foreach=FALS
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
     if(foreach){
@@ -811,7 +1541,6 @@ sufficientStatistics_Weighted.GaussianInvWishart<- function(obj,x,w,foreach=FALS
 #' @seealso \code{\link{GaussianInvWishart}},\code{\link{posteriorDiscard.GaussianInvWishart}},\code{\link{sufficientStatistics.GaussianInvWishart}}
 #' @param obj A "GaussianInvWishart" object.
 #' @param ss Sufficient statistics of x. In Gaussian and Inverse-Wishart case the sufficient statistic of sample x is a object of type "ssGaussianVar", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
@@ -824,7 +1553,7 @@ sufficientStatistics_Weighted.GaussianInvWishart<- function(obj,x,w,foreach=FALS
 #' obj
 #' @references Gelman, Andrew, et al. Bayesian data analysis. CRC press, 2013.
 #' @references MARolA, K. V., JT KBNT, and J. M. Bibly. Multivariate analysis. AcadeInic Press, Londres, 1979.
-posterior.GaussianInvWishart <- function(obj,ss,w=NULL,...){
+posterior.GaussianInvWishart <- function(obj,ss,...){
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussianVar")) stop("'ss' must be of class 'ssGaussianVar', you need to use sufficientStatistics() to generate 'ssGaussianVar' objects")
     obj$gamma$v <- obj$gamma$v+ss$N
@@ -922,6 +1651,56 @@ MPE.GaussianInvWishart <- function(obj,...){
     obj$gamma$S/(obj$gamma$v-D-1)
 }
 
+#' @title Density function of the posterior distribution of a "GaussianInvWishart" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'     \deqn{x ~ Gaussian(mu,Sigma)}
+#'     \deqn{Sigma ~ InvWishart(v,S)}
+#' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
+#' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
+#' Posterior density is the density function of InvWishart(Sigma|v,S).
+#' @seealso \code{\link{GaussianInvWishart}}, \code{\link{rPosterior.GaussianInvWishart}}
+#' @param obj A "GaussianInvWishart" object.
+#' @param Sigma  matrix.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric, the posterior density of Sigma.
+#' @export
+#' @examples
+#' obj <- GaussianInvWishart(gamma=list(mu=c(-1.5,1.5),v=3,S=diag(2)))
+#' Sigma <- rInvWishart(df = 3,scale = diag(2))
+#' dPosterior(obj = obj,Sigma=Sigma)
+dPosterior.GaussianInvWishart <- function(obj,Sigma,LOG=TRUE,...){
+    if(missing(Sigma)) stop("'Sigma' not specified!")
+    if(is.vector(Sigma)){
+        Sigma <- matrix(Sigma,ncol = 1)
+    }else if(!.is(Sigma,"matrix")){
+        stop("'Sigma' Sigmast be a vector(univariate) or matrix(Sigmaltivariate)!")
+    }
+    if(any(dim(Sigma)!=dim(obj$gamma$S))) stop("Dimension of Sigma doesn't match obj$gamma$S.")
+    dInvWishart(x=Sigma,df = obj$gamma$v,scale = obj$gamma$S,LOG = LOG)
+}
+
+#' @title Generate one ramdom sample from the posterior distribution of a "GaussianInvWishart" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#'      \deqn{x ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu ~ Gaussian(m,S)}
+#' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
+#' Posterior distribution is Gaussian(mu|m,S).
+#' @seealso \code{\link{GaussianInvWishart}}, \code{\link{dPosterior.GaussianInvWishart}}
+#' @param obj A "GaussianInvWishart" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return matrix, a sample of Sigma.
+#' @export
+#' @examples
+#' obj <- GaussianInvWishart(gamma=list(mu=c(-1.5,1.5),v=3,S=diag(2)))
+#' rPosterior(obj = obj)
+rPosterior.GaussianInvWishart <- function(obj,...){
+    rInvWishart(df = obj$gamma$v,scale = obj$gamma$S)
+}
+
 #' @title Marginal likelihood of a "GaussianInvWishart" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
@@ -932,7 +1711,7 @@ MPE.GaussianInvWishart <- function(obj,...){
 #' Marginal likelihood = p(x|v,S,mu)
 #' @seealso \code{\link{GaussianInvWishart}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}}
 #' @param obj A "GaussianInvWishart" object.
-#' @param x matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.
+#' @param x matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
@@ -953,7 +1732,7 @@ marginalLikelihood.GaussianInvWishart <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(ncol(x)!=length(obj$gamma$mu)) stop("dimensions of 'x' and obj$gamma$mu don't match!")
     ss <- sufficientStatistics.GaussianInvWishart(obj=obj,x=x,foreach = TRUE)
@@ -1000,7 +1779,7 @@ marginalLikelihood_bySufficientStatistics.GaussianInvWishart <- function(obj,ss,
 #' Posterior predictive density is p(x|v,S,mu).
 #' @seealso \code{\link{GaussianInvWishart}}, \code{\link{dPosteriorPredictive.GaussianInvWishart}}, \code{\link{marginalLikelihood.GaussianInvWishart}}
 #' @param obj A "GaussianInvWishart" object.
-#' @param x  matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.
+#' @param x  matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector of the same length as nrow(x), the posterior predictive density.
@@ -1021,7 +1800,7 @@ dPosteriorPredictive.GaussianInvWishart <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     d <- length(obj$gamma$mu)           #dimension
     if(ncol(x)!=d) stop("dimensions of 'x' and obj$gamma$mu don't match!")
@@ -1029,7 +1808,7 @@ dPosteriorPredictive.GaussianInvWishart <- function(obj,x,LOG=TRUE,...){
     dT(x=x,mu=obj$gamma$mu,Sigma = obj$gamma$S/(obj$gamma$v-d+1),df = obj$gamma$v-d+1,LOG = LOG)
 }
 
-#' @title Posterior predictive random generation of a "GaussianInvWishart" object
+#' @title Generate random samples from the posterior predictive distribution of a "GaussianInvWishart" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'     \deqn{x ~ Gaussian(mu,Sigma)}
@@ -1128,7 +1907,7 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(foreach){
         sapply(1:nrow(x),function(i){
@@ -1181,7 +1960,7 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
     if(is.vector(x)){
         x <- matrix(x, ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     if(length(w)!=nrow(x)) stop("Error in sufficientStatisticsGaussian_Weighted(): number of weights and observations don't match")
     if(foreach){
@@ -1211,7 +1990,6 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
 #' @seealso \code{\link{GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{sufficientStatistics.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
 #' @param ss Sufficient statistics of x. In Gaussian-NIW case the sufficient statistic of sample x is a object of type "ssGaussian", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
@@ -1225,7 +2003,7 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
 #' obj
 #' @references Murphy, Kevin P. "Conjugate Bayesian analysis of the Gaussian distribution." def 1.22 (2007): 16.
 #' @references Gelman, Andrew, et al. "Bayesian Data Analysis Chapman & Hall." CRC Texts in Statistical Science (2004).
-posterior.GaussianNIW <- function(obj,ss,w=NULL,...){
+posterior.GaussianNIW <- function(obj,ss,...){
     
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussian")) stop("'ss' must be of class 'ssGaussian', you need to use sufficientStatistics() to generate 'ssGaussian' objects")
@@ -1344,6 +2122,55 @@ MPE.GaussianNIW <- function(obj,...){
          sigmaMAP=obj$gamma$S/(obj$gamma$v-D-1))
 }
 
+#' @title Density function of the posterior distribution of a "GaussianNIW" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
+#' Posterior density is the density function of NIW(mu,Sigma|m,k,v,S).
+#' @seealso \code{\link{GaussianNIW}}, \code{\link{rPosterior.GaussianNIW}}
+#' @param obj A "GaussianNIW" object.
+#' @param mu  vector.
+#' @param Sigma matrix, nrow(Sigma) = length(mu).
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric, the posterior density of (mu,Sigma).
+#' @export
+#' @examples
+#' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
+#' mu <- rnorm(2)
+#' Sigma <- rInvWishart(df = 3,scale = diag(2))
+#' dPosterior(obj = obj,mu=mu,Sigma = Sigma)
+dPosterior.GaussianNIW <- function(obj,mu,Sigma,LOG=TRUE,...){
+    if(missing(mu)|missing(Sigma)) stop("'mu' or 'Sigma' not specified!")
+    mu <- as.vector(mu)
+    if(length(mu)!=length(obj$gamma$m)) stop("Dimensions of mu and obj$gamma$m don't match")
+    if(any(dim(Sigma) != dim(obj$gamma$S))) stop("Dimensions of Sigma and obj$gamma$S don't match")
+    dNIW(mu=mu,Sigma = Sigma,m=obj$gamma$m,k=obj$gamma$k,v=obj$gamma$v,S=obj$gamma$S,LOG = LOG)
+}
+
+#' @title Generate ramdom samples from the posterior distribution of a "GaussianNIW" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
+#' Posterior distribution is NIW(mu,Sigma|m,k,v,S).
+#' @seealso \code{\link{GaussianNIW}}, \code{\link{dPosterior.GaussianNIW}}
+#' @param obj A "GaussianNIW" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return list(mu,Sigma), where mu is a numeric vector, Sigma is a symmetric positive definite matrix.
+#' @export
+#' @examples
+#' obj <- GaussianNIW(gamma=list(m=c(0,0),k=1,v=2,S=diag(2)))
+#' rPosterior(obj = obj)
+rPosterior.GaussianNIW <- function(obj,...){
+    rNIW(m=obj$gamma$m,k=obj$gamma$k,v=obj$gamma$v,S=obj$gamma$S)
+}
+
 #' @title Marginal likelihood of a "GaussianNIW" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
@@ -1355,7 +2182,7 @@ MPE.GaussianNIW <- function(obj,...){
 #'
 #' @seealso \code{\link{GaussianNIW}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
-#' @param x matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix. each row of x is an observation
+#' @param x matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return numeric, the marginal likelihood.
@@ -1374,7 +2201,7 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
     ss <- sufficientStatistics.GaussianNIW(obj=obj,x=x,foreach = FALSE)
     marginalLikelihood_bySufficientStatistics.GaussianNIW(obj = obj,ss=ss,LOG = LOG)
@@ -1431,7 +2258,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' Posterior predictive density is p(x|m,k,v,S).
 #' @seealso \code{\link{GaussianNIW}}, \code{\link{dPosteriorPredictive.GaussianNIW}}, \code{\link{marginalLikelihood.GaussianNIW}}
 #' @param obj A "GaussianNIW" object.
-#' @param x  matrix, or the ones that can be converted to matrix. each row of x is an observation matrix, or the ones that can be converted to matrix.
+#' @param x  matrix, or the ones that can be converted to matrix, each row of x is an observation.
 #' @param LOG Return the log density if set to "TRUE".
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A numeric vector of the same length as nrow(x), the posterior predictive density.
@@ -1452,7 +2279,7 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     if(is.vector(x)){
         x <- matrix(x,ncol = 1)
     }else if(!.is(x,"matrix")){
-        stop("'x' must be a vector(for univariate t) or matrix(for multivariate t)!")
+        stop("'x' must be a vector(for univariate) or matrix(for multivariate)!")
     }
 
 
@@ -1462,7 +2289,7 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
     dT(x=x,mu=obj$gamma$m,Sigma = (obj$gamma$k+1)/obj$gamma$k/(obj$gamma$v-d+1)*obj$gamma$S,df = obj$gamma$v-d+1,LOG = LOG)
 }
 
-#' @title Posterior predictive random generation of a "GaussianNIW" object
+#' @title Generate random samples from the posterior predictive distribution of a "GaussianNIW" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
 #'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
@@ -1490,10 +2317,10 @@ rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
 #' @title Create objects of type "GaussianNIG".
 #' @description
 #' Create an object of type "GaussianNIG", which represents the Gaussian and Normal-Inverse-Gamma (Gaussian-NIG) conjugate structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{MPE.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}},\code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{rPosteriorPredictive.GaussianNIG}} ...
 #' @param objCopy An object of type "GaussianNIG". If "objCopy" is not NULL, the function create a new "GaussianNIG" object by copying the content from objCopy, otherwise this new object will be created by using "ENV" and "gamma". Default NULL.
@@ -1538,10 +2365,10 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' @title Sufficient statistics of a "GaussianNIG" object
 #' @description
 #' For following Gaussian-NIG model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The sufficient statistics of a set of samples (x,X) are:
 #' \itemize{
@@ -1598,10 +2425,10 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "GaussianNIG" object
 #' @description
 #' For following Gaussian-NIG model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. \cr
 #' The sufficient statistics of a set of samples (x,X) and weights ware:
@@ -1664,16 +2491,15 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...
 #' @title Update a "GaussianNIG" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Update (m,V,a,b) by adding the information of newly observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{sufficientStatistics.GaussianNIG}}
 #' @param obj A "GaussianNIG" object.
 #' @param ss Sufficient statistics of (x,X). In Gaussian-NIG case the sufficient statistic of sample (x,X) is a object of type "ssGaussianLinear", it can be  generated by the function sufficientStatistics().
-#' @param w Sample weights, default NULL.
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return None. the gamma stored in "obj" will be updated based on "ss".
 #' @export
@@ -1685,7 +2511,7 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...
 #' posterior(obj = obj,ss = ss)
 #' obj
 #' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
-posterior.GaussianNIG <- function(obj,ss,w=NULL,...){
+posterior.GaussianNIG <- function(obj,ss,...){
     
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
@@ -1704,10 +2530,10 @@ posterior.GaussianNIG <- function(obj,ss,w=NULL,...){
 #' @title Update a "GaussianNIG" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Contrary to posterior(), this function will update (m,V,a,b) by removing the information of observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianNIG}},\code{\link{posterior.GaussianNIG}}
@@ -1754,10 +2580,10 @@ posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "GaussianNIG" object
 #' @description
 #' Generate the MAP estimate of (beta,sigma^2) in following Gaussian-NIG structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The MAP estimates are:
 #' \itemize{
@@ -1786,10 +2612,10 @@ MAP.GaussianNIG <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "GaussianNIG" object
 #' @description
 #' Generate the MPE estimate of (beta,sigma^2) in following Gaussian-NIG structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The MPEs are E(beta,sigma^2|m,V,a,b,X,x)
 #' @seealso \code{\link{GaussianNIG}}
@@ -1802,13 +2628,68 @@ MPE.GaussianNIG <- function(obj,...){
     stop("MPE method for class 'GaussianNIG' is not implemented yet")
 }
 
+#' @title Density function of the posterior distribution of a "GaussianNIG" object
+#' @description
+#' Generate the the density value of the posterior distribution of the following structure:
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 ~ InvGamma(a,b)}
+#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
+#' Posterior density is the density function of beta,sigma^2|a,b,m,V.
+#' @seealso \code{\link{GaussianNIG}}, \code{\link{rPosterior.GaussianNIG}}
+#' @param obj A "GaussianNIG" object.
+#' @param beta  numeric vector.
+#' @param sigma2 numeric.
+#' @param LOG Return the log density if set to "TRUE".
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return numeric, the posterior density of (beta,sigma^2).
+#' @export
+#' @examples
+#' obj <- GaussianNIG(gamma=list(m=c(0,0),V=diag(2),a=1,b=1))
+#' dPosterior(obj = obj,beta=runif(2),sigma2=3)
+dPosterior.GaussianNIG <- function(obj,beta,sigma2,LOG=TRUE,...){
+    if(missing(beta)|missing(sigma2)) stop("'beta' or 'sigma2' not specified!")
+    beta <- as.vector(beta)
+    if(length(sigma2)!=1) stop("length(sigma2) must equals to 1.")
+    if(length(beta)!=length(obj$gamma$m)) stop("Dimensions of beta and obj$gamma$m don't match!")
+    logp <- dInvGamma(x = sigma2,shape = obj$gamma$a,scale = obj$gamma$b,LOG = TRUE)+
+        dGaussian(x=matrix(beta,nrow=1),mu = obj$gamma$m,Sigma = obj$gamma$V*sigma2,LOG = TRUE)
+    if(!LOG) logp <- exp(logp)
+    logp
+}
+
+#' @title Generate ramdom samples from the posterior distribution of a "GaussianNIG" object
+#' @description
+#' Generate random samples from the posterior distribution of the following structure:
+#' Generate the the density value of the posterior distribution of the following structure:
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 ~ InvGamma(a,b)}
+#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
+#' Posterior distribution is the distribution of beta,sigma^2|m,V,a,b.
+#' @seealso \code{\link{GaussianNIG}}, \code{\link{dPosterior.GaussianNIG}}
+#' @param obj A "GaussianNIG" object.
+#' @param ... Additional arguments to be passed to other inherited types.
+#' @return list(beta,sigma2), where beta is a numeric vector, sigma is a scalar value.
+#' @export
+#' @examples
+#' obj <- GaussianNIG(gamma=list(m=c(0,0),V=diag(2),a=1,b=1))
+#' rPosterior(obj = obj)
+rPosterior.GaussianNIG <- function(obj,...){
+    sigma2 <- rInvGamma(n=1,shape = obj$gamma$a,scale = obj$gamma$b)
+    beta <- rGaussian(n=1,mu = obj$gamma$m,Sigma = obj$gamma$V*sigma2)
+    list(beta=beta,sigma2=sigma2)
+}
+
 #' @title Marginal likelihood of a "GaussianNIG" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Marginal likelihood = p(x|m,V,a,b,X).
 #' @seealso \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}}
@@ -1842,10 +2723,10 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' @title Marginal likelihood of a "GaussianNIG" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of a set of observations of the following model structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Marginal likelihood = p(x|m,V,a,b,X)
 #' @seealso \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
@@ -1882,10 +2763,10 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' @title Posterior predictive density function of a "GaussianNIG" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior predictive density is p(x|m,V,a,b,X).
 #' @seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{marginalLikelihood.GaussianNIG}}
@@ -1922,13 +2803,13 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     })
 }
 
-#' @title Posterior predictive random generation of a "GaussianNIG" object
+#' @title Generate random samples from the posterior predictive distribution of a "GaussianNIG" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
 #'    \deqn{sigma^2 ~ InvGamma(a,b)}
 #'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
-#' Where InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
+#' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior predictive is a distribution of x|m,V,a,b,X
 #' @seealso \code{\link{GaussianNIG}}, \code{\link{dPosteriorPredictive.GaussianNIG}}

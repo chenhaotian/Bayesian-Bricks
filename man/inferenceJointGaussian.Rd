@@ -31,6 +31,3 @@ m <- runif(5)
 x2 <- runif(3)
 inferenceJointGaussian(x2 = x2,mu = m,Precision = P)
 }
-\seealso{
-\code{\link{linearGaussian}}
-}

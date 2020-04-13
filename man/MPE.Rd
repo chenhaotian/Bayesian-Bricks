@@ -20,6 +20,13 @@ This is a generic function that will generate the MPE estimate of a given "Bayes
      \deqn{x|theta ~ F(theta)}
 MPE estimate of theta is theta_MPE = E(theta|gamma,x), E() is the expectation function.
 For a given Bayesian bricks object obj, the MPE estimate will be:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+Where
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{MPE()} will return the MPE estimate of z.
+See \code{?MPE.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -46,9 +53,10 @@ See \code{?MPE.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{MPE()} will return the MPE estimate of beta and sigma^2.
 See \code{?MPE.GaussianNIG} for details.
 }
@@ -68,5 +76,5 @@ See \code{?MPE.CatDP} for details.
 }
 }
 \seealso{
-\code{\link{MPE.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MPE.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{MPE.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{MPE.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MPE.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
 }

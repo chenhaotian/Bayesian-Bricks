@@ -6,9 +6,9 @@
 #' A Basic Bayesian Object is with following conditional dependency structure: 
 #'      \deqn{theta|gamma ~ H(gamma)}
 #'      \deqn{X|theta ~ F(theta)}
-#' Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP" are all "BasicBayesian"s.
+#' Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "LinearGaussianGaussian", "GaussianGaussian", "GaussianInvWishart", "GaussianNIW", "GaussianNIG", "CatDirichlet" and "CatDP" are all "BasicBayesian"s.
 #' 
-#' @seealso \code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
 #' @param ENV The environment where you want to create the BasicBayesian object
 #' @return An object of class "BasicBayesian".
 #' @export
@@ -32,6 +32,16 @@ BasicBayesian <- function(ENV=parent.frame()){
 #'      \deqn{x|theta ~ F(theta)}
 #' get the sufficient statistics T(x). \cr
 #' For a given sample set x, each row of x is an observation, and a Bayesian bricks object obj. \code{sufficientStatistics()} return the sufficient statistics for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' The sufficient statistics are:
+#' \itemize{
+#'  \item   SA = \eqn{sum_{i=1:N} A_i^T Sigma^{-1} A_i}
+#'  \item  SAx = \eqn{sum_{i=1:N} A_i^T Sigma^{-1} (x_i-b_i)}
+#' }
+#' See \code{?sufficientStatistics.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -71,9 +81,10 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' The sufficient statistics are:
 #' \itemize{
 #' \item N: the effective number of samples.
@@ -130,7 +141,7 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' See \code{?sufficientStatistics.HDP2} for details.
 #' }
 #'
-#' @seealso \code{\link{sufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{sufficientStatistics.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{sufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj a "BayesianBrick" object used to select a method.
 #' @param x a set of samples.
 #' @param ... further arguments passed to or from other methods.
@@ -149,6 +160,16 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #'      \deqn{x|theta ~ F(theta)}
 #' get the weighted sufficient statistics T(x).
 #' For a given sample set x, each row of x is an observation, the sample weights w, and a Bayesian bricks object obj. \code{sufficientStatistics_Weighted()} return the weighted sufficient statistics for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' The sufficient statistics are:
+#' \itemize{
+#'  \item   SA = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} A_i}
+#'  \item  SAx = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} (x_i-b_i)}
+#' }
+#' See \code{?sufficientStatistics.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -188,9 +209,10 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' The sufficient statistics are:
 #' \itemize{
 #' \item N: the effective number of samples.
@@ -246,7 +268,7 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' The sufficient statistics of "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2".
 #' See \code{?sufficientStatistics_Weighted.HDP2} for details.
 #' }
-#' @seealso \code{\link{sufficientStatistics_Weighted.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{sufficientStatistics_Weighted.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj a "BayesianBrick" object used to select a method.
 #' @param x a set of samples.
 #' @param w numeric, sample weights.
@@ -276,6 +298,12 @@ posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySuf
 #'      \deqn{x|theta ~ F(theta)}
 #' update gamma to gamma_posterior by adding the information of x to gamma.\cr
 #' For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posterior()} will update the posterior parameters in obj for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{posterior()} will update m and S in obj.
+#' See \code{?posterior.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -302,9 +330,10 @@ posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySuf
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{posterior()} will update m, V, a and b in obj.
 #' See \code{?posterior.GaussianNIG} for details.
 #' }
@@ -355,7 +384,7 @@ posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySuf
 #' See \code{?posterior.HDP2} for details.
 #' }
 #'
-#' @seealso \code{\link{posterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{posterior.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{posterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posterior.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return None, or an error message if the update fails.
@@ -376,6 +405,12 @@ posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posterio
 #'      \deqn{x|theta ~ F(theta)}
 #' update gamma to gamma_posterior by removing the information of x from gamma.
 #' For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posteriorDiscard()} will update the posterior parameters in obj for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{posteriorDiscard()} will update m and S in obj.
+#' See \code{?posteriorDiscard.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -402,9 +437,10 @@ posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posterio
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#  X is a row vector, or a design matrix where each row is an obervation.
 #' \code{posteriorDiscard()} will update m, V, a and b in obj.
 #' See \code{?posteriorDiscard.GaussianNIG} for details.
 #' }
@@ -455,7 +491,7 @@ posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posterio
 #' See \code{?posteriorDiscard.HDP2} for details.
 #' }
 #'
-#' @seealso \code{\link{posteriorDiscard.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posteriorDiscard.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posteriorDiscard.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posteriorDiscard.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posteriorDiscard.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{posteriorDiscard.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{posteriorDiscard.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{posteriorDiscard.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{posteriorDiscard.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{posteriorDiscard.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{posteriorDiscard.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return None, or an error message if the update fails.
@@ -469,6 +505,13 @@ posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 #'      x|theta ~ F(theta) \cr
 #' MAP estimate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
 #' For a given Bayesian bricks object obj, the MAP estimate will be:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{MAP()} will return the MAP estimate of z.
+#' See \code{?MAP.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -495,9 +538,10 @@ posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{MAP()} will return the MAP estimate of beta and sigma^2.
 #' See \code{?MAP.GaussianNIG} for details.
 #' }
@@ -515,7 +559,7 @@ posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 #' \code{MAP()} will return the MAP estimate of pi.
 #' See \code{?MAP.CatDP} for details.
 #' }
-#' @seealso \code{\link{MAP.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MAP.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{MAP.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{MAP.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MAP.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MAP.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MAP.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MAP.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MAP.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return A list of the MAP estimates
@@ -529,6 +573,13 @@ MAP <- function(obj,...) UseMethod("MAP")
 #'      \deqn{x|theta ~ F(theta)}
 #' MPE estimate of theta is theta_MPE = E(theta|gamma,x), E() is the expectation function.
 #' For a given Bayesian bricks object obj, the MPE estimate will be:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{MPE()} will return the MPE estimate of z.
+#' See \code{?MPE.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -555,9 +606,10 @@ MAP <- function(obj,...) UseMethod("MAP")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{MPE()} will return the MPE estimate of beta and sigma^2.
 #' See \code{?MPE.GaussianNIG} for details.
 #' }
@@ -575,12 +627,134 @@ MAP <- function(obj,...) UseMethod("MAP")
 #' \code{MPE()} will return the MPE estimate of pi.
 #' See \code{?MPE.CatDP} for details.
 #' }
-#' @seealso \code{\link{MPE.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MPE.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{MPE.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{MPE.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{MPE.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{MPE.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{MPE.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{MPE.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{MPE.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return A list of MPE estimates
 #' @export
 MPE <- function(obj,...) UseMethod("MPE")
+
+#' @title Get the density from the posterior distribution.
+#' @description
+#' This is a generic function that will generate the the density value of the posterior distribution. i.e. for the model structure: \cr
+#'      \deqn{theta|gamma ~ H(gamma)}
+#'      \deqn{x|theta ~ F(theta)}
+#' get the probability density/mass from the distribution \eqn{theta ~ H(gamma)}.
+#' For a given Bayesian bricks object obj and an observation of theta, \code{dPosterior()} will calculate the density value for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{dPosterior()} will return p(theta|m,S)
+#' See \code{?dPosterior.LinearGaussianGaussian} for details.
+#' }
+#' \subsection{class(obj)="GaussianGaussian"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{mu ~ Gaussian(m,S)}
+#' Sigma is known.
+#' \code{dPosterior()} will return p(mu|m,S)
+#' See \code{?dPosterior.GaussianGaussian} for details.
+#' }
+#' \subsection{class(obj)="GaussianInvWishart"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{Sigma ~ InvWishart(v,S)}
+#' mu is known.
+#' \code{dPosterior()} will return p(Sigma|v,S)
+#' See \code{?dPosterior.GaussianInvWishart} for details.
+#' }
+#' \subsection{class(obj)="GaussianNIW"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \code{dPosterior()} will return p(mu,Sigma|m,k,v,S)
+#' See \code{?dPosterior.GaussianNIW} for details.
+#' }
+#' \subsection{class(obj)="GaussianNIG"}{
+#' Where
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 ~ InvGamma(a,b)}
+#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
+#' \code{dPosterior()} will return p(beta,sigma^2|m,V,a,b)
+#' See \code{?dPosterior.GaussianNIG} for details.
+#' }
+#' \subsection{class(obj)="CatDirichlet"}{
+#' Where
+#' \deqn{x ~ Categorical(pi)}
+#' \deqn{pi ~ Dirichlet(alpha)}
+#' \code{dPosterior()} will return p(pi|alpha)
+#' See \code{?dPosterior.CatDirichlet} for details.
+#' }
+#' @seealso \code{\link{dPosterior.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{dPosterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{dPosterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{dPosterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure ...
+#' @param obj A "BayesianBrick" object used to select a method.
+#' @param ... further arguments passed to or from other methods.
+#' @return numeric, the density value
+#' @export
+dPosterior <- function(obj,...) UseMethod("dPosterior")
+
+#' @title Generate random samples from the posterior distribution
+#' @description
+#' This is a generic function that will generate random samples from the posterior distribution. i.e. for the model structure: \cr
+#'      \deqn{theta|gamma ~ H(gamma)}
+#'      \deqn{x|theta ~ F(theta)}
+#' generate random sampels of theta from the distribution \eqn{theta ~ H(gamma)}.
+#' For a given Bayesian bricks object obj, \code{rPosterior()} will generate random samples for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{rPosterior()} will generate random samples from Gaussian(m,S)
+#' See \code{?rPosterior.LinearGaussianGaussian} for details.
+#' }
+#' \subsection{class(obj)="GaussianGaussian"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{mu ~ Gaussian(m,S)}
+#' Sigma is known.
+#' \code{rPosterior()} will generate random samples from Gaussian(m,S)
+#' See \code{?rPosterior.GaussianGaussian} for details.
+#' }
+#' \subsection{class(obj)="GaussianInvWishart"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{Sigma ~ InvWishart(v,S)}
+#' mu is known.
+#' \code{rPosterior()} will generate random samples from InvWishart(v,S)
+#' See \code{?rPosterior.GaussianInvWishart} for details.
+#' }
+#' \subsection{class(obj)="GaussianNIW"}{
+#' Where
+#' \deqn{x ~ Gaussian(mu,Sigma)}
+#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \code{rPosterior()} will generate random samples from NIW(m,k,v,S)
+#' See \code{?rPosterior.GaussianNIW} for details.
+#' }
+#' \subsection{class(obj)="GaussianNIG"}{
+#' Where
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 ~ InvGamma(a,b)}
+#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
+#' \code{rPosterior()} will generate random samples from NIG(m,V,a,b)
+#' See \code{?rPosterior.GaussianNIG} for details.
+#' }
+#' \subsection{class(obj)="CatDirichlet"}{
+#' Where
+#' \deqn{x ~ Categorical(pi)}
+#' \deqn{pi ~ Dirichlet(alpha)}
+#' \code{rPosterior()} will generate random samples from Dirichlet(alpha)
+#' See \code{?rPosterior.CatDirichlet} for details.
+#' }
+#' @seealso \code{\link{rPosterior.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{rPosterior.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{rPosterior.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{rPosterior.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{rPosterior.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{rPosterior.CatDirichlet}} for Categorical-Dirichlet conjugate structure ...
+#' @param obj A "BayesianBrick" object used to select a method.
+#' @param ... further arguments passed to or from other methods.
+#' @return numeric, the density value
+#' @export
+rPosterior <- function(obj,...) UseMethod("rPosterior")
 
 #' @title Get the marginal likelihood of a "BayesianBrick" object
 #' @description
@@ -589,6 +763,13 @@ MPE <- function(obj,...) UseMethod("MPE")
 #'      \deqn{x|theta ~ F(theta)}
 #' Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 #' For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood_bySufficientStatistics()} will calculate the marginal likelihood for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,A,b,Sigma)
+#' See \code{?marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -615,9 +796,10 @@ MPE <- function(obj,...) UseMethod("MPE")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x,X|m,V,a,b)
 #' See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIG} for details.
 #' }
@@ -635,7 +817,7 @@ MPE <- function(obj,...) UseMethod("MPE")
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
 #' See \code{?marginalLikelihood_bySufficientStatistics.CatDP} for details.
 #' }
-#' @seealso \code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood_bySufficientStatistics.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return numeric, the marginal likelihood
@@ -649,6 +831,13 @@ marginalLikelihood_bySufficientStatistics <- function(obj,...) UseMethod("margin
 #'      x|theta ~ F(theta) \cr
 #' Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 #' For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood()} will calculate the marginal likelihood for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{marginalLikelihood()} will return p(x|m,S,A,b,Sigma)
+#' See \code{?marginalLikelihood.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -675,9 +864,10 @@ marginalLikelihood_bySufficientStatistics <- function(obj,...) UseMethod("margin
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{marginalLikelihood()} will return p(x,X|m,V,a,b)
 #' See \code{?marginalLikelihood.GaussianNIG} for details.
 #' }
@@ -695,7 +885,7 @@ marginalLikelihood_bySufficientStatistics <- function(obj,...) UseMethod("margin
 #' \code{marginalLikelihood()} will return p(x|alpha)
 #' See \code{?marginalLikelihood.CatDP} for details.
 #' }
-#' @seealso \code{\link{marginalLikelihood.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{marginalLikelihood.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{marginalLikelihood.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{marginalLikelihood.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{marginalLikelihood.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{marginalLikelihood.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{marginalLikelihood.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{marginalLikelihood.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return numeric, the marginal likelihood
@@ -709,6 +899,13 @@ marginalLikelihood <- function(obj,...) UseMethod("marginalLikelihood")
 #'      \deqn{x|theta ~ F(theta)}
 #' get the probability density/mass of the posterior predictive distribution of a new sample x_new: p(x_new|gamma).
 #' For a given Bayesian bricks object obj and a new sample x, \code{dPosteriorPredictive()} will calculate the marginal likelihood for different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{dPosteriorPredictive()} will return p(x|m,S,A,b,Sigma)
+#' See \code{?dPosteriorPredictive.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -735,9 +932,10 @@ marginalLikelihood <- function(obj,...) UseMethod("marginalLikelihood")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{dPosteriorPredictive()} will return p(x,X|m,V,a,b)
 #' See \code{?dPosteriorPredictive.GaussianNIG} for details.
 #' }
@@ -755,7 +953,7 @@ marginalLikelihood <- function(obj,...) UseMethod("marginalLikelihood")
 #' \code{dPosteriorPredictive()} will return p(x|alpha)
 #' See \code{?dPosteriorPredictive.CatDP} for details.
 #' }
-#' @seealso \code{\link{dPosteriorPredictive.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
+#' @seealso \code{\link{dPosteriorPredictive.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{dPosteriorPredictive.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{dPosteriorPredictive.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{dPosteriorPredictive.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{dPosteriorPredictive.CatDP}} for Categorical-DP conjugate structure ...
 #' @param obj A "BayesianBrick" object used to select a method.
 #' @param ... further arguments passed to or from other methods.
 #' @return numeric, the density value
@@ -769,6 +967,13 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 #'      x|theta ~ F(theta) \cr
 #' generate x_new from the posterior predictive distribution of x|gamma.
 #' For a given Bayesian bricks object obj, \code{rPosteriorPredictive()} will generate random samples from different model structures:
+#' \subsection{class(obj)="LinearGaussianGaussian"}{
+#' Where
+#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
+#'      \deqn{z ~ Gaussian(m,S)}
+#' \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,A,b,Sigma
+#' See \code{?rPosteriorPredictive.LinearGaussianGaussian} for details.
+#' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
 #' \deqn{x ~ Gaussian(mu,Sigma)}
@@ -795,9 +1000,10 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X^T beta,sigma^2)}
+#' \deqn{x ~ Gaussian(X beta,sigma^2)}
 #' \deqn{sigma^2 ~ InvGamma(a,b)}
 #' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x,X|m,V,a,b
 #' See \code{?rPosteriorPredictive.GaussianNIG} for details.
 #' }

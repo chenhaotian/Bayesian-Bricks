@@ -2,7 +2,7 @@
 % Please edit documentation in R/Dirichlet_Process.r
 \name{rPosteriorPredictive.DP}
 \alias{rPosteriorPredictive.DP}
-\title{Posterior predictive random generation of a "DP" object}
+\title{Generate random samples from the posterior predictive distribution of a "DP" object}
 \usage{
 \method{rPosteriorPredictive}{DP}(obj, n = 1, x, ...)
 }

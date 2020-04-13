@@ -22,6 +22,13 @@ This is a generic function that will generate random samples from the posterior 
      x|theta ~ F(theta) \cr
 generate x_new from the posterior predictive distribution of x|gamma.
 For a given Bayesian bricks object obj, \code{rPosteriorPredictive()} will generate random samples from different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+Where
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+\code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,A,b,Sigma
+See \code{?rPosteriorPredictive.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -48,9 +55,10 @@ See \code{?rPosteriorPredictive.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 \code{rPosteriorPredictive()} will generate samples from the distribution of x,X|m,V,a,b
 See \code{?rPosteriorPredictive.GaussianNIG} for details.
 }

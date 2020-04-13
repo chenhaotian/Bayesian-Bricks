@@ -24,6 +24,16 @@ This is a generic function that will generate the weighted sufficient statistics
      \deqn{x|theta ~ F(theta)}
 get the weighted sufficient statistics T(x).
 For a given sample set x, each row of x is an observation, the sample weights w, and a Bayesian bricks object obj. \code{sufficientStatistics_Weighted()} return the weighted sufficient statistics for different model structures:
+\subsection{class(obj)="LinearGaussianGaussian"}{
+     \deqn{x ~ Gaussian(A z + b, Sigma)}
+     \deqn{z ~ Gaussian(m,S)}
+The sufficient statistics are:
+\itemize{
+ \item   SA = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} A_i}
+ \item  SAx = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} (x_i-b_i)}
+}
+See \code{?sufficientStatistics.LinearGaussianGaussian} for details.
+}
 \subsection{class(obj)="GaussianGaussian"}{
 Where
 \deqn{x ~ Gaussian(mu,Sigma)}
@@ -63,9 +73,10 @@ See \code{?sufficientStatistics_Weighted.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X^T beta,sigma^2)}
+\deqn{x ~ Gaussian(X beta,sigma^2)}
 \deqn{sigma^2 ~ InvGamma(a,b)}
 \deqn{beta ~ Gaussian(m,sigma^2 V)}
+X is a row vector, or a design matrix where each row is an obervation.
 The sufficient statistics are:
 \itemize{
 \item N: the effective number of samples.
@@ -131,5 +142,5 @@ sufficientStatistics_Weighted(obj=obj,x=x,w=w)
 }
 }
 \seealso{
-\code{\link{sufficientStatistics_Weighted.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorical-DP conjugate structure ...
+\code{\link{sufficientStatistics_Weighted.LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{sufficientStatistics_Weighted.GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{sufficientStatistics_Weighted.CatDP}} for Categorical-DP conjugate structure ...
 }
