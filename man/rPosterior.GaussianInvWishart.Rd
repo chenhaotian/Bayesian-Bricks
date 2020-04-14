@@ -16,11 +16,11 @@ matrix, a sample of Sigma.
 }
 \description{
 Generate random samples from the posterior distribution of the following structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
-Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+    \deqn{x ~ Gaussian(mu,Sigma)}
+    \deqn{Sigma ~ InvWishart(v,S)}
+mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
-Posterior distribution is Gaussian(mu|m,S).
+Posterior distribution is InvWishart(Sigma|v,S).
 }
 \examples{
 obj <- GaussianInvWishart(gamma=list(mu=c(-1.5,1.5),v=3,S=diag(2)))

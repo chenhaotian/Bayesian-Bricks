@@ -15,7 +15,7 @@ pdsInverse(S, returnUpper = FALSE)
 A matrix, the inverse of "S".
 }
 \description{
-Use Cholesky decomposition to calculate the inverse of S,  where S = A'A, A is a upper diagonal matrix. inv(S) = inv(A)inv(A)'.
+Use Cholesky decomposition to calculate the inverse of S,  where \eqn{S = A'A}, A is a upper diagonal matrix. inv(S) = inv(A)inv(A)'.
 }
 \examples{
 Sigma = matrix(c(2,1,1,2),2,2)      # some positive definite symmetric matrix

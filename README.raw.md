@@ -4,8 +4,8 @@
 
 [bbricks](https://github.com/chenhaotian/Bayesian-Bricks) provides a collection of frequently used Bayesian parametric and nonparametric model *structures*, as well as a set of tools for common analytical *tasks*.
 
-+ *Structures* include Gaussian and Gaussian conjugate structure, Gaussian and Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
-+ *Tasks* include updating posteriors, calculating marginal likelihood, calculating posterior predictive, calculating MAP estimates ...
++ *Structures* include linear Gaussian systems, Gaussian and Gaussian conjugate structure, Gaussian and Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ...
++ *Tasks* include updating posteriors, calculating marginal likelihood, calculating posterior predictive densities, sampling from posterior distribution, sampling from posterior predictive distribution, calculating MAP estimates ...
 
 See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples) to get started.
 
@@ -19,7 +19,9 @@ See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
 
-**----Table of Contents----**
+
+
+## Table of Contents
 
 [1.Mindset](#Mindset)
 
@@ -49,8 +51,8 @@ The idea of **bbricks** came from the fact that modeling in Bayesian statistics 
 Where the most frequently appeared **tasks** are:
 + Update prior info into posterior when new samples are observed.
 + Sample from the posterior distribution.
-+ Calculate marginal likelihood of the posterior distribution.
-+ Calculate posterior predictive of the posterior distribution.
++ Calculate marginal likelihood of the data set.
++ Calculate posterior predictive densities from the posterior distribution.
 + ...
 
 And the **model structure**s are just generalizations of $3$ basic Bayesian modeling structures:
@@ -69,22 +71,50 @@ See [Examples](#examples) for details.
 
 Here's a list of examples:
 
-[Bayesian Linear Regression](#bayesian-linear-regression)
 
-[Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian)
 
-[Mixture of Gaussian](#mixture-of-gaussian)
+### Hierarchical Bayesian Linear Regression
 
-+ [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
-+ [Mixture Model with Partially Observed Cluster Labels](#mixture-model-with-partially-observed-cluster-labels)
+This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from 100 different schools. The Conditional Probability Distributions (**CPD**s) of the model is defined as:
+$$
+\begin{align}
+x | \beta_j , \sigma^2,x & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\
+\beta_j & \sim Gaussian(\mu,\Sigma)\text{, } j = 1:J\\
+\sigma^2 & \sim InvWishart(v_s,S_s) \\
+\mu,\Sigma & \sim NIW(m,k,v,S) 
+\end{align}
+$$
 
-[Hierarchical Mixture Models](#hierarchical-mixture-models)
+Where NIW is Normal-Inverse-Wishart distribution, it's density function is defined as:
+$$
+p_{NIW}(\mu,\Sigma | m,k,v,S) = p_{Gaussian}(\mu|m,\Sigma/k)p_{InverseWishart}(\Sigma|v,S)
+$$
 
-+ [Topic Modeling with HDP](#topic-modeling-with-hdp)
 
-[Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies)
+Data: p143
 
-+ [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
+Example: p199
+
+To enable sampling from this model, we first look at the CPDs of the random variables and their **Markov blanket**s:
+
+1. The Markov blanket for $\beta_j,j=1:J$ is $x, X, \mu,\Sigma,\sigma^2$, the corresponding CPD of the blanket is a linear Gaussian system. **bbricks** provides an object of type `"LinearGaussianGaussian"` (see `?LinearGaussianGaussian` in R for details) to encode such a structure.
+2. The Markov blanket for $\mu,\Sigma$ is $\beta_{1:J},m,k,v,S$, the corresponding CPDs of the blanket forms an Gaussian-NIW conjugate structure. **bbricks** provides an object of type `"GaussianNIW"` (see `?GaussianNIW` in R for details) to encode such a structure.
+3. The Markov blanket for $\sigma^2$ is $\beta_{1:J},x,X,v_v,S_v$, the corresponding CPDs of the blanket forms an Gaussian-InvWishart conjugate structure. **bbricks** provides an object of type `"GaussianInvWishart"` (see `?GaussianInvWishart` in R for details) to encode such a structure.
+
+Note that `"LinearGaussianGaussian"`, `"GaussianNIW"` and `"GaussianInvWishart"` are all basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. In **bbricks**, all objects representing structures same as graph $(b)$ are also of type `"BasicBayesian"`. For example a `"LinearGaussianGaussian"` object is also an `"BasicBayesian"` object.
+
+To estimate the posterior parameters $(v_s,S_s,m,k,v,S)$,  the Gibbs sampling procedure goes as:
+
+1. Sample $\beta_j,j=1:J$ from a `LinearGaussianGaussian` object which encodes $\beta_j | x, X, \mu,\Sigma,\sigma^2$.
+2. Sample $\mu,\Sigma$ from a `GaussianNIW` object which encodes $\mu,\Sigma | \beta_{1:J},m,k,v,S$
+3. Sample $\sigma^2$ from a `GaussianInvWishart` object which encodes $\sigma^2 | \beta_{1:J},x,X,v_v,S_v$
+
+R code:
+
+```R
+## Gibbs sampling for hierarchical linear regression
+
+```
 
 
 
@@ -152,22 +182,6 @@ sd(predictedSamples)
 ```
 
 
-
-### Hierarchical Bayesian Linear Regression
-
-This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from 100 different schools.
-$$
-\begin{align}
-x | \beta_j , \sigma^2,X & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\
-\beta_j & \sim Gaussian(m,S)\text{, } j = 1:J\\
-\sigma^2 & \sim InvGamma(a,b)
-\end{align}
-$$
-
-
-Data: p143
-
-Example: p199
 
 ### Estimate Cancer Mortality Rates with Hierarchical Bayesian
 

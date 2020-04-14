@@ -15,7 +15,7 @@ pdsDeterminant(S, LOG = FALSE)
 A matrix, the determinant of "S".
 }
 \description{
-Use Cholesky decomposition to calculate the determinant of S, where S = A'A, A is a upper diagonal matrix. det(S) = det(A)*det(A).
+Use Cholesky decomposition to calculate the determinant of S, where \eqn{S = A'A}, A is a upper diagonal matrix. det(S) = det(A)*det(A).
 }
 \examples{
 Sigma = matrix(c(1.3,1,1,2),2,2)      # some positive definite symmetric matrix

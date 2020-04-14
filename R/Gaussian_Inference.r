@@ -355,14 +355,14 @@ sufficientStatistics.LinearGaussianGaussian <- function(obj,x,A,b=NULL,foreach=F
         if(!is.null(b)) x <- x-as.vector(b)
         if(foreach){
             sapply(1:nrow(x),function(i){
-                ss <- list(SA = crossprod(A[i,,drop=FALSE])/obj$gamma$Sigma,
-                           SAx = drop(t(A[i,,drop=FALSE])*x[i]/obj$gamma$Sigma))
+                ss <- list(SA = crossprod(A[i,,drop=FALSE])/as.numeric(obj$gamma$Sigma),
+                           SAx = drop(t(A[i,,drop=FALSE])*x[i]/as.numeric(obj$gamma$Sigma)))
                 class(ss) <- "ssLinearGaussianGaussian"
                 ss
             },simplify = FALSE,USE.NAMES = FALSE)
         }else{
-            ss <- list(SA = crossprod(A)/obj$gamma$Sigma,
-                       SAx = drop(t(A)%*%x/obj$gamma$Sigma))
+            ss <- list(SA = crossprod(A)/as.numeric(obj$gamma$Sigma),
+                       SAx = drop(t(A)%*%x/as.numeric(obj$gamma$Sigma)))
             class(ss) <- "ssLinearGaussianGaussian"
             ss
         }
@@ -475,15 +475,15 @@ sufficientStatistics_Weighted.LinearGaussianGaussian <- function(obj,x,w,A,b=NUL
         if(!is.null(b)) x <- x-as.vector(b)
         if(foreach){
             sapply(1:nrow(x),function(i){
-                ss <- list(SA = w[i]*crossprod(A[i,,drop=FALSE])/obj$gamma$Sigma,
-                           SAx = drop(w[i]*t(A[i,,drop=FALSE])*x[i]/obj$gamma$Sigma))
+                ss <- list(SA = w[i]*crossprod(A[i,,drop=FALSE])/as.numeric(obj$gamma$Sigma),
+                           SAx = drop(w[i]*t(A[i,,drop=FALSE])*x[i]/as.numeric(obj$gamma$Sigma)))
                 class(ss) <- "ssLinearGaussianGaussian"
                 ss
             },simplify = FALSE,USE.NAMES = FALSE)
         }else{
             
-            ss <- list(SA = t(A)%*%(A*w)/obj$gamma$Sigma,
-                       SAx = drop(t(A)%*%(x*w)/obj$gamma$Sigma))
+            ss <- list(SA = t(A)%*%(A*w)/as.numeric(obj$gamma$Sigma),
+                       SAx = drop(t(A)%*%(x*w)/as.numeric(obj$gamma$Sigma)))
             class(ss) <- "ssLinearGaussianGaussian"
             ss
         }
@@ -1684,11 +1684,11 @@ dPosterior.GaussianInvWishart <- function(obj,Sigma,LOG=TRUE,...){
 #' @title Generate one ramdom sample from the posterior distribution of a "GaussianInvWishart" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
-#' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
+#'     \deqn{x ~ Gaussian(mu,Sigma)}
+#'     \deqn{Sigma ~ InvWishart(v,S)}
+#' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
-#' Posterior distribution is Gaussian(mu|m,S).
+#' Posterior distribution is InvWishart(Sigma|v,S).
 #' @seealso \code{\link{GaussianInvWishart}}, \code{\link{dPosterior.GaussianInvWishart}}
 #' @param obj A "GaussianInvWishart" object.
 #' @param ... Additional arguments to be passed to other inherited types.

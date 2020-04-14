@@ -10,7 +10,6 @@
 ^CRAN-RELEASE$
 ^.*~$
 ^.*#$
+^inst/WORDLIST$
 ^doc$
 ^Meta$
-^WORDLIST$
-^inst$

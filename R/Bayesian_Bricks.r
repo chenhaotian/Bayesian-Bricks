@@ -1094,7 +1094,7 @@ logsumexp <- function(x){
 }
 
 #' @title Inverse of a positive definite symmetric matrix
-#' @description Use Cholesky decomposition to calculate the inverse of S,  where S = A'A, A is a upper diagonal matrix. inv(S) = inv(A)inv(A)'.
+#' @description Use Cholesky decomposition to calculate the inverse of S,  where \eqn{S = A'A}, A is a upper diagonal matrix. inv(S) = inv(A)inv(A)'.
 #' @param S a symmetric positive definitive matrix.
 #' @param returnUpper logical, return inv(A) if returnUpper=TRUE,return inv(S) if returnUpper=FALSE, default FALSE.
 #' @return A matrix, the inverse of "S".
@@ -1121,7 +1121,7 @@ pdsInverse <- function(S,returnUpper=FALSE){
 }
 
 #' @title determinant of a positive definite symmetric matrix
-#' @description Use Cholesky decomposition to calculate the determinant of S, where S = A'A, A is a upper diagonal matrix. det(S) = det(A)*det(A).
+#' @description Use Cholesky decomposition to calculate the determinant of S, where \eqn{S = A'A}, A is a upper diagonal matrix. det(S) = det(A)*det(A).
 #' @param S a symmetric positive definitive matrix.
 #' @param LOG logical, return log(det(S)) if TRUE, return det(S) if FALSE, default FALSE.
 #' @return A matrix, the determinant of "S".
