@@ -1,6 +1,6 @@
 # bbricks
 
-[![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?token=hByNmnrjfd4L3sAdyCVy&branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
+[![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks)
 
 [bbricks](https://github.com/chenhaotian/Bayesian-Bricks) provides a collection of frequently used Bayesian parametric and nonparametric model *structures*, as well as a set of tools for common analytical *tasks*.
 
