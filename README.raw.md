@@ -23,11 +23,13 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 
 ## Table of Contents
 
-[1.Mindset](#Mindset)
+[Installation](#bbricks)
 
-[2.Examples](#examples)
+[Mindset](#Mindset)
 
-+ [Bayesian Linear Regression](#bayesian-linear-regression)
+[Examples](#examples)
+
++ [Hierarchical Bayesian Linear Regression](#hierarchical-bayesian-linear-regression)
 + [Estimate Cancer Mortality Rates with Hierarchical Bayesian](#estimate-cancer-mortality-rates-with-hierarchical-bayesian)
 + [Mixture of Gaussian](#mixture-of-gaussian)
   + [Dirichlet Process Mixture Model](#dirichlet-process-mixture-model)
@@ -39,6 +41,7 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
   
   + [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
   
++ [Bayesian Linear Regression](#bayesian-linear-regression)
 
 [3.References](#references)
 
@@ -69,13 +72,11 @@ See [Examples](#examples) for details.
 
 ## Examples
 
-Here's a list of examples:
-
 
 
 ### Hierarchical Bayesian Linear Regression
 
-This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from 100 different schools. The Conditional Probability Distributions (**CPD**s) of the model is defined as:
+This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from $J=100$ different schools. The Conditional Probability Distributions (**CPD**s) of the model is defined as:
 $$
 \begin{align}
 x | \beta_j , \sigma^2,x & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\
@@ -85,15 +86,16 @@ x | \beta_j , \sigma^2,x & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\
 \end{align}
 $$
 
-Where NIW is Normal-Inverse-Wishart distribution, it's density function is defined as:
+Where $x$ is the math score, $X$ is a length $2$ row vector $X = (1,\text{SES})^T$ corresponding to each math score observation in $x$, NIW is Normal-Inverse-Wishart distribution, it's density function is defined as:
 $$
 p_{NIW}(\mu,\Sigma | m,k,v,S) = p_{Gaussian}(\mu|m,\Sigma/k)p_{InverseWishart}(\Sigma|v,S)
 $$
 
+The graphical model structure for this model is:
 
-Data: p143
+![](./notes_pictures/hierarchicalBayesianLinearRegression.png)
 
-Example: p199
+Where $\gamma = (v_s,S_s)$, $\Psi = (m,k,v,S)$.
 
 To enable sampling from this model, we first look at the CPDs of the random variables and their **Markov blanket**s:
 
@@ -105,79 +107,84 @@ Note that `"LinearGaussianGaussian"`, `"GaussianNIW"` and `"GaussianInvWishart"`
 
 To estimate the posterior parameters $(v_s,S_s,m,k,v,S)$,  the Gibbs sampling procedure goes as:
 
-1. Sample $\beta_j,j=1:J$ from a `LinearGaussianGaussian` object which encodes $\beta_j | x, X, \mu,\Sigma,\sigma^2$.
-2. Sample $\mu,\Sigma$ from a `GaussianNIW` object which encodes $\mu,\Sigma | \beta_{1:J},m,k,v,S$
-3. Sample $\sigma^2$ from a `GaussianInvWishart` object which encodes $\sigma^2 | \beta_{1:J},x,X,v_v,S_v$
+1. Sample $\beta_j,j=1:J$ from a `LinearGaussianGaussian` object which encodes the distribution of $\beta_j | x, X, \mu,\Sigma,\sigma^2$.
+2. Sample $\mu,\Sigma$ from a `GaussianNIW` object which encodes the distribution of $\mu,\Sigma | \beta_{1:J},m,k,v,S$
+3. Sample $\sigma^2$ from a `GaussianInvWishart` object which encodes the distribution of $\sigma^2 | \beta_{1:J},x,X,v_v,S_v$
 
 R code:
 
 ```R
 ## Gibbs sampling for hierarchical linear regression
 
-```
-
-
-
-### Bayesian Linear Regression
-
-A Bayesian linear regression model has the following graph structure:
-
-![](./notes_pictures/bayesianLinearRegression.png)
-
-The CPDs are:
-$$
-\begin{align}
-x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2) \\
-\beta & \sim Gaussian(m,\sigma^2 V) \\
-\sigma^2 & \sim InvGamma(a,b)
-\end{align}
-$$
-Since the combination of "Gaussian" and "InvGamma" is a commonly used conjugate structure in Bayesian linear regression, people named the combination as "Normal-Inverse-Gamma" (NIG) distribution. With NIG, the CPDs are usually represented as:
-$$
-\begin{align}
-\beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
-x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
-\end{align}
-$$
-Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
-
-The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object of type `"GaussianNIG"` to represent such a structure. 
-
-See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood calculations on the `"GaussianNIG"` object:
-
-```R
-## Bayesian linear regression
-
 library(bbricks)
-
-## lrData is a list of two elements. lrData$x is the sample set of the dependent variable; lrData$X is the sample set of the independent variable
-## see ?lrData for details
-data(lrData)
-X <- lrData$X                           #a matrix of 1 column
-x <- lrData$x                           #a numeric vector
-## task 1. update the prior into posterior using X and x
-obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
-ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
-posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
-## task 2. get MAP estimate of beta and sigma^2 from the posterior
-bsMAP <- MAP(obj)                               #get the MAP estimate of beta and sigma^2
-bsMAP                                           #print the MAP estimate
-## plot the MAP estimate of the regression line
-plot(X,X%*%bsMAP$betaMAP,type = "l")
-points(X,x,pch=20)
-## task 3. calculate marginal likelihood
-## generate some new data
-Xnew <- matrix(runif(3,min=0,max=),ncol=1)
-xnew <- Xnew*0.2+rnorm(3,sd=10)
-marginalLikelihood(obj = obj,X=x,x=x,LOG = TRUE)
-## task 4. calculate the posterior prediction
-## say we want to predict x at the location X=100
-predictedSamples <- rPosteriorPredictive(obj = obj,X=matrix(101,ncol = 1),n=1000)
-## histogram of the prediction
-hist(predictedSamples)
-## the mean and standard devition of the prediction
-mean(predictedSamples)
-sd(predictedSamples)
+## load some hierarchical linear regression data
+## hlrData is a list of 3 numeric vectors
+## see ?hlrData for details
+data(hlrData)
+x <- hlrData$mathScore                    #math score as the dependent variable
+X <- cbind(1,hlrData$socioeconomicStatus) #socioeconomic status as the independt variable
+js <- hlrData$schoolID                    #school ID as the group IDs.
+J <- max(js)
+## Initialization----------------------------------------------
+## initialize the Markov blanket of mu and Sigma
+## the prior parameters are: m=0, k=0.0001, v=3, S=diag(1)
+objmS <- GaussianNIW(gamma = list(m =c(mean(hlrData$mathScore),0),k=0.0001,v=3,S=diag(2)))
+## initialize the Markov blanket of sigma^2
+## the prior parameters are: vs=2, Ss=diag(1)
+objs <- GaussianInvWishart(gamma = list(mu=0,v=2,S=diag(1)))
+## initialize mu and Sigma by sampling from the prior
+muSigma <- rPosterior(objmS)
+## initialize sigma^2 by sampling from the prior
+sigma2 <- rPosterior(objs)
+betaJ <- matrix(0,J,2)                  #place-holder the beta_j, j=1:J
+epsilon <- x                            #place-holder for the random noises
+## Main Gibbs loop---------------------------------------------
+maxit <- 100                           #number of sampling iterations
+burnin <- 50                           #number of burn-in samples
+meanBeta <- betaJ                      #place-hoder for the sample means of beta
+it <- 1
+pb <- txtProgressBar(min = 0,max = maxit,style = 3)
+while(it<=maxit){
+    ## Step1: sample beta_j, j in 1:100
+    for(j in 1L:J){
+        objb <- LinearGaussianGaussian(gamma=list(Sigma=sigma2,m=muSigma$mu,S=muSigma$Sigma))
+        idx <- js == j
+        ss <- sufficientStatistics(obj = objb,x=x[idx],A=X[idx,,drop=FALSE])
+        posterior(obj = objb,ss = ss)
+        betaJ[j,] <- rPosterior(objb)
+    }
+    ## calculate the sample mean
+    if(it>burnin) meanBeta <- meanBeta+betaJ/(maxit-burnin)
+    ## Step2: sample mu and Sigma
+    ssmS <- sufficientStatistics(obj = objmS,x=betaJ)
+    posterior(obj = objmS,ss = ssmS)
+    muSigma <- rPosterior(obj = objmS)
+    ## Step3: sample sigma^2
+    for(j in 1L:J){
+        idx <- js == j
+        epsilon[idx] <- x[idx]-X[idx,,drop=FALSE]%*%betaJ[j,]
+    }
+    sss <- sufficientStatistics(obj = objs,x=epsilon)
+    posterior(obj = objs,ss = sss)
+    sigma2 <- rPosterior(objs)
+    ## increase iteration counter 
+    it <- it+1
+    setTxtProgressBar(pb,it)
+    ## if continue sampling, then discard the information in objmS and objs
+    ## to make room for the new information in the next iteration.
+    if(it < maxit){
+        posteriorDiscard(obj = objmS,ss = ssmS)
+        posteriorDiscard(obj = objs,ss = sss)
+    }
+}
+## plot the result
+## gray lines are the betas of each school
+## black line is the beta for all the data as a whole
+plot(x=0, xlim = range(0.2,0.8),ylim = c(20,35),xlab = "socioeconomic status",ylab = "math score")
+for(j in 1L:J)
+    abline(a=betaJ[j,2],b=betaJ[j,1],col="gray")
+allSchools <- lm(x~X-1)$coefficients
+abline(a=allSchools[2],b=allSchools[1],lwd=3)
 
 ```
 
@@ -191,6 +198,8 @@ The model's graph structure is:
 
 ![](./notes_pictures/cancer.png)
 
+Where $x$ is a categorical random sample that takes one of two values: "death" or "no death". There are $K$ cities in total, $\pi_k,k=1:k$ are the mortality rates of the cities.
+
 The CPDs are:
 $$
 \begin{align}
@@ -199,14 +208,17 @@ x|\pi_k & \sim Categorical(\pi_k) \\
 \alpha | \eta & \sim Exponential(\eta)
 \end{align}
 $$
-Where $x$ is a categorical random sample that takes one of two values: "death" or "no death".
+To enable sampling from this model, we first look at the CPDs of the random variables and their **Markov blanket**s:
+
+1. The Markov blanket for $\pi_k,k=1:K$ is $\alpha, x$, the corresponding CPD of the blanket is a Categorical-Dirichlet conjugate structure. **bbricks** provides an object of type `"CatDirichlet"` (see `?CatDirichlet` in R for details) to encode such a structure.
+2. The Markov blanket for $\alpha$ is $\pi_{1:K},\eta$, the corresponding CPDs of the blanket is not very common thus not provided in **bbricks**, instead we can use Metropolis-Hastings algorithm to sample from it.
+
+Note that `"CatDirichlet"` is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. In **bbricks**, all objects representing structures same as graph $(b)$ are also of type `"BasicBayesian"`. For example a `"CatDirichlet"` object is also an `"BasicBayesian"` object.
 
 To estimate $\pi_k,k=1...K$, we use the following Gibbs sampling procedure:
 
-1. sample $\pi_k,k=1...K$ from $\pi_k | \alpha,x$
-2. sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$
-
-Sample $\alpha$ from $\alpha|\eta,\pi_{1:K}$ is done via an independent Metropolis-Hastings algorithm, see `?MetropolisHastings` for details.
+1. sample $\pi_k,k=1...K$ from a `CatDirichlet` object which encodes the distribution of  $\pi_k | \alpha,x$.
+2. sample $\alpha$ from the distribution of $\alpha|\eta,\pi_{1:K}$ with and independent Metropolis-Hastings algorithm. see `?MetropolisHastings` for details.
 
 R code:
 
@@ -274,6 +286,8 @@ A mixture of Gaussian has the following graph structure:
 
 ![](./notes_pictures/mixtureModel.png)
 
+Where there are $K$ Gaussian components/groups. $x$ is an Gaussian observation, $z=1,...,K$ is the hidden group label, $\pi$ is the component weights (or the group label distribution). $\theta=(\mu,\Sigma)$ are the observation distribution parameters. $\alpha$ and $\gamma$ are prior parameters. 
+
 The CPDs are:
 $$
 \begin{align}
@@ -284,7 +298,11 @@ x| z,\theta_z &\sim  Gaussian(\theta_z)
 \end{align}
 $$
 
-Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
+Where $NIW(\gamma)$ is the Normal-Inverse-Wishart distribution with parameter $\gamma = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms. For a NIW sample $\theta=(\mu,\Sigma)$, it's density function is defined as:
+
+$$
+p_{NIW}(\mu,\Sigma | m,k,v,S) = p_{Gaussian}(\mu|m,\Sigma/k)p_{InverseWishart}(\Sigma|v,S)
+$$
 
 A mixture model can be see as a combination of two "prior-posterior" structures(As shown in [Mindset](#mindset) graph $(b)$): One Categorical-Dirichlet structure $\alpha \rightarrow \pi \rightarrow z$ for the hidden cluster labels. and one Gaussian-NIW structure $\gamma \rightarrow \theta \rightarrow x$ for the observation distribution.
 
@@ -723,6 +741,69 @@ plot(x=x[,1],y=x[,2],col=uBest)
 
 If we want to extract topics from multiple corpus, and we want the corpus to share the same set of topics, this is a model called the "hierarchical topic model"(Griffiths, Thomas L., et al. "Hierarchical topic models and the nested Chinese restaurant process." *Advances in neural information processing systems*. 2004.). A hierarchical topic model is a [Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies). The model can be built by simply replacing the `"GaussianNIW"` object with a `"CatDirichlet"` object in the previous R example.
 
+### Bayesian Linear Regression
+
+A Bayesian linear regression model has the following graph structure:
+
+![](./notes_pictures/bayesianLinearRegression.png)
+
+The CPDs are:
+$$
+\begin{align}
+x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2) \\
+\beta & \sim Gaussian(m,\sigma^2 V) \\
+\sigma^2 & \sim InvGamma(a,b)
+\end{align}
+$$
+Since the combination of "Gaussian" and "InvGamma" is a commonly used conjugate structure in Bayesian linear regression, people named the combination as "Normal-Inverse-Gamma" (NIG) distribution. With NIG, the CPDs are usually represented as:
+$$
+\begin{align}
+\beta,\sigma^2 | \gamma & \sim NIG(\gamma) \\
+x| \beta, \sigma^2,X & \sim Gaussian(X\beta,\sigma^2)
+\end{align}
+$$
+Where $NIG(\gamma)$ is the Normal-Inverse-Gamma distribution with parameter $\gamma=(m,V,a,b)$, $m$ and $V$ are the "location" and "scale" parameters, $a$ and $b$ are the "shape" and "rate" parameters.
+
+The distribution of $\gamma \rightarrow (\beta,\sigma^2) \rightarrow x$ is a basic prior-posterior structure as shown in [Mindset](#mindset) graph $(b)$. **bbricks** provides an object of type `"GaussianNIG"` to represent such a structure. 
+
+See the R example below for applying MAP estimate, posterior predictive, and marginal likelihood calculations on the `"GaussianNIG"` object:
+
+```R
+## Bayesian linear regression
+
+library(bbricks)
+
+## lrData is a list of two elements. lrData$x is the sample set of the dependent variable; lrData$X is the sample set of the independent variable
+## see ?lrData for details
+data(lrData)
+X <- lrData$X                           #a matrix of 1 column
+x <- lrData$x                           #a numeric vector
+## task 1. update the prior into posterior using X and x
+obj <- GaussianNIG(gamma=list(m=0,V=1,a=1,b=0)) #create a GaussianNIG object
+ss <- sufficientStatistics(obj = obj,X=X,x=x)   #the sufficient statistics of X and x
+posterior(obj = obj,ss = ss)                    #add the infomation to the posterior
+## task 2. get MAP estimate of beta and sigma^2 from the posterior
+bsMAP <- MAP(obj)                               #get the MAP estimate of beta and sigma^2
+bsMAP                                           #print the MAP estimate
+## plot the MAP estimate of the regression line
+plot(X,X%*%bsMAP$betaMAP,type = "l")
+points(X,x,pch=20)
+## task 3. calculate marginal likelihood
+## generate some new data
+Xnew <- matrix(runif(3,min=0,max=),ncol=1)
+xnew <- Xnew*0.2+rnorm(3,sd=10)
+marginalLikelihood(obj = obj,X=x,x=x,LOG = TRUE)
+## task 4. calculate the posterior prediction
+## say we want to predict x at the location X=100
+predictedSamples <- rPosteriorPredictive(obj = obj,X=matrix(101,ncol = 1),n=1000)
+## histogram of the prediction
+hist(predictedSamples)
+## the mean and standard devition of the prediction
+mean(predictedSamples)
+sd(predictedSamples)
+
+```
+
 
 
 ## References
@@ -735,11 +816,17 @@ Hoff, Peter D. *A first course in Bayesian statistical methods*. Vol. 580. New Y
 
 Li, Yuelin, Elizabeth Schofield, and Mithat Gönen. "A tutorial on Dirichlet process mixture modeling." *Journal of Mathematical Psychology* 91 (2019): 128-144.
 
+MARolA, K. V., JT KBNT, and J. M. Bibly. Multivariate analysis. AcadeInic Press, Londres, 1979.
+
 McLachlan, Geoffrey J., and Thriyambakam Krishnan. *The EM algorithm and extensions*. Vol. 382. John Wiley & Sons, 2007.
 
 Murphy, Kevin P. *Machine learning: a probabilistic perspective*. MIT press, 2012.
 
+Smith, W. B., and R. R. Hocking. *Algorithm as 53: Wishart variate generator.* Journal of the Royal Statistical Society. Series C (Applied Statistics) 21.3 (1972): 341-345.
+
 Teh, Yee Whye. "Dirichlet Process." (2010): 280-287.
 
 Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." *Advances in neural information processing systems*. 2005.
+
+Wishart, John. "The generalized product moment distribution in samples from a normal multivariate population." Biometrika (1928): 32-52.
 

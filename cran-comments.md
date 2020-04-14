@@ -1,10 +1,5 @@
-## Resubmission
-This is a resubmission. In this version I have:
-* Corrected the spacing in DESCRIPTION text:
-structures,as --> structures, as
-"Maximum A Posteriori"(MAP) --> "Maximum A Posteriori" (MAP)
-* Removed the par() settings in the examples.
-
+## Update submission
+This is a submission of a new version.
 
 ## Test environments
 * local Ubuntu 16.04, R 3.6.2

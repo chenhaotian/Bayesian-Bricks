@@ -2,8 +2,8 @@ library(roxygen2)
 library(devtools)
 library(usethis)
 
-VERSION <- "0.1.1.9000"
-VERSION <- "0.1.1"
+VERSION <- "0.1.2.9000"
+VERSION <- "0.1.2"
 
 ## remove previous build
 system("rm -r man")
