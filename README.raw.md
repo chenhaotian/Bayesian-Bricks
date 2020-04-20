@@ -14,7 +14,9 @@ See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples
 **----Installation----**
 
 ```R
-# install development version from GitHub:
+# install from CRAN:
+install.packages("bbricks")
+# or install development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("chenhaotian/Bayesian-Bricks")
 ```
