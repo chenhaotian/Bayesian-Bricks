@@ -18,8 +18,8 @@ A matrix of n rows, each row is a sample.
 }
 \description{
 Generate random samples from the posterior predictive distribution of the following structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 Posterior predictive is a distribution of x|v,S,mu.

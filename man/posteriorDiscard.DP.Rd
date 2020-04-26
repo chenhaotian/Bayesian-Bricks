@@ -22,10 +22,10 @@ None. the model stored in "obj" will be updated based on "ss".
 }
 \description{
 For the model structure:
-     \deqn{pi|alpha ~ DP(alpha,U)}
-     \deqn{z|pi ~ Categorical(pi)}
-     \deqn{theta_z|psi ~ H0(psi)}
-     \deqn{x|theta_z,z ~ F(theta_z)}
+     \deqn{pi|alpha \sim DP(alpha,U)}
+     \deqn{z|pi \sim Categorical(pi)}
+     \deqn{theta_z|psi \sim H0(psi)}
+     \deqn{x|theta_z,z \sim F(theta_z)}
 where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 }

@@ -6,6 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -68,13 +69,14 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 The idea of **bbricks** came from the fact that modeling in Bayesian statistics is nothing more than applying a set of **tasks** on a specific **model structure**.
 
 Where the most frequently appeared **tasks** are:
+
 + Update prior info into posterior when new samples are observed.
 + Sample from the posterior distribution.
 + Calculate marginal likelihood of the data set.
 + Calculate posterior predictive densities from the posterior distribution.
 + ...
 
-And the **model structure**s are just generalizations of $3$ basic Bayesian modeling structures:
+And the **model structure**s are always constituted by $3$ basic Bayesian modeling structures:
 ![](./notes_pictures/basicStructures.png){width=100%}
 Where
 
@@ -92,7 +94,7 @@ See [Examples](#examples) for details.
 
 ### Hierarchical Bayesian Linear Regression
 
-This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from $J=100$ different schools. The Conditional Probability Distributions (**CPD**s) of the model is defined as:
+This is an example from Hoff(2009). Where we want to examine the relationship between math score and another variable, socioeconomic status (SES) of students from $J=100$ different schools. The Conditional Probability Distributions (**CPD**s) of the model are defined as:
 $$
 \begin{align}
 x | \beta_j , \sigma^2,x & \sim Gaussian(X\beta_j,\sigma^2)\text{, }j = 1:J \\

@@ -22,8 +22,8 @@ An object of class "GaussianGaussian".
 }
 \description{
 Create an object of type "GaussianGaussian", which represents the Gaussian and Gaussian conjugate structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(mu,Sigma)}
+     \deqn{mu \sim Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }

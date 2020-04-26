@@ -16,8 +16,8 @@ A named list, the MAP estimate of mu and Sigma.
 }
 \description{
 Generate the MAP estimate of (mu,Sigma) in following Gaussian-NIW structure:
-     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+     \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 The MAP estimates are:

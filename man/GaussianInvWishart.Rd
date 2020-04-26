@@ -22,8 +22,8 @@ An object of class "GaussianInvWishart".
 }
 \description{
 Create an object of type "GaussianInvWishart", which represents the Gaussian and Inverse-Wishart conjugate structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }

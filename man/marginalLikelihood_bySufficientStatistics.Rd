@@ -16,61 +16,61 @@ numeric, the marginal likelihood
 }
 \description{
 This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
-     \deqn{theta|gamma ~ H(gamma)}
-     \deqn{x|theta ~ F(theta)}
+     \deqn{theta|gamma \sim H(gamma)}
+     \deqn{x|theta \sim F(theta)}
 Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood_bySufficientStatistics()} will calculate the marginal likelihood for different model structures:
 \subsection{class(obj)="LinearGaussianGaussian"}{
 Where
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,A,b,Sigma)
 See \code{?marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianGaussian"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{mu ~ Gaussian(m,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{mu \sim Gaussian(m,S)}
 Sigma is known.
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,Sigma)
 See \code{?marginalLikelihood_bySufficientStatistics.GaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianInvWishart"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
 mu is known.
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|mu,v,S)
 See \code{?marginalLikelihood_bySufficientStatistics.GaussianInvWishart} for details.
 }
 \subsection{class(obj)="GaussianNIW"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
-\deqn{mu ~ Gaussian(m,Sigma/k)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
+\deqn{mu \sim Gaussian(m,Sigma/k)}
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,k,v,S)
 See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X beta,sigma^2)}
-\deqn{sigma^2 ~ InvGamma(a,b)}
-\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\deqn{x \sim Gaussian(X beta,sigma^2)}
+\deqn{sigma^2 \sim InvGamma(a,b)}
+\deqn{beta \sim Gaussian(m,sigma^2 V)}
 X is a row vector, or a design matrix where each row is an obervation.
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x,X|m,V,a,b)
 See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIG} for details.
 }
 \subsection{class(obj)="CatDirichlet"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ Dirichlet(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim Dirichlet(alpha)}
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
 See \code{?marginalLikelihood_bySufficientStatistics.CatDirichlet} for details.
 }
 \subsection{class(obj)="CatDP"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ DirichletProcess(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim DirichletProcess(alpha)}
 \code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
 See \code{?marginalLikelihood_bySufficientStatistics.CatDP} for details.
 }

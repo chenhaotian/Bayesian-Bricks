@@ -22,9 +22,9 @@ An object of class "GaussianNIG".
 }
 \description{
 Create an object of type "GaussianNIG", which represents the Gaussian and Normal-Inverse-Gamma (Gaussian-NIG) conjugate structure:
-   \deqn{x ~ Gaussian(X beta,sigma^2)}
-   \deqn{sigma^2 ~ InvGamma(a,b)}
-   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+   \deqn{x \sim Gaussian(X beta,sigma^2)}
+   \deqn{sigma^2 \sim InvGamma(a,b)}
+   \deqn{beta \sim Gaussian(m,sigma^2 V)}
 Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
@@ -41,7 +41,7 @@ obj
 }
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 }
 \seealso{
 \code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{MPE.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}},\code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{rPosteriorPredictive.GaussianNIG}} ...

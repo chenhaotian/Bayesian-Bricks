@@ -16,92 +16,92 @@ None, or an error message if the update fails.
 }
 \description{
 This is a generic function that will update the prior distribution of a "BayesianBrick" object by adding information of the observation's sufficient statistics. i.e. for the model structure:
-     \deqn{theta|gamma ~ H(gamma)}
-     \deqn{x|theta ~ F(theta)}
+     \deqn{theta|gamma \sim H(gamma)}
+     \deqn{x|theta \sim F(theta)}
 update gamma to gamma_posterior by adding the information of x to gamma.\cr
 For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posterior()} will update the posterior parameters in obj for different model structures:
 \subsection{class(obj)="LinearGaussianGaussian"}{
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 \code{posterior()} will update m and S in obj.
 See \code{?posterior.LinearGaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianGaussian"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{mu ~ Gaussian(m,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{mu \sim Gaussian(m,S)}
 Sigma is known.
 \code{posterior()} will update m and S in obj.
 See \code{?posterior.GaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianInvWishart"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
 mu is known.
 \code{posterior()} will update v and S in obj.
 See \code{?posterior.GaussianInvWishart} for details.
 }
 \subsection{class(obj)="GaussianNIW"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
-\deqn{mu ~ Gaussian(m,Sigma/k)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
+\deqn{mu \sim Gaussian(m,Sigma/k)}
 \code{posterior()} will update m, k, v and S in obj.
 See \code{?posterior.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X beta,sigma^2)}
-\deqn{sigma^2 ~ InvGamma(a,b)}
-\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\deqn{x \sim Gaussian(X beta,sigma^2)}
+\deqn{sigma^2 \sim InvGamma(a,b)}
+\deqn{beta \sim Gaussian(m,sigma^2 V)}
 X is a row vector, or a design matrix where each row is an obervation.
 \code{posterior()} will update m, V, a and b in obj.
 See \code{?posterior.GaussianNIG} for details.
 }
 \subsection{class(obj)="CatDirichlet"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ Dirichlet(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim Dirichlet(alpha)}
 \code{posterior()} will update alpha in obj.
 See \code{?posterior.CatDirichlet} for details.
 }
 \subsection{class(obj)="CatDP"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ DirichletProcess(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim DirichletProcess(alpha)}
 \code{posterior()} will update alpha in obj.
 See \code{?posterior.CatDP} for details.
 }
 \subsection{class(obj)="DP"}{
 Where
-     \deqn{pi|alpha ~ DP(alpha,U)}
-    \deqn{z|pi ~ Categorical(pi)}
-     \deqn{theta_z|psi ~ H0(psi)}
-     \deqn{x|theta_z,z ~ F(theta_z)}
+     \deqn{pi|alpha \sim DP(alpha,U)}
+    \deqn{z|pi \sim Categorical(pi)}
+     \deqn{theta_z|psi \sim H0(psi)}
+     \deqn{x|theta_z,z \sim F(theta_z)}
 \code{posterior()} will update alpha and psi in obj.
 See \code{?posterior.DP} for details.
 }
 \subsection{class(obj)="HDP"}{
 Where
-     \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-     \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-     \deqn{z|pi_j ~ Categorical(pi_j)}
-     \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-     \deqn{theta_k|psi ~ H0(psi)}
+     \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+     \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+     \deqn{z|pi_j \sim Categorical(pi_j)}
+     \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{theta_k|psi \sim H0(psi)}
 \code{posterior()} will update gamma, alpha and psi in obj.
 See \code{?posterior.HDP} for details.
 }
 \subsection{class(obj)="HDP2"}{
 Where
-     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-     \deqn{z|pi_mj ~ Categorical(pi_mj)}
-     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-     \deqn{theta_u|psi ~ H0(psi)}
-     \deqn{x|theta_u,u ~ F(theta_u)}
+     \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+     \deqn{z|pi_mj \sim Categorical(pi_mj)}
+     \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi \sim H0(psi)}
+     \deqn{x|theta_u,u \sim F(theta_u)}
 \code{posterior()} will update eta, gamma, alpha and psi in obj.
 See \code{?posterior.HDP2} for details.
 }

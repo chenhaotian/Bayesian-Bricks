@@ -22,8 +22,8 @@ An object of class "CatDirichlet".
 }
 \description{
 Create an object of type "CatDirichlet", which represents the Categorical (Multinomial) and Dirichlet conjugate structure:
-     \deqn{pi|alpha ~ Dir(alpha)}
-     \deqn{x|pi ~ Categorical(pi)}
+     \deqn{pi|alpha \sim Dir(alpha)}
+     \deqn{x|pi \sim Categorical(pi)}
 Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. A categorical distribution is defined on a set of unique labels, usually these labels are integers, they can also be characters and factors.
 }

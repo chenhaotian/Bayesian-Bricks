@@ -16,8 +16,8 @@ matrix, the MPE estimate of "Sigma".
 }
 \description{
 Generate the MPE estimate of Sigma in following model structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 The MPE estimates are:

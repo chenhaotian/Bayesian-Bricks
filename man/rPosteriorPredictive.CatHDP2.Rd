@@ -22,12 +22,12 @@ integer, the categorical samples.
 }
 \description{
 Generate random samples from the posterior predictive distribution of the following structure:
-     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-     \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-     \deqn{z|pi_mj ~ Categorical(pi_mj)}
-     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+     \deqn{z|pi_mj \sim Categorical(pi_mj)}
+     \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatHDP2, u, z and k can only be positive integers. \cr
 The model structure and prior parameters are stored in a "CatHDP2" object. \cr

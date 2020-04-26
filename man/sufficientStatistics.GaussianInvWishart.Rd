@@ -20,8 +20,8 @@ If foreach=TRUE, will return a list of sufficient statistics for each row of x, 
 }
 \description{
 For following model structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The sufficient statistics of a set of samples x (each row of x is a sample) are: \cr
 \itemize{

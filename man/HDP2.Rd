@@ -23,14 +23,14 @@ An object of class "HDP2".
 }
 \description{
 Create an object of type "HDP2", which represents the Hierarchical-Dirichlet-Process with two Dirichlet-Process hierarchies:
-     \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-     \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-     \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-     \deqn{z|pi_mj ~ Categorical(pi_mj)}
-     \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-     \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-     \deqn{theta_u|psi ~ H0(psi)}
-     \deqn{x|theta_u,u ~ F(theta_u)}
+     \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+     \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+     \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+     \deqn{z|pi_mj \sim Categorical(pi_mj)}
+     \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+     \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{theta_u|psi \sim H0(psi)}
+     \deqn{x|theta_u,u \sim F(theta_u)}
 where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 In the case of HDP2, u, z and k can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.

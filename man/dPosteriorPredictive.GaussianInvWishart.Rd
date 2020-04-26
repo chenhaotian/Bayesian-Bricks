@@ -20,8 +20,8 @@ A numeric vector of the same length as nrow(x), the posterior predictive density
 }
 \description{
 Generate the the density value of the posterior predictive distribution of the following structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 Posterior predictive density is p(x|v,S,mu).

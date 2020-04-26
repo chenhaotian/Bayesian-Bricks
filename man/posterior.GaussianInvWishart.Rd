@@ -18,8 +18,8 @@ None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
 For the model structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 Update (v,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianInvWishart" object, the prior parameters in this object will be updated after running this function.
 }

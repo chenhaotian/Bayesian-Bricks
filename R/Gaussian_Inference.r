@@ -9,8 +9,8 @@
 #' @title Inference in joint Gaussian distribution
 #' @description
 #' For the model structure
-#'    \deqn{x1,x2|mu,Sigma ~ Gaussian(mu,Sigma)}
-#'    \deqn{x1|x2,mu,Sigma ~ Gaussian(mu12,Sigma12)}
+#'    \deqn{x1,x2|mu,Sigma \sim Gaussian(mu,Sigma)}
+#'    \deqn{x1|x2,mu,Sigma \sim Gaussian(mu12,Sigma12)}
 #' @param x2 numeric, an sample of X2, satisfying length(x2)<D, D is the dimension of the joint distribution.
 #' @param mu numeric, length D mean vector. mu=c(mu_X1,mu_X2)/.
 #' @param Sigma DxD covariance matrix. At least one of Sigma and Precision should be non-NULL.
@@ -253,8 +253,8 @@ rNIW <- function(m,k,v,S){
 #' @title Create objects of type "LinearGaussianGaussian".
 #' @description
 #' Create an object of type "LinearGaussianGaussian", which represents the Linear Gaussian and Gaussian conjugate structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{m x n} matrix, x is a \eqn{m x 1} random vector, z is a \eqn{n x 1} random vector, b is a \eqn{n x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.LinearGaussianGaussian}},\code{\link{posteriorDiscard.LinearGaussianGaussian}},\code{\link{MAP.LinearGaussianGaussian}},\code{\link{MPE.LinearGaussianGaussian}},\code{\link{marginalLikelihood.LinearGaussianGaussian}},\code{\link{rPosteriorPredictive.LinearGaussianGaussian}},\code{\link{dPosteriorPredictive.LinearGaussianGaussian}}.
@@ -305,8 +305,8 @@ LinearGaussianGaussian <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(Si
 #' @title Sufficient statistics of a "LinearGaussianGaussian" object
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' For one dimensional observations: x is a vector of length N, or a \eqn{N x 1} matrix, each row is an observation; A is a \eqn{N x dimz} matrix; b is a length N vector. The sufficient statistics are:
 #' \itemize{
@@ -427,8 +427,8 @@ sufficientStatistics.LinearGaussianGaussian <- function(obj,x,A,b=NULL,foreach=F
 #' @title Weighted sufficient statistics of a "LinearGaussianGaussian" object
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' For weight vector w and one dimensional observations: x is a vector of length N, or a \eqn{N x 1} matrix, each row is an observation, must satisfy \eqn{nrow(x)=length(w)}; A is a \eqn{N x dimz} matrix; b is a length N vector. The sufficient statistics are:
 #' \itemize{
@@ -548,8 +548,8 @@ sufficientStatistics_Weighted.LinearGaussianGaussian <- function(obj,x,w,A,b=NUL
 #' @title Update a "LinearGaussianGaussian" object with sample sufficient statistics
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' Update (m,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "LinearGaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{LinearGaussianGaussian}},\code{\link{posteriorDiscard.LinearGaussianGaussian}},\code{\link{sufficientStatistics.LinearGaussianGaussian}}
@@ -582,8 +582,8 @@ posterior.LinearGaussianGaussian <- function(obj,ss,...){
 #' @title Update a "LinearGaussianGaussian" object with sample sufficient statistics
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' Contrary to posterior(), this function will update (m,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "LinearGaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{LinearGaussianGaussian}},\code{\link{posterior.LinearGaussianGaussian}},\code{\link{sufficientStatistics.LinearGaussianGaussian}}
@@ -620,8 +620,8 @@ posteriorDiscard.LinearGaussianGaussian <- function(obj,ss,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "LinearGaussianGaussian" object
 #' @description
 #' Generate the MAP estimate of mu in following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' The MAP estimates are:
@@ -652,8 +652,8 @@ MAP.LinearGaussianGaussian <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "LinearGaussianGaussian" object
 #' @description
 #' Generate the MPE estimate of mu in following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' The MPE estimates is:
@@ -684,8 +684,8 @@ MPE.LinearGaussianGaussian <- function(obj,...){
 #' @title Posterior density function of a "LinearGaussianGaussian" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Posterior density is the density function of Gaussian(z|m,S).
@@ -715,8 +715,8 @@ dPosterior.LinearGaussianGaussian <- function(obj,z,LOG=TRUE,...){
 #' @title Posterior random generation of a "LinearGaussianGaussian" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Posterior distribution is Gaussian(z|m,S).
@@ -737,8 +737,8 @@ rPosterior.LinearGaussianGaussian <- function(obj,n=1,...){
 #' @title Marginal likelihood of a "LinearGaussianGaussian" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Marginal likelihood = p(x|m,S,A,b,Sigma)
@@ -816,8 +816,8 @@ marginalLikelihood.LinearGaussianGaussian <- function(obj,x,A,b=NULL,LOG=TRUE,..
 #' @title Marginal likelihood of a "LinearGaussianGaussian" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Marginal likelihood = p(x|m,S,Sigma)
@@ -837,8 +837,8 @@ marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian <- function(obj
 #' @title Posterior predictive density function of a "LinearGaussianGaussian" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Posterior predictive density is p(x|m,S,A,b,Sigma).
@@ -908,8 +908,8 @@ dPosteriorPredictive.LinearGaussianGaussian <- function(obj,x,A,b=NULL,LOG=TRUE,
 #' @title Generate random samples from the posterior predictive distribution of a "LinearGaussianGaussian" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 #' Posterior predictive is a distribution of x|m,S,A,b,Sigma.
@@ -972,8 +972,8 @@ rPosteriorPredictive.LinearGaussianGaussian <- function(obj,n=1,A,b=NULL,...){
 #' @title Create objects of type "GaussianGaussian".
 #' @description
 #' Create an object of type "GaussianGaussian", which represents the Gaussian and Gaussian conjugate structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.GaussianGaussian}},\code{\link{posteriorDiscard.GaussianGaussian}},\code{\link{MAP.GaussianGaussian}},\code{\link{MPE.GaussianGaussian}},\code{\link{marginalLikelihood.GaussianGaussian}},\code{\link{rPosteriorPredictive.GaussianGaussian}},\code{\link{dPosteriorPredictive.GaussianGaussian}}.
@@ -1011,8 +1011,8 @@ GaussianGaussian <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(Sigma=1,
 #' @title Sufficient statistics of a "GaussianGaussian" object
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample) are: \cr
 #' \itemize{
@@ -1057,8 +1057,8 @@ sufficientStatistics.GaussianGaussian <- function(obj,x,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "GaussianGaussian" object
 #' @description
 #' For following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are: \cr
 #' \itemize{
@@ -1106,8 +1106,8 @@ sufficientStatistics_Weighted.GaussianGaussian<- function(obj,x,w,foreach=FALSE,
 #' @title Update a "GaussianGaussian" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' Update (m,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianGaussian}},\code{\link{posteriorDiscard.GaussianGaussian}},\code{\link{sufficientStatistics.GaussianGaussian}}
@@ -1138,8 +1138,8 @@ posterior.GaussianGaussian <- function(obj,ss,...){
 #' @title Update a "GaussianGaussian" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' Contrary to posterior(), this function will update (m,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "GaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianGaussian}},\code{\link{posterior.GaussianGaussian}},\code{\link{sufficientStatistics.GaussianGaussian}}
@@ -1175,8 +1175,8 @@ posteriorDiscard.GaussianGaussian <- function(obj,ss,w=NULL,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "GaussianGaussian" object
 #' @description
 #' Generate the MAP estimate of mu in following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' The MAP estimates are:
@@ -1204,8 +1204,8 @@ MAP.GaussianGaussian <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "GaussianGaussian" object
 #' @description
 #' Generate the MPE estimate of mu in following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' The MPE estimates is:
@@ -1233,8 +1233,8 @@ MPE.GaussianGaussian <- function(obj,...){
 #' @title Density function of the posterior distribution of a "GaussianGaussian" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Posterior density is the density function of Gaussian(mu|m,S).
@@ -1262,8 +1262,8 @@ dPosterior.GaussianGaussian <- function(obj,mu,LOG=TRUE,...){
 #' @title Generate ramdom samples from the posterior distribution of a "GaussianGaussian" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Posterior distribution is Gaussian(mu|m,S).
@@ -1283,8 +1283,8 @@ rPosterior.GaussianGaussian <- function(obj,n=1,...){
 #' @title Marginal likelihood of a "GaussianGaussian" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Marginal likelihood = p(x|m,S,Sigma)
@@ -1324,8 +1324,8 @@ marginalLikelihood.GaussianGaussian <- function(obj,x,LOG=TRUE,...){
 #' @title Marginal likelihood of a "GaussianGaussian" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Marginal likelihood = p(x|m,S,Sigma)
@@ -1345,8 +1345,8 @@ marginalLikelihood_bySufficientStatistics.GaussianGaussian <- function(obj,ss,LO
 #' @title Posterior predictive density function of a "GaussianGaussian" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Posterior predictive density is p(x|m,S,Sigma).
@@ -1376,8 +1376,8 @@ dPosteriorPredictive.GaussianGaussian <- function(obj,x,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "GaussianGaussian" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{x ~ Gaussian(mu,Sigma)}
-#'      \deqn{mu ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(mu,Sigma)}
+#'      \deqn{mu \sim Gaussian(m,S)}
 #' Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 #' Posterior predictive is a distribution of x|m,S,Sigma.
@@ -1398,8 +1398,8 @@ rPosteriorPredictive.GaussianGaussian <- function(obj,n=1,...){
 #' @title Create objects of type "GaussianInvWishart".
 #' @description
 #' Create an object of type "GaussianInvWishart", which represents the Gaussian and Inverse-Wishart conjugate structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.GaussianInvWishart}},\code{\link{posteriorDiscard.GaussianInvWishart}},\code{\link{MAP.GaussianInvWishart}},\code{\link{MPE.GaussianInvWishart}},\code{\link{marginalLikelihood.GaussianInvWishart}},\code{\link{rPosteriorPredictive.GaussianInvWishart}},\code{\link{dPosteriorPredictive.GaussianInvWishart}} ...
@@ -1436,8 +1436,8 @@ GaussianInvWishart <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(mu=0,v
 #' @title Sufficient statistics of a "GaussianInvWishart" object
 #' @description
 #' For following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample) are: \cr
 #' \itemize{
@@ -1483,8 +1483,8 @@ sufficientStatistics.GaussianInvWishart <- function(obj,x,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "GaussianInvWishart" object
 #' @description
 #' For following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample)  and weights w are: \cr
 #' \itemize{
@@ -1534,8 +1534,8 @@ sufficientStatistics_Weighted.GaussianInvWishart<- function(obj,x,w,foreach=FALS
 #' @title Update a "GaussianInvWishart" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' Update (v,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianInvWishart" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianInvWishart}},\code{\link{posteriorDiscard.GaussianInvWishart}},\code{\link{sufficientStatistics.GaussianInvWishart}}
@@ -1563,8 +1563,8 @@ posterior.GaussianInvWishart <- function(obj,ss,...){
 #' @title Update a "GaussianInvWishart" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' Contrary to posterior(), this function will update (v,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "GaussianInvWishart" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianInvWishart}},\code{\link{posterior.GaussianInvWishart}},\code{\link{sufficientStatistics.GaussianInvWishart}}
@@ -1595,8 +1595,8 @@ posteriorDiscard.GaussianInvWishart <- function(obj,ss,w=NULL,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "GaussianInvWishart" object
 #' @description
 #' Generate the MAP estimate of Sigma in following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' The MAP estimates are:
@@ -1624,8 +1624,8 @@ MAP.GaussianInvWishart <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "GaussianInvWishart" object
 #' @description
 #' Generate the MPE estimate of Sigma in following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' The MPE estimates are:
@@ -1654,8 +1654,8 @@ MPE.GaussianInvWishart <- function(obj,...){
 #' @title Density function of the posterior distribution of a "GaussianInvWishart" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Posterior density is the density function of InvWishart(Sigma|v,S).
@@ -1684,8 +1684,8 @@ dPosterior.GaussianInvWishart <- function(obj,Sigma,LOG=TRUE,...){
 #' @title Generate one ramdom sample from the posterior distribution of a "GaussianInvWishart" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Posterior distribution is InvWishart(Sigma|v,S).
@@ -1704,8 +1704,8 @@ rPosterior.GaussianInvWishart <- function(obj,...){
 #' @title Marginal likelihood of a "GaussianInvWishart" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Marginal likelihood = p(x|v,S,mu)
@@ -1751,8 +1751,8 @@ marginalLikelihood.GaussianInvWishart <- function(obj,x,LOG=TRUE,...){
 #' @title Marginal likelihood of a "GaussianInvWishart" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Marginal likelihood = p(x|v,S,mu)
@@ -1772,8 +1772,8 @@ marginalLikelihood_bySufficientStatistics.GaussianInvWishart <- function(obj,ss,
 #' @title Posterior predictive density function of a "GaussianInvWishart" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Posterior predictive density is p(x|v,S,mu).
@@ -1811,8 +1811,8 @@ dPosteriorPredictive.GaussianInvWishart <- function(obj,x,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "GaussianInvWishart" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'     \deqn{x ~ Gaussian(mu,Sigma)}
-#'     \deqn{Sigma ~ InvWishart(v,S)}
+#'     \deqn{x \sim Gaussian(mu,Sigma)}
+#'     \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 #' The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 #' Posterior predictive is a distribution of x|v,S,mu.
@@ -1841,8 +1841,8 @@ rPosteriorPredictive.GaussianInvWishart <- function(obj,n,...){
 #' @title Create objects of type "GaussianNIW".
 #' @description
 #' Create an object of type "GaussianNIW", which represents the Gaussian-Normal-Inverse-Wishart (Gaussian-NIW) conjugate structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{MAP.GaussianNIW}},\code{\link{MPE.GaussianNIW}},\code{\link{marginalLikelihood.GaussianNIW}},\code{\link{rPosteriorPredictive.GaussianNIW}},\code{\link{dPosteriorPredictive.GaussianNIW}} ...
@@ -1879,8 +1879,8 @@ GaussianNIW <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,k=1,v=2,S
 #' @title Sufficient statistics of a "GaussianNIW" object
 #' @description
 #' For following Gaussian-NIW model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample) are: \cr
 #' \itemize{
@@ -1929,8 +1929,8 @@ sufficientStatistics.GaussianNIW <- function(obj,x,foreach=FALSE,...){
 #' @title Weighted sufficient statistics for a "GaussianNIW" object
 #' @description
 #' For following Gaussian-NIW model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The sufficient statistics of a set of samples x (each row of x is a sample) and weights w are:
 #' \itemize{
@@ -1983,8 +1983,8 @@ sufficientStatistics_Weighted.GaussianNIW<- function(obj,x,w,foreach=FALSE,...){
 #' @title Update a "GaussianNIW" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' Update (m,k,v,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "GaussianNIW" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianNIW}},\code{\link{posteriorDiscard.GaussianNIW}},\code{\link{sufficientStatistics.GaussianNIW}}
@@ -2020,8 +2020,8 @@ posterior.GaussianNIW <- function(obj,ss,...){
 #' @title Update a "GaussianNIW" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' Contrary to posterior(), this function will update (m,k,v,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "GaussianNIW" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{GaussianNIW}},\code{\link{posterior.GaussianNIW}}
@@ -2067,8 +2067,8 @@ posteriorDiscard.GaussianNIW <- function(obj,ss,w=NULL,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "GaussianNIW" object
 #' @description
 #' Generate the MAP estimate of (mu,Sigma) in following Gaussian-NIW structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' The MAP estimates are:
@@ -2100,8 +2100,8 @@ MAP.GaussianNIW <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "GaussianNIW" object
 #' @description
 #' Generate the MPE of (mu,Sigma) in following GaussianNIW structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' The MPE estimates are:
@@ -2125,8 +2125,8 @@ MPE.GaussianNIW <- function(obj,...){
 #' @title Density function of the posterior distribution of a "GaussianNIW" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Posterior density is the density function of NIW(mu,Sigma|m,k,v,S).
@@ -2154,8 +2154,8 @@ dPosterior.GaussianNIW <- function(obj,mu,Sigma,LOG=TRUE,...){
 #' @title Generate ramdom samples from the posterior distribution of a "GaussianNIW" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Posterior distribution is NIW(mu,Sigma|m,k,v,S).
@@ -2174,8 +2174,8 @@ rPosterior.GaussianNIW <- function(obj,...){
 #' @title Marginal likelihood of a "GaussianNIW" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Marginal likelihood = p(x|m,k,v,S)
@@ -2210,8 +2210,8 @@ marginalLikelihood.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' @title Marginal likelihood of a "GaussianNIW" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of a set of observations of the following model structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Marginal likelihood = p(x|m,k,v,S)
@@ -2251,8 +2251,8 @@ marginalLikelihood_bySufficientStatistics.GaussianNIW <- function(obj,ss,LOG=TRU
 #' @title Posterior predictive density function of a "GaussianNIW" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Posterior predictive density is p(x|m,k,v,S).
@@ -2292,8 +2292,8 @@ dPosteriorPredictive.GaussianNIW <- function(obj,x,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "GaussianNIW" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-#'      \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+#'      \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+#'      \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 #' Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 #' Posterior predictive is a distribution of x|m,k,v,S.
@@ -2317,9 +2317,9 @@ rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
 #' @title Create objects of type "GaussianNIG".
 #' @description
 #' Create an object of type "GaussianNIG", which represents the Gaussian and Normal-Inverse-Gamma (Gaussian-NIG) conjugate structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{posterior.GaussianNIG}},\code{\link{posteriorDiscard.GaussianNIG}},\code{\link{MAP.GaussianNIG}},\code{\link{MPE.GaussianNIG}},\code{\link{marginalLikelihood.GaussianNIG}},\code{\link{dPosteriorPredictive.GaussianNIG}}, \code{\link{rPosteriorPredictive.GaussianNIG}} ...
@@ -2339,7 +2339,7 @@ rPosteriorPredictive.GaussianNIW <- function(obj,n,...){
 #' ## print the whole content, "invV" and "mVm" in the output are temporary variables.
 #' obj
 #' }
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b=1)){
     object <- BasicBayesian(ENV = ENV)
     if(!is.null(objCopy)){
@@ -2365,9 +2365,9 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' @title Sufficient statistics of a "GaussianNIG" object
 #' @description
 #' For following Gaussian-NIG model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The sufficient statistics of a set of samples (x,X) are:
@@ -2391,7 +2391,7 @@ GaussianNIG <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(m=0,V=1,a=1,b
 #' x <- rnorm(20)+ X*0.3
 #' sufficientStatistics(obj = obj,X=X,x=x)
 #' sufficientStatistics(obj = obj,X=X,x=x,foreach = TRUE)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' must be specified")
     if(!is.vector(x)) x <- as.vector(x)
@@ -2425,9 +2425,9 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "GaussianNIG" object
 #' @description
 #' For following Gaussian-NIG model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. \cr
@@ -2454,7 +2454,7 @@ sufficientStatistics.GaussianNIG <- function(obj,x,X,foreach=FALSE,...){
 #' w <- runif(20)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 #' sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...){
     if(missing(x)|missing(w)|missing(X)) stop("'x', 'w' and 'X' must be specified")
     if(!is.vector(w)) w <- as.vector(w)
@@ -2491,9 +2491,9 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...
 #' @title Update a "GaussianNIG" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Update (m,V,a,b) by adding the information of newly observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
@@ -2510,7 +2510,7 @@ sufficientStatistics_Weighted.GaussianNIG<- function(obj,x,w,X,foreach=FALSE,...
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' obj
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 posterior.GaussianNIG <- function(obj,ss,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -2530,9 +2530,9 @@ posterior.GaussianNIG <- function(obj,ss,...){
 #' @title Update a "GaussianNIG" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Contrary to posterior(), this function will update (m,V,a,b) by removing the information of observed samples (x,X). The model structure and prior parameters are stored in a "GaussianNIG" object, the prior parameters in this object will be updated after running this function.
@@ -2560,7 +2560,7 @@ posterior.GaussianNIG <- function(obj,ss,...){
 #' obj
 #' for(sss in ssEach) posteriorDiscard(obj = obj,ss = sss)
 #' obj
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
     
     if(missing(ss)) stop("'ss' not specified!")
@@ -2580,9 +2580,9 @@ posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
 #' @title Maximum A Posteriori (MAP) estimate of a "GaussianNIG" object
 #' @description
 #' Generate the MAP estimate of (beta,sigma^2) in following Gaussian-NIG structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The MAP estimates are:
@@ -2602,7 +2602,7 @@ posteriorDiscard.GaussianNIG <- function(obj,ss,w=NULL,...){
 #' ss <- sufficientStatistics(obj = obj,X=X,x=x)
 #' posterior(obj = obj,ss = ss)
 #' MAP(obj)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 MAP.GaussianNIG <- function(obj,...){
     D <- length(obj$gamma$m)                      #dimension
     list(betaMAP=obj$gamma$m,
@@ -2612,9 +2612,9 @@ MAP.GaussianNIG <- function(obj,...){
 #' @title Mean Posterior Estimate (MPE) of a "GaussianNIG" object
 #' @description
 #' Generate the MPE estimate of (beta,sigma^2) in following Gaussian-NIG structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' The MPEs are E(beta,sigma^2|m,V,a,b,X,x)
@@ -2623,7 +2623,7 @@ MAP.GaussianNIG <- function(obj,...){
 #' @param ... Additional arguments to be passed to other inherited types.
 #' @return A named list, the MPE estimate of beta and sigma^2.
 #' @export
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 MPE.GaussianNIG <- function(obj,...){
     stop("MPE method for class 'GaussianNIG' is not implemented yet")
 }
@@ -2631,9 +2631,9 @@ MPE.GaussianNIG <- function(obj,...){
 #' @title Density function of the posterior distribution of a "GaussianNIG" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior density is the density function of beta,sigma^2|a,b,m,V.
@@ -2663,9 +2663,9 @@ dPosterior.GaussianNIG <- function(obj,beta,sigma2,LOG=TRUE,...){
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
 #' Generate the the density value of the posterior distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior distribution is the distribution of beta,sigma^2|m,V,a,b.
@@ -2686,9 +2686,9 @@ rPosterior.GaussianNIG <- function(obj,...){
 #' @title Marginal likelihood of a "GaussianNIG" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Marginal likelihood = p(x|m,V,a,b,X).
@@ -2706,7 +2706,7 @@ rPosterior.GaussianNIG <- function(obj,...){
 #' x <- rnorm(20)+ X*0.3
 #' marginalLikelihood(obj = obj,x = x, X = X)
 #' marginalLikelihood(obj = obj,x = x, X = X,LOG = FALSE)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
@@ -2723,9 +2723,9 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' @title Marginal likelihood of a "GaussianNIG" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of a set of observations of the following model structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Marginal likelihood = p(x|m,V,a,b,X)
@@ -2743,7 +2743,7 @@ marginalLikelihood.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' ss <- sufficientStatistics(obj=obj,x=x,X=X,foreach=FALSE)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss)
 #' marginalLikelihood_bySufficientStatistics(obj = obj,ss = ss,LOG = FALSE)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRUE,...){
     if(missing(ss)) stop("'ss' not specified!")
     if(!.is(ss,"ssGaussianLinear")) stop("'ss' must be of class 'ssGaussianLinear', you need to use sufficientStatistics() to generate 'ssGaussianLinear' objects")
@@ -2763,9 +2763,9 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' @title Posterior predictive density function of a "GaussianNIG" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior predictive density is p(x|m,V,a,b,X).
@@ -2787,7 +2787,7 @@ marginalLikelihood_bySufficientStatistics.GaussianNIG <- function(obj,ss,LOG=TRU
 #' for(i in 1:length(x))
 #' out2[i] <- marginalLikelihood(obj,x=x[i],X=X[i],LOG = TRUE)
 #' max(abs(out1-out2))
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
     if(missing(x)|missing(X)) stop("'x' and 'X' not specified!")
     if(!is.vector(x)) x <- as.vector(x)
@@ -2806,9 +2806,9 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "GaussianNIG" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'    \deqn{x ~ Gaussian(X beta,sigma^2)}
-#'    \deqn{sigma^2 ~ InvGamma(a,b)}
-#'    \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#'    \deqn{x \sim Gaussian(X beta,sigma^2)}
+#'    \deqn{sigma^2 \sim InvGamma(a,b)}
+#'    \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 #' The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 #' Posterior predictive is a distribution of x|m,V,a,b,X
@@ -2823,7 +2823,7 @@ dPosteriorPredictive.GaussianNIG <- function(obj,x,X,LOG=TRUE,...){
 #' obj <- GaussianNIG(gamma=list(m=c(1,1),V=diag(2),a=1,b=1))
 #' X <- matrix(runif(20),ncol=2)
 #' rPosteriorPredictive(obj=obj,n=3,X=X)
-#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+#' @references Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/ ph7440 (2008).
 rPosteriorPredictive.GaussianNIG <- function(obj,n,X,...){
     if(missing(X)) stop("'X' not specified!")
     if(!.is(X,"matrix")){

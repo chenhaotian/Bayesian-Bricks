@@ -1,3 +1,11 @@
+# bbricks 0.1.3 (2020-04-26)
+Enhance documentations.
+
+## Improvements
++ fix some display errors in function documentations.
++ add example "hierarchical Bayesian linear regression" to the package vignette.
+
+
 # bbricks 0.1.2 (2020-04-14)
 Add features and enhance documentations. Fix minor bugs.
 

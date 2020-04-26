@@ -20,8 +20,8 @@ None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
 For the model structure:
-     \deqn{pi|alpha ~ Dir(alpha)}
-     \deqn{x|pi ~ Categorical(pi)}
+     \deqn{pi|alpha \sim Dir(alpha)}
+     \deqn{x|pi \sim Categorical(pi)}
 Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 update alpha by adding the information of newly observed samples x. \cr
 The model structure and prior parameters are stored in a "CatDirichlet" object, the prior parameters in this object will be updated after running this function.

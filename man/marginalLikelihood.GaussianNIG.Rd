@@ -22,9 +22,9 @@ numeric, the marginal likelihood.
 }
 \description{
 Generate the marginal likelihood of the following model structure:
-   \deqn{x ~ Gaussian(X beta,sigma^2)}
-   \deqn{sigma^2 ~ InvGamma(a,b)}
-   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+   \deqn{x \sim Gaussian(X beta,sigma^2)}
+   \deqn{sigma^2 \sim InvGamma(a,b)}
+   \deqn{beta \sim Gaussian(m,sigma^2 V)}
 Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 Marginal likelihood = p(x|m,V,a,b,X).
@@ -37,7 +37,7 @@ marginalLikelihood(obj = obj,x = x, X = X)
 marginalLikelihood(obj = obj,x = x, X = X,LOG = FALSE)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{marginalLikelihood_bySufficientStatistics.GaussianNIG}}

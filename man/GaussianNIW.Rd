@@ -22,8 +22,8 @@ An object of class "GaussianNIW".
 }
 \description{
 Create an object of type "GaussianNIW", which represents the Gaussian-Normal-Inverse-Wishart (Gaussian-NIW) conjugate structure:
-     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+     \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }

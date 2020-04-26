@@ -24,9 +24,9 @@ If foreach=TRUE, will return a list of sufficient statistics for each row of (x,
 }
 \description{
 For following Gaussian-NIG model structure:
-   \deqn{x ~ Gaussian(X beta,sigma^2)}
-   \deqn{sigma^2 ~ InvGamma(a,b)}
-   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+   \deqn{x \sim Gaussian(X beta,sigma^2)}
+   \deqn{sigma^2 \sim InvGamma(a,b)}
+   \deqn{beta \sim Gaussian(m,sigma^2 V)}
 Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. \cr
@@ -47,7 +47,7 @@ sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w)
 sufficientStatistics_Weighted(obj = obj,X=X,x=x,w=w,foreach = TRUE)
 }
 \references{
-Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ ph7440 (2008).
+Banerjee, Sudipto. "Bayesian Linear Model: Gory Details." Downloaded from http://www. biostat. umn. edu/~ph7440 (2008).
 }
 \seealso{
 \code{\link{GaussianNIG}}, \code{\link{sufficientStatistics.GaussianNIG}}

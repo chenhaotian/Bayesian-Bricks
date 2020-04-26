@@ -18,8 +18,8 @@ A matrix of n rows, each row is a sample.
 }
 \description{
 Generate random samples from the posterior predictive distribution of the following structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(mu,Sigma)}
+     \deqn{mu \sim Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 Posterior predictive is a distribution of x|m,S,Sigma.

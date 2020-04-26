@@ -20,8 +20,8 @@ A numeric vector of the same length as nrow(mu), the posterior density.
 }
 \description{
 Generate the the density value of the posterior distribution of the following structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(mu,Sigma)}
+     \deqn{mu \sim Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 The model structure and prior parameters are stored in a "GaussianGaussian" object. \cr
 Posterior density is the density function of Gaussian(mu|m,S).

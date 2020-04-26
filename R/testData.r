@@ -1,5 +1,3 @@
-
-
 #' Samples from a mixture model
 #'
 #' A matrix of 2-dimensional Gaussian mixture samples, the samples came from 4 different Gaussian distributions

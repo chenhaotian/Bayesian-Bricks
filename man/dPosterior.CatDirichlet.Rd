@@ -20,8 +20,8 @@ numeric vector, the posterior densities for each row of pi.
 }
 \description{
 Generate the the density value of the posterior distribution of the following structure:
-     \deqn{pi|alpha ~ Dir(alpha)}
-     \deqn{x|pi ~ Categorical(pi)}
+     \deqn{pi|alpha \sim Dir(alpha)}
+     \deqn{x|pi \sim Categorical(pi)}
 Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 Posterior density is the density function of Dir(pi|alpha).

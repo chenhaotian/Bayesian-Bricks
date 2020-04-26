@@ -23,8 +23,8 @@
 #' @title Create objects of type "CatDP".
 #' @description
 #' Create an object of type "CatDP", which represents the Categorical-Dirichlet-Process(Multinomial-Dirichlet-Process) conjugate structure on positive integers:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
@@ -71,8 +71,8 @@ CatDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(alpha=1)){
 #' @title Sufficient statistics of a "CatDP" object
 #' @description
 #' For following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -114,8 +114,8 @@ sufficientStatistics.CatDP <- function(obj,x,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "CatDP" object
 #' @description
 #' For following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -161,8 +161,8 @@ sufficientStatistics_Weighted.CatDP <- function(obj,x,w,foreach=FALSE,...){
 #' @title Update a "CatDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' Update prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -289,8 +289,8 @@ posterior_bySufficientStatistics.CatDP <- function(obj,ss,...){
 #' @title Update a "CatDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -405,8 +405,8 @@ posteriorDiscard_bySufficientStatistics.CatDP <- function(obj,ss,...){
 #' @title Maximum A Posteriori(MAP) estimate of a "CatDP" object
 #' @description
 #' Generate the MAP estimate of "pi" in following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -432,8 +432,8 @@ MAP.CatDP <- function(obj,...){
 #' @title Mean Posterior Estimate(MPE) of a "CatDP" object
 #' @description
 #' Generate the MPE estimate of "pi" in following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -459,8 +459,8 @@ MPE.CatDP <- function(obj,...){
 #' @title Marginal likelihood of a "CatDP" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -482,8 +482,8 @@ marginalLikelihood.CatDP <- function(obj,x,LOG=TRUE,...){
 #' @title Marginal likelihood of a "CatDP" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -504,8 +504,8 @@ marginalLikelihood_bySufficientStatistics.CatDP <- function(obj,ss,LOG=TRUE,...)
 #' @title Posterior predictive density function of a "CatDP" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -541,8 +541,8 @@ dPosteriorPredictive.CatDP <- function(obj,x,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "CatDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatDP, x can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatDP" object. \cr
@@ -571,10 +571,10 @@ rPosteriorPredictive.CatDP <- function(obj,n=1L,...){
 #' @title Create objects of type "CatHDP".
 #' @description
 #' Create an object of type "CatHDP", which represents the Categorical-Hierarchical-Dirichlet-Process(Multinomial-Hierarchical-Dirichlet-Process) conjugate structure on positive integers:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), rPosteriorPredictive() and so on.
@@ -635,10 +635,10 @@ print.CatHDP <- function(x,...){
 #' @title Update a "CatHDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' Update the prior knowledge by adding the information of newly observed samples z and k. The model structure and prior parameters are stored in a "CatHDP" object, the prior parameters in this object will be updated after running this function.
@@ -676,10 +676,10 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
 #' @title Update a "CatHDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -705,14 +705,14 @@ posteriorDiscard.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
 #' @title Posterior predictive density function of a "CatHDP" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatHDP" object. \cr
-#' Posterior predictive density = p(z,k|alpha,gamm,U,G_j)
+#' Posterior predictive density = p(z,k|alpha,gamma,U,j)
 #'
 #' @seealso \code{\link{CatHDP}}, \code{\link{dPosteriorPredictive.CatHDP}}
 #' @param obj A "CatHDP" object.
@@ -747,10 +747,10 @@ dPosteriorPredictive.CatHDP <- function(obj,z,k,j,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "CatHDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatHDP" object. \cr
@@ -779,12 +779,12 @@ rPosteriorPredictive.CatHDP <- function(obj,n=1L,j,...){
 #' @title Create objects of type "CatHDP2".
 #' @description
 #' Create an object of type "CatHDP2" that represents the Categorical-Hierarchical-Dirichlet-Process of two Dirichlet Process hierarchies, which is basically CatHDP with an additional layer of Dirichlet Process:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
@@ -852,12 +852,12 @@ print.CatHDP2 <- function(x,...){
 #' @title Update a "CatHDP2" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' Update the prior knowledge by adding the information of newly observed samples u, z and k. The model structure and prior parameters are stored in a "CatHDP2" object, the prior parameters in this object will be updated after running this function.
@@ -895,12 +895,12 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
 #' @title Update a "CatHDP2" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples u, z and k. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -929,12 +929,12 @@ posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
 #' @title Posterior predictive density function of a "CatHDP" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatHDP" object. \cr
@@ -976,12 +976,12 @@ dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "CatHDP2" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "CatHDP2" object. \cr
@@ -1018,10 +1018,10 @@ rPosteriorPredictive.CatHDP2 <- function(obj,n=1L,m,j,...){
 #' @title Create objects of type "DP".
 #' @description
 #' Create an object of type "DP", which represents the Dirichlet-Process model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' The "DP" object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 #' @seealso \code{\link{BasicBayesian}},\code{\link{GaussianNIW}},\code{\link{GaussianNIG}},\code{\link{CatDirichlet}},\code{\link{CatDP}},\code{\link{posterior.DP}},\code{\link{posteriorDiscard.DP}},\code{\link{marginalLikelihood.DP}} ...
@@ -1133,10 +1133,10 @@ print.DP <- function(x,...){
 #' @title Sufficient statistics of a "DP" object
 #' @description
 #' For following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
 #' @seealso \code{\link{DP}}, \code{\link{sufficientStatistics_Weighted.DP}} 
@@ -1162,10 +1162,10 @@ sufficientStatistics.DP <- function(obj,x,...){
 #' @title Weighted sufficient statistics of a "DP" object
 #' @description
 #' For following model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' The sufficient statistics of a set of samples x in a "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP", see examples.
 #' @seealso \code{\link{DP}}, \code{\link{sufficientStatistics.DP}} 
@@ -1193,10 +1193,10 @@ sufficientStatistics_Weighted.DP <- function(obj,x,w,...){
 #' @title Update a "DP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "DP" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
@@ -1229,10 +1229,10 @@ posterior.DP <- function(obj,ss,z,w=NULL,...){
 #' @title Update a "DP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
 #' @seealso \code{\link{DP}},\code{\link{posteriorDiscard.DP}},\code{\link{sufficientStatistics.DP}}
@@ -1271,10 +1271,10 @@ marginalLikelihood.DP <- function(obj,...){
 #' @title Posterior predictive density function of a Dirichlet Process object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' The model structure and prior parameters are stored in a "DP" object. \cr
 #' Posterior predictive density = p(x,z|alpha,psi).
@@ -1322,10 +1322,10 @@ dPosteriorPredictive.DP <- function(obj,x,z,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "DP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'      \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'      \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "DP" object is simply a combination of a "CatDP" object (see \code{?CatDP}) and an object of any "BasicBayesian" type.\cr
 #' The model structure and prior parameters are stored in a "DP" object. \cr
 #' This function will generate random samples from the distribution  z|alpha,psi,x.
@@ -1375,12 +1375,12 @@ rPosteriorPredictive.DP <- function(obj,n=1,x,...){
 #' @title Create objects of type "HDP".
 #' @description
 #' Create an object of type "HDP", which represents the Hierarchical-Dirichlet-Process conjugate structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
@@ -1490,12 +1490,12 @@ print.HDP <- function(x,...){
 #' @title Sufficient statistics of a "HDP" object
 #' @description
 #' For following model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
@@ -1527,12 +1527,12 @@ sufficientStatistics.HDP <- function(obj,x,...){
 #' @title Weighted sufficient statistics of a "HDP" object
 #' @description
 #' For following model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP", see examples.
@@ -1567,12 +1567,12 @@ sufficientStatistics_Weighted.HDP <- function(obj,x,w,...){
 #' @title Update a "HDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP" object, the prior parameters in this object will be updated after running this function.
@@ -1604,12 +1604,12 @@ posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #' @title Update a "HDP" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -1643,12 +1643,12 @@ marginalLikelihood.HDP <- function(obj,...){
 #' @title Posterior predictive density function of a "HDP" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP" object. \cr
@@ -1696,12 +1696,12 @@ dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "HDP" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
-#'      \deqn{x|theta_k,k ~ F(theta_k)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
 #' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP" object. \cr
@@ -1732,14 +1732,14 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
 #' @title Create objects of type "HDP2".
 #' @description
 #' Create an object of type "HDP2", which represents the Hierarchical-Dirichlet-Process with two Dirichlet-Process hierarchies:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP() and so on.
@@ -1854,14 +1854,14 @@ print.HDP2 <- function(x,...){
 #' @title Sufficient statistics of a "HDP2" object
 #' @description
 #' For following model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
@@ -1893,14 +1893,14 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
 #' @title Weighted sufficient statistics of a "HDP2" object
 #' @description
 #' For following model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The sufficient statistics of a set of samples x in a "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2", see examples.
@@ -1935,14 +1935,14 @@ sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
 #' @title Update a "HDP2" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP2" object, the prior parameters in this object will be updated after running this function.
@@ -1972,14 +1972,14 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
 #' @title Update a "HDP2" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' Contrary to posterior(), this function will update the prior knowledge by removing the information of observed samples x. The model structure and prior parameters are stored in a "CatDP" object, the prior parameters in this object will be updated after running this function.
@@ -2015,14 +2015,14 @@ marginalLikelihood.HDP2 <- function(obj,...){
 #' @title Posterior predictive density function of a "HDP2" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP2" object. \cr
@@ -2072,14 +2072,14 @@ dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "HDP2" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr
 #' In the case of HDP2, u, z and k can only be positive integers. \cr
 #' The model structure and prior parameters are stored in a "HDP2" object. \cr

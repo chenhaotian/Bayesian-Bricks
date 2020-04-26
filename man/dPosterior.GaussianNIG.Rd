@@ -22,9 +22,9 @@ numeric, the posterior density of (beta,sigma^2).
 }
 \description{
 Generate the the density value of the posterior distribution of the following structure:
-   \deqn{x ~ Gaussian(X beta,sigma^2)}
-   \deqn{sigma^2 ~ InvGamma(a,b)}
-   \deqn{beta ~ Gaussian(m,sigma^2 V)}
+   \deqn{x \sim Gaussian(X beta,sigma^2)}
+   \deqn{sigma^2 \sim InvGamma(a,b)}
+   \deqn{beta \sim Gaussian(m,sigma^2 V)}
 Where X is a row vector, or a design matrix where each row is an obervation. InvGamma() is the Inverse-Gamma distribution, Gaussian() is the Gaussian distribution. See \code{?dInvGamma} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIG" object. \cr
 Posterior density is the density function of beta,sigma^2|a,b,m,V.

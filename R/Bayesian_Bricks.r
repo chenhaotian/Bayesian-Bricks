@@ -4,8 +4,8 @@
 #' @title Create objects of type '"BasicBayesian"'.
 #' @description
 #' A Basic Bayesian Object is with following conditional dependency structure: 
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{X|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{X|theta \sim F(theta)}
 #' Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "LinearGaussianGaussian", "GaussianGaussian", "GaussianInvWishart", "GaussianNIW", "GaussianNIG", "CatDirichlet" and "CatDP" are all "BasicBayesian"s.
 #' 
 #' @seealso \code{\link{LinearGaussianGaussian}} for Linear Gaussian and Gaussian conjugate structure, \code{\link{GaussianGaussian}} for Gaussian-Gaussian conjugate structure, \code{\link{GaussianInvWishart}} for Gaussian-Inverse-Wishart conjugate structure, \code{\link{GaussianNIW}} for Gaussian-NIW conjugate structure, \code{\link{GaussianNIG}} for Gaussian-NIG conjugate structure, \code{\link{CatDirichlet}} for Categorical-Dirichlet conjugate structure, \code{\link{CatDP}} for Categorical-DP conjugate structure ...
@@ -28,13 +28,13 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' @description
 #' This is a generic function that will generate the sufficient statistics of a given Bayesian bricks object. i.e. \cr
 #' for the model structure:
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' get the sufficient statistics T(x). \cr
 #' For a given sample set x, each row of x is an observation, and a Bayesian bricks object obj. \code{sufficientStatistics()} return the sufficient statistics for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' The sufficient statistics are:
 #' \itemize{
 #'  \item   SA = \eqn{sum_{i=1:N} A_i^T Sigma^{-1} A_i}
@@ -44,8 +44,8 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' The sufficient statistics are:
 #' \itemize{
@@ -56,8 +56,8 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. \cr
 #' The sufficient statistics are:
 #' \itemize{
@@ -68,9 +68,9 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' The sufficient statistics are:
 #' \itemize{
 #' \item N: the effective number of samples.
@@ -81,9 +81,9 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' The sufficient statistics are:
 #' \itemize{
@@ -96,47 +96,47 @@ BasicBayesian <- function(ENV=parent.frame()){
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' The sufficient statistics of CatDirichlet object can either be x itself, or the counts of the unique labels in x.\cr
 #' See \code{?sufficientStatistics.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' The sufficient statistics of CatDP object can either be x itself, or the counts of the unique labels in x.\cr
 #' See \code{?sufficientStatistics.CatDP} for details.
 #' }
 #' \subsection{class(obj)="DP"}{
 #' Where
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'     \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'     \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' The sufficient statistics of "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP".
 #' See \code{?sufficientStatistics.DP} for details.
 #' }
 #' \subsection{class(obj)="HDP"}{
 #' Where
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
 #' The sufficient statistics of "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP".
 #' See \code{?sufficientStatistics.HDP} for details.
 #' }
 #' \subsection{class(obj)="HDP2"}{
 #' Where
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' The sufficient statistics of "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2".
 #' See \code{?sufficientStatistics.HDP2} for details.
 #' }
@@ -156,13 +156,13 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' @title Get weighted sample sufficient statistics
 #' @description
 #' This is a generic function that will generate the weighted sufficient statistics of a given "BayesianBrick" object. That is, for the model structure:
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' get the weighted sufficient statistics T(x).
 #' For a given sample set x, each row of x is an observation, the sample weights w, and a Bayesian bricks object obj. \code{sufficientStatistics_Weighted()} return the weighted sufficient statistics for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' The sufficient statistics are:
 #' \itemize{
 #'  \item   SA = \eqn{sum_{i=1:N} w_i A_i^T Sigma^{-1} A_i}
@@ -172,8 +172,8 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' The sufficient statistics are:
 #' \itemize{
@@ -184,8 +184,8 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known. \cr
 #' The sufficient statistics are:
 #' \itemize{
@@ -196,9 +196,9 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' The sufficient statistics are:
 #' \itemize{
 #' \item N: the effective number of samples.
@@ -209,9 +209,9 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' The sufficient statistics are:
 #' \itemize{
@@ -224,47 +224,47 @@ sufficientStatistics <- function(obj,x,...) UseMethod("sufficientStatistics")
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' The sufficient statistics of CatDirichlet object can either be x itself, or the counts of the unique labels in x.\cr
 #' See \code{?sufficientStatistics_Weighted.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' The sufficient statistics of CatDP object can either be x itself, or the counts of the unique labels in x.\cr
 #' See \code{?sufficientStatistics_Weighted.CatDP} for details.
 #' }
 #' \subsection{class(obj)="DP"}{
 #' Where
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'     \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'     \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' The sufficient statistics of "DP" object is the same sufficient statistics of the "BasicBayesian" inside the "DP".
 #' See \code{?sufficientStatistics_Weighted.DP} for details.
 #' }
 #' \subsection{class(obj)="HDP"}{
 #' Where
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
 #' The sufficient statistics of "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP".
 #' See \code{?sufficientStatistics_Weighted.HDP} for details.
 #' }
 #' \subsection{class(obj)="HDP2"}{
 #' Where
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' The sufficient statistics of "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2".
 #' See \code{?sufficientStatistics_Weighted.HDP2} for details.
 #' }
@@ -294,92 +294,92 @@ posterior_bySufficientStatistics <- function(obj,...) UseMethod("posterior_bySuf
 #' @title update the prior distribution with sufficient statistics
 #' @description
 #' This is a generic function that will update the prior distribution of a "BayesianBrick" object by adding information of the observation's sufficient statistics. i.e. for the model structure:
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' update gamma to gamma_posterior by adding the information of x to gamma.\cr
 #' For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posterior()} will update the posterior parameters in obj for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{posterior()} will update m and S in obj.
 #' See \code{?posterior.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{posterior()} will update m and S in obj.
 #' See \code{?posterior.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{posterior()} will update v and S in obj.
 #' See \code{?posterior.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{posterior()} will update m, k, v and S in obj.
 #' See \code{?posterior.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{posterior()} will update m, V, a and b in obj.
 #' See \code{?posterior.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{posterior()} will update alpha in obj.
 #' See \code{?posterior.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{posterior()} will update alpha in obj.
 #' See \code{?posterior.CatDP} for details.
 #' }
 #' \subsection{class(obj)="DP"}{
 #' Where
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'     \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'     \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' \code{posterior()} will update alpha and psi in obj.
 #' See \code{?posterior.DP} for details.
 #' }
 #' \subsection{class(obj)="HDP"}{
 #' Where
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
 #' \code{posterior()} will update gamma, alpha and psi in obj.
 #' See \code{?posterior.HDP} for details.
 #' }
 #' \subsection{class(obj)="HDP2"}{
 #' Where
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' \code{posterior()} will update eta, gamma, alpha and psi in obj.
 #' See \code{?posterior.HDP2} for details.
 #' }
@@ -401,92 +401,92 @@ posteriorDiscard_bySufficientStatistics <- function(obj,...) UseMethod("posterio
 #' @title update the prior distribution with sufficient statistics
 #' @description
 #' Contrary to posterior(), posteriorDiscard() a generic function that will update the prior distribution of a "BayesianBrick" object by removing the information provided by the observation's sufficient statistics. i.e. for the model structure:
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' update gamma to gamma_posterior by removing the information of x from gamma.
 #' For a given sample set x or it's sufficient statistics ss, and a Bayesian bricks object obj, \code{posteriorDiscard()} will update the posterior parameters in obj for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{posteriorDiscard()} will update m and S in obj.
 #' See \code{?posteriorDiscard.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{posteriorDiscard()} will update m and S in obj.
 #' See \code{?posteriorDiscard.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{posteriorDiscard()} will update v and S in obj.
 #' See \code{?posteriorDiscard.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{posteriorDiscard()} will update m, k, v and S in obj.
 #' See \code{?posteriorDiscard.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #  X is a row vector, or a design matrix where each row is an obervation.
 #' \code{posteriorDiscard()} will update m, V, a and b in obj.
 #' See \code{?posteriorDiscard.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{posteriorDiscard()} will update alpha in obj.
 #' See \code{?posteriorDiscard.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{posteriorDiscard()} will update alpha in obj.
 #' See \code{?posteriorDiscard.CatDP} for details.
 #' }
 #' \subsection{class(obj)="DP"}{
 #' Where
-#'      \deqn{pi|alpha ~ DP(alpha,U)}
-#'     \deqn{z|pi ~ Categorical(pi)}
-#'      \deqn{theta_z|psi ~ H0(psi)}
-#'      \deqn{x|theta_z,z ~ F(theta_z)}
+#'      \deqn{pi|alpha \sim DP(alpha,U)}
+#'     \deqn{z|pi \sim Categorical(pi)}
+#'      \deqn{theta_z|psi \sim H0(psi)}
+#'      \deqn{x|theta_z,z \sim F(theta_z)}
 #' \code{posteriorDiscard()} will update alpha and psi in obj.
 #' See \code{?posteriorDiscard.DP} for details.
 #' }
 #' \subsection{class(obj)="HDP"}{
 #' Where
-#'      \deqn{G_j|gamma ~ DP(gamma,U), j = 1:J}
-#'      \deqn{pi_j|G_j,alpha ~ DP(alpha,G_j)}
-#'      \deqn{z|pi_j ~ Categorical(pi_j)}
-#'      \deqn{k|z,G_j ~ Categorical(G_j), if z is a sample from the base measure G}
-#'      \deqn{theta_k|psi ~ H0(psi)}
+#'      \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
+#'      \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+#'      \deqn{theta_k|psi \sim H0(psi)}
 #' \code{posteriorDiscard()} will update gamma, alpha and psi in obj.
 #' See \code{?posteriorDiscard.HDP} for details.
 #' }
 #' \subsection{class(obj)="HDP2"}{
 #' Where
-#'      \deqn{G_m |eta ~ DP(eta,U), m = 1:M}
-#'      \deqn{G_mj|gamma,G_m ~ DP(gamma,G_m), j = 1:J_m}
-#'      \deqn{pi_mj|G_mj,alpha ~ DP(alpha,G_mj)}
-#'      \deqn{z|pi_mj ~ Categorical(pi_mj)}
-#'      \deqn{k|z,G_mj ~ Categorical(G_mj), if z is a sample from the base measure G_mj}
-#'      \deqn{u|k,G_m ~ Categorical(G_m), if k is a sample from the base measure G_m}
-#'      \deqn{theta_u|psi ~ H0(psi)}
-#'      \deqn{x|theta_u,u ~ F(theta_u)}
+#'      \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
+#'      \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
+#'      \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
+#'      \deqn{z|pi_mj \sim Categorical(pi_mj)}
+#'      \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
+#'      \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+#'      \deqn{theta_u|psi \sim H0(psi)}
+#'      \deqn{x|theta_u,u \sim F(theta_u)}
 #' \code{posteriorDiscard()} will update eta, gamma, alpha and psi in obj.
 #' See \code{?posteriorDiscard.HDP2} for details.
 #' }
@@ -501,61 +501,61 @@ posteriorDiscard <- function(obj,...) UseMethod("posteriorDiscard")
 #' @title Get the Maximum A Posteriori(MAP) estimate of a "BayesianBrick" object
 #' @description
 #' This is a generic function that will generate the MAP estimate of a given "BayesianBrick" object. For the model structure:  \cr
-#'      theta|gamma ~ H(gamma) \cr
-#'      x|theta ~ F(theta) \cr
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' MAP estimate of theta is theta_MAP = argmax_theta p(theta|gamma,x).
 #' For a given Bayesian bricks object obj, the MAP estimate will be:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{MAP()} will return the MAP estimate of z.
 #' See \code{?MAP.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{MAP()} will return the MAP estimate of mu.
 #' See \code{?MAP.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{MAP()} will return the MAP estimate of Sigma.
 #' See \code{?MAP.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{MAP()} will return the MAP estimate of mu and Sigma.
 #' See \code{?MAP.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{MAP()} will return the MAP estimate of beta and sigma^2.
 #' See \code{?MAP.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{MAP()} will return the MAP estimate of pi.
 #' See \code{?MAP.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{MAP()} will return the MAP estimate of pi.
 #' See \code{?MAP.CatDP} for details.
 #' }
@@ -569,61 +569,61 @@ MAP <- function(obj,...) UseMethod("MAP")
 #' @title Get the Mean Posterior Estimate(MPE) of a "BayesianBrick" object
 #' @description
 #' This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' MPE estimate of theta is theta_MPE = E(theta|gamma,x), E() is the expectation function.
 #' For a given Bayesian bricks object obj, the MPE estimate will be:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{MPE()} will return the MPE estimate of z.
 #' See \code{?MPE.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{MPE()} will return the MPE estimate of mu.
 #' See \code{?MPE.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{MPE()} will return the MPE estimate of Sigma.
 #' See \code{?MPE.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{MPE()} will return the MPE estimate of mu and Sigma.
 #' See \code{?MPE.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{MPE()} will return the MPE estimate of beta and sigma^2.
 #' See \code{?MPE.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{MPE()} will return the MPE estimate of pi.
 #' See \code{?MPE.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{MPE()} will return the MPE estimate of pi.
 #' See \code{?MPE.CatDP} for details.
 #' }
@@ -637,54 +637,54 @@ MPE <- function(obj,...) UseMethod("MPE")
 #' @title Get the density from the posterior distribution.
 #' @description
 #' This is a generic function that will generate the the density value of the posterior distribution. i.e. for the model structure: \cr
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
-#' get the probability density/mass from the distribution \eqn{theta ~ H(gamma)}.
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
+#' get the probability density/mass from the distribution \eqn{theta \sim H(gamma)}.
 #' For a given Bayesian bricks object obj and an observation of theta, \code{dPosterior()} will calculate the density value for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{dPosterior()} will return p(theta|m,S)
 #' See \code{?dPosterior.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{dPosterior()} will return p(mu|m,S)
 #' See \code{?dPosterior.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{dPosterior()} will return p(Sigma|v,S)
 #' See \code{?dPosterior.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{dPosterior()} will return p(mu,Sigma|m,k,v,S)
 #' See \code{?dPosterior.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{dPosterior()} will return p(beta,sigma^2|m,V,a,b)
 #' See \code{?dPosterior.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{dPosterior()} will return p(pi|alpha)
 #' See \code{?dPosterior.CatDirichlet} for details.
 #' }
@@ -698,54 +698,54 @@ dPosterior <- function(obj,...) UseMethod("dPosterior")
 #' @title Generate random samples from the posterior distribution
 #' @description
 #' This is a generic function that will generate random samples from the posterior distribution. i.e. for the model structure: \cr
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
-#' generate random sampels of theta from the distribution \eqn{theta ~ H(gamma)}.
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
+#' generate random sampels of theta from the distribution \eqn{theta \sim H(gamma)}.
 #' For a given Bayesian bricks object obj, \code{rPosterior()} will generate random samples for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{rPosterior()} will generate random samples from Gaussian(m,S)
 #' See \code{?rPosterior.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{rPosterior()} will generate random samples from Gaussian(m,S)
 #' See \code{?rPosterior.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{rPosterior()} will generate random samples from InvWishart(v,S)
 #' See \code{?rPosterior.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{rPosterior()} will generate random samples from NIW(m,k,v,S)
 #' See \code{?rPosterior.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{rPosterior()} will generate random samples from NIG(m,V,a,b)
 #' See \code{?rPosterior.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{rPosterior()} will generate random samples from Dirichlet(alpha)
 #' See \code{?rPosterior.CatDirichlet} for details.
 #' }
@@ -759,61 +759,61 @@ rPosterior <- function(obj,...) UseMethod("rPosterior")
 #' @title Get the marginal likelihood of a "BayesianBrick" object
 #' @description
 #' This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 #' For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood_bySufficientStatistics()} will calculate the marginal likelihood for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,A,b,Sigma)
 #' See \code{?marginalLikelihood_bySufficientStatistics.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,S,Sigma)
 #' See \code{?marginalLikelihood_bySufficientStatistics.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|mu,v,S)
 #' See \code{?marginalLikelihood_bySufficientStatistics.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|m,k,v,S)
 #' See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x,X|m,V,a,b)
 #' See \code{?marginalLikelihood_bySufficientStatistics.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
 #' See \code{?marginalLikelihood_bySufficientStatistics.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{marginalLikelihood_bySufficientStatistics()} will return p(x|alpha)
 #' See \code{?marginalLikelihood_bySufficientStatistics.CatDP} for details.
 #' }
@@ -827,61 +827,61 @@ marginalLikelihood_bySufficientStatistics <- function(obj,...) UseMethod("margin
 #' @title Get the marginal likelihood of a "BayesianBrick" object
 #' @description
 #' This is a generic function that will generate the marginal likelihood of a set of observations conditioned on a given "BayesianBrick" object. i.e. for the model structure: \cr
-#'      theta|gamma ~ H(gamma) \cr
-#'      x|theta ~ F(theta) \cr
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' Marginal likelihood is p(x|gamma), p() is the probability density/mass function for continuous/discrete x.
 #' For a given Bayesian bricks object obj and a sample set x, \code{marginalLikelihood()} will calculate the marginal likelihood for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{marginalLikelihood()} will return p(x|m,S,A,b,Sigma)
 #' See \code{?marginalLikelihood.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{marginalLikelihood()} will return p(x|m,S,Sigma)
 #' See \code{?marginalLikelihood.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{marginalLikelihood()} will return p(x|mu,v,S)
 #' See \code{?marginalLikelihood.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{marginalLikelihood()} will return p(x|m,k,v,S)
 #' See \code{?marginalLikelihood.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{marginalLikelihood()} will return p(x,X|m,V,a,b)
 #' See \code{?marginalLikelihood.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{marginalLikelihood()} will return p(x|alpha)
 #' See \code{?marginalLikelihood.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{marginalLikelihood()} will return p(x|alpha)
 #' See \code{?marginalLikelihood.CatDP} for details.
 #' }
@@ -895,61 +895,61 @@ marginalLikelihood <- function(obj,...) UseMethod("marginalLikelihood")
 #' @title Get the density value of the posterior predictive distribution
 #' @description
 #' This is a generic function that will generate the the density value of the posterior predictive distribution. i.e. for the model structure: \cr
-#'      \deqn{theta|gamma ~ H(gamma)}
-#'      \deqn{x|theta ~ F(theta)}
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' get the probability density/mass of the posterior predictive distribution of a new sample x_new: p(x_new|gamma).
 #' For a given Bayesian bricks object obj and a new sample x, \code{dPosteriorPredictive()} will calculate the marginal likelihood for different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{dPosteriorPredictive()} will return p(x|m,S,A,b,Sigma)
 #' See \code{?dPosteriorPredictive.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{dPosteriorPredictive()} will return p(x|m,S,Sigma)
 #' See \code{?dPosteriorPredictive.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{dPosteriorPredictive()} will return p(x|mu,v,S)
 #' See \code{?dPosteriorPredictive.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{dPosteriorPredictive()} will return p(x|m,k,v,S)
 #' See \code{?dPosteriorPredictive.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{dPosteriorPredictive()} will return p(x,X|m,V,a,b)
 #' See \code{?dPosteriorPredictive.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{dPosteriorPredictive()} will return p(x|alpha)
 #' See \code{?dPosteriorPredictive.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{dPosteriorPredictive()} will return p(x|alpha)
 #' See \code{?dPosteriorPredictive.CatDP} for details.
 #' }
@@ -963,61 +963,61 @@ dPosteriorPredictive <- function(obj,...) UseMethod("dPosteriorPredictive")
 #' @title Generate random samples from the posterior predictive distribution
 #' @description
 #' This is a generic function that will generate random samples from the posterior predictive distribution. i.e. for the model structure: \cr
-#'      theta|gamma ~ H(gamma) \cr
-#'      x|theta ~ F(theta) \cr
+#'      \deqn{theta|gamma \sim H(gamma)}
+#'      \deqn{x|theta \sim F(theta)}
 #' generate x_new from the posterior predictive distribution of x|gamma.
 #' For a given Bayesian bricks object obj, \code{rPosteriorPredictive()} will generate random samples from different model structures:
 #' \subsection{class(obj)="LinearGaussianGaussian"}{
 #' Where
-#'      \deqn{x ~ Gaussian(A z + b, Sigma)}
-#'      \deqn{z ~ Gaussian(m,S)}
+#'      \deqn{x \sim Gaussian(A z + b, Sigma)}
+#'      \deqn{z \sim Gaussian(m,S)}
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,A,b,Sigma
 #' See \code{?rPosteriorPredictive.LinearGaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianGaussian"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{mu ~ Gaussian(m,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{mu \sim Gaussian(m,S)}
 #' Sigma is known.
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,Sigma
 #' See \code{?rPosteriorPredictive.GaussianGaussian} for details.
 #' }
 #' \subsection{class(obj)="GaussianInvWishart"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
 #' mu is known.
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|mu,v,S
 #' See \code{?rPosteriorPredictive.GaussianInvWishart} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIW"}{
 #' Where
-#' \deqn{x ~ Gaussian(mu,Sigma)}
-#' \deqn{Sigma ~ InvWishart(v,S)}
-#' \deqn{mu ~ Gaussian(m,Sigma/k)}
+#' \deqn{x \sim Gaussian(mu,Sigma)}
+#' \deqn{Sigma \sim InvWishart(v,S)}
+#' \deqn{mu \sim Gaussian(m,Sigma/k)}
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,k,v,S
 #' See \code{?rPosteriorPredictive.GaussianNIW} for details.
 #' }
 #' \subsection{class(obj)="GaussianNIG"}{
 #' Where
-#' \deqn{x ~ Gaussian(X beta,sigma^2)}
-#' \deqn{sigma^2 ~ InvGamma(a,b)}
-#' \deqn{beta ~ Gaussian(m,sigma^2 V)}
+#' \deqn{x \sim Gaussian(X beta,sigma^2)}
+#' \deqn{sigma^2 \sim InvGamma(a,b)}
+#' \deqn{beta \sim Gaussian(m,sigma^2 V)}
 #' X is a row vector, or a design matrix where each row is an obervation.
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x,X|m,V,a,b
 #' See \code{?rPosteriorPredictive.GaussianNIG} for details.
 #' }
 #' \subsection{class(obj)="CatDirichlet"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ Dirichlet(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim Dirichlet(alpha)}
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
 #' See \code{?rPosteriorPredictive.CatDirichlet} for details.
 #' }
 #' \subsection{class(obj)="CatDP"}{
 #' Where
-#' \deqn{x ~ Categorical(pi)}
-#' \deqn{pi ~ DirichletProcess(alpha)}
+#' \deqn{x \sim Categorical(pi)}
+#' \deqn{pi \sim DirichletProcess(alpha)}
 #' \code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
 #' See \code{?rPosteriorPredictive.CatDP} for details.
 #' }
@@ -1047,6 +1047,7 @@ print.BasicBayesian <- function(x,...){
 #' @param object an object to be test with
 #' @param class2 the class you want to test
 #' @return logical, return TRUE if 'class2' is in 'class(object)'.
+#' @noRd
 .is <- function(object,class2){
     isTRUE(class2 %in% class(object))
 }
@@ -1055,6 +1056,7 @@ print.BasicBayesian <- function(x,...){
 #' @param a numeric, a numeric vector to be evaluated.
 #' @param p numeric, the dimension.
 #' @return numeric, the log value of the multivariate gamma function.
+#' @noRd
 .lmvgamma <- function(a,p){
     sapply(a,function(ai){
         p*(p-1)/4*log(pi)+ sum(lgamma(ai+(1-(1:p))/2))
@@ -1064,6 +1066,7 @@ print.BasicBayesian <- function(x,...){
 #' determinant of a matrix
 #' @param m numeric or matrix. When m is a numeric vector, it's treated as a diagonal matrix.
 #' @return logical, return TRUE if 'class2' is in 'class(object)'.
+#' @noRd
 .det <- function(m){
     if(is.matrix(m)){
         base::det(m)

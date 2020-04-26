@@ -18,8 +18,8 @@ A matrix of n rows, each row is a sample of z.
 }
 \description{
 Generate random samples from the posterior distribution of the following structure:
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 The model structure and prior parameters are stored in a "LinearGaussianGaussian" object. \cr
 Posterior distribution is Gaussian(z|m,S).

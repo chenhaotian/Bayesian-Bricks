@@ -20,8 +20,8 @@ numeric, the posterior density of Sigma.
 }
 \description{
 Generate the the density value of the posterior distribution of the following structure:
-    \deqn{x ~ Gaussian(mu,Sigma)}
-    \deqn{Sigma ~ InvWishart(v,S)}
+    \deqn{x \sim Gaussian(mu,Sigma)}
+    \deqn{Sigma \sim InvWishart(v,S)}
 mu is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} and \code{?dInvWishart} for the definition of the distributions.\cr
 The model structure and prior parameters are stored in a "GaussianInvWishart" object. \cr
 Posterior density is the density function of InvWishart(Sigma|v,S).

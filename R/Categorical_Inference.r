@@ -112,8 +112,8 @@ dDir <- function(x, alpha,LOG=FALSE){
 #' @title Create objects of type "CatDirichlet".
 #' @description
 #' Create an object of type "CatDirichlet", which represents the Categorical (Multinomial) and Dirichlet conjugate structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The created object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on. A categorical distribution is defined on a set of unique labels, usually these labels are integers, they can also be characters and factors.
 #' @seealso \code{\link{posterior.CatDirichlet}},\code{\link{posteriorDiscard.CatDirichlet}},\code{\link{MAP.CatDirichlet}},\code{\link{MPE.CatDirichlet}},\code{\link{marginalLikelihood.CatDirichlet}},\code{\link{rPosteriorPredictive.CatDirichlet}},\code{\link{dPosteriorPredictive.CatDirichlet}} ...
@@ -153,8 +153,8 @@ CatDirichlet <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(alpha=1,uniq
 #' @title Sufficient statistics of a "CatDirichlet" object
 #' @description
 #' For following Categorical-Dirichlet model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The sufficient statistics of a set of samples x is: \cr
 #' \itemize{
@@ -190,8 +190,8 @@ sufficientStatistics.CatDirichlet <- function(obj,x,foreach=FALSE,...){
 #' @title Weighted sufficient statistics of a "CatDirichlet" object
 #' @description
 #' For following Categorical-Dirichlet model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' the sufficient statistics of a set of samples x and weights w are: \cr
 #'   the effective counts (in this case the sum of the weight w) of each unique label in x \cr
@@ -229,8 +229,8 @@ sufficientStatistics_Weighted.CatDirichlet <- function(obj,x,w,foreach=FALSE,...
 #' @title Update a "CatDirichlet" object with sample sufficient statistics
 #' @description
 #' For the model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' update alpha by adding the information of newly observed samples x. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object, the prior parameters in this object will be updated after running this function.
@@ -300,8 +300,8 @@ posterior_bySufficientStatistics.CatDirichlet <- function(obj,ss,...){
 #' @title Update a "CatDirichlet" object with sample sufficient statistics
 #' @description
 #' Contrary to posterior(), this function will update alpha by removing the information of observed samples x for the model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object, the prior parameters in this object will be updated after running this function.
 #'
@@ -370,8 +370,8 @@ posteriorDiscard_bySufficientStatistics.CatDirichlet <- function(obj,ss,...){
 #' @title MAP estimate of a "CatDirichlet" object
 #' @description
 #' Generate the MAP estimate of "pi" in following Categorical-Dirichlet structure: 
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' MAP is pi_MAP = argmax p(pi|alpha,x).
@@ -395,8 +395,8 @@ MAP.CatDirichlet <- function(obj,...){
 #' @title MPE of a "CatDirichlet" object
 #' @description
 #' Generate the MPE of "pi" in following Categorical-Dirichlet structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' MPE is pi_MPE = E(pi|alpha,x), E() is the expectation function.
@@ -419,8 +419,8 @@ MPE.CatDirichlet <- function(obj,...){
 #' @title Density function of the posterior distribution of a "CatDirichlet" object
 #' @description
 #' Generate the the density value of the posterior distribution of the following structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' Posterior density is the density function of Dir(pi|alpha).
@@ -444,8 +444,8 @@ dPosterior.CatDirichlet <- function(obj,pi,LOG=TRUE,...){
 #' @title Generate ramdom samples from the posterior distribution of a "CatDirichlet" object
 #' @description
 #' Generate random samples from the posterior distribution of the following structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' Posterior distribution is Dir(pi|alpha).
@@ -465,8 +465,8 @@ rPosterior.CatDirichlet <- function(obj,n=1,...){
 #' @title Marginal likelihood of a "CatDirichlet" object
 #' @description
 #' Generate the marginal likelihood of the following model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' Marginal likelihood is the likelihood of x|alpha.
@@ -495,8 +495,8 @@ marginalLikelihood.CatDirichlet <- function(obj,x,LOG=TRUE,...){
 #' @title Marginal likelihood of a "CatDirichlet" object, using sufficient statistics
 #' @description
 #' Generate the marginal likelihood of a set of observations of the following model structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' Marginal likelihood is the likelihood of x|alpha
@@ -531,8 +531,8 @@ marginalLikelihood_bySufficientStatistics.CatDirichlet <- function(obj,ss,LOG=TR
 #' @title Posterior predictive density function of a "CatDirichlet" object
 #' @description
 #' Generate the the density value of the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object. \cr
 #' Posterior predictive is a distribution of x|alpha.
@@ -563,8 +563,8 @@ dPosteriorPredictive.CatDirichlet <- function(obj,x,LOG=TRUE,...){
 #' @title Generate random samples from the posterior predictive distribution of a "CatDirichlet" object
 #' @description
 #' Generate random samples from the posterior predictive distribution of the following structure:
-#'      \deqn{pi|alpha ~ Dir(alpha)}
-#'      \deqn{x|pi ~ Categorical(pi)}
+#'      \deqn{pi|alpha \sim Dir(alpha)}
+#'      \deqn{x|pi \sim Categorical(pi)}
 #' Where Dir() is the Dirichlet distribution, Categorical() is the Categorical distribution. See \code{?dDir} and \code{dCategorical} for the definitions of these distribution. \cr
 #' The model structure and prior parameters are stored in a "CatDirichlet" object \cr
 #' posterior predictive is a distribution of x|alpha

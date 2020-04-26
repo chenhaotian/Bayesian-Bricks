@@ -16,8 +16,8 @@ list(mu,Sigma), where mu is a numeric vector, Sigma is a symmetric positive defi
 }
 \description{
 Generate random samples from the posterior distribution of the following structure:
-     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+     \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 Posterior distribution is NIW(mu,Sigma|m,k,v,S).

@@ -20,8 +20,8 @@ A numeric vector of the same length as nrow(x), the posterior predictive density
 }
 \description{
 Generate the the density value of the posterior predictive distribution of the following structure:
-     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+     \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 Posterior predictive density is p(x|m,k,v,S).

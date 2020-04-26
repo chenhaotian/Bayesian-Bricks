@@ -16,61 +16,61 @@ A list of MPE estimates
 }
 \description{
 This is a generic function that will generate the MPE estimate of a given "BayesianBrick" object. i.e. for the model structure: \cr
-     \deqn{theta|gamma ~ H(gamma)}
-     \deqn{x|theta ~ F(theta)}
+     \deqn{theta|gamma \sim H(gamma)}
+     \deqn{x|theta \sim F(theta)}
 MPE estimate of theta is theta_MPE = E(theta|gamma,x), E() is the expectation function.
 For a given Bayesian bricks object obj, the MPE estimate will be:
 \subsection{class(obj)="LinearGaussianGaussian"}{
 Where
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 \code{MPE()} will return the MPE estimate of z.
 See \code{?MPE.LinearGaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianGaussian"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{mu ~ Gaussian(m,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{mu \sim Gaussian(m,S)}
 Sigma is known.
 \code{MPE()} will return the MPE estimate of mu.
 See \code{?MPE.GaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianInvWishart"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
 mu is known.
 \code{MPE()} will return the MPE estimate of Sigma.
 See \code{?MPE.GaussianInvWishart} for details.
 }
 \subsection{class(obj)="GaussianNIW"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
-\deqn{mu ~ Gaussian(m,Sigma/k)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
+\deqn{mu \sim Gaussian(m,Sigma/k)}
 \code{MPE()} will return the MPE estimate of mu and Sigma.
 See \code{?MPE.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X beta,sigma^2)}
-\deqn{sigma^2 ~ InvGamma(a,b)}
-\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\deqn{x \sim Gaussian(X beta,sigma^2)}
+\deqn{sigma^2 \sim InvGamma(a,b)}
+\deqn{beta \sim Gaussian(m,sigma^2 V)}
 X is a row vector, or a design matrix where each row is an obervation.
 \code{MPE()} will return the MPE estimate of beta and sigma^2.
 See \code{?MPE.GaussianNIG} for details.
 }
 \subsection{class(obj)="CatDirichlet"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ Dirichlet(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim Dirichlet(alpha)}
 \code{MPE()} will return the MPE estimate of pi.
 See \code{?MPE.CatDirichlet} for details.
 }
 \subsection{class(obj)="CatDP"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ DirichletProcess(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim DirichletProcess(alpha)}
 \code{MPE()} will return the MPE estimate of pi.
 See \code{?MPE.CatDP} for details.
 }

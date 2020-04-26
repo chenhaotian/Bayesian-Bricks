@@ -20,8 +20,8 @@ None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
 For the model structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(mu,Sigma)}
+     \deqn{mu \sim Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 Contrary to posterior(), this function will update (m,S) by removing the information of observed samples x. The model structure and prior parameters are stored in a "GaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 }

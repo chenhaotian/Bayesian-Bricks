@@ -14,8 +14,8 @@ An object of class "BasicBayesian".
 }
 \description{
 A Basic Bayesian Object is with following conditional dependency structure: 
-     \deqn{theta|gamma ~ H(gamma)}
-     \deqn{X|theta ~ F(theta)}
+     \deqn{theta|gamma \sim H(gamma)}
+     \deqn{X|theta \sim F(theta)}
 Where H(gamma) is usually called "the prior distribution", F(theta) is called "the observation distribution". Objects of type "LinearGaussianGaussian", "GaussianGaussian", "GaussianInvWishart", "GaussianNIW", "GaussianNIG", "CatDirichlet" and "CatDP" are all "BasicBayesian"s.
 }
 \seealso{

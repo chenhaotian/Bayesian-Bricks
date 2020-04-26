@@ -18,8 +18,8 @@ A matrix of n rows, each row is a sample.
 }
 \description{
 Generate random samples from the posterior predictive distribution of the following structure:
-     \deqn{mu,Sigma|m,k,v,S ~ NIW(m,k,v,S)}
-     \deqn{x|mu,Sigma ~ Gaussian(mu,Sigma)}
+     \deqn{mu,Sigma|m,k,v,S \sim NIW(m,k,v,S)}
+     \deqn{x|mu,Sigma \sim Gaussian(mu,Sigma)}
 Where NIW() is the Normal-Inverse-Wishart distribution, Gaussian() is the Gaussian distribution. See \code{?dNIW} and \code{dGaussian} for the definitions of these distribution.\cr
 The model structure and prior parameters are stored in a "GaussianNIW" object. \cr
 Posterior predictive is a distribution of x|m,k,v,S.

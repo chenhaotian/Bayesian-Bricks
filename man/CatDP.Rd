@@ -18,8 +18,8 @@ An object of class "CatDP".
 }
 \description{
 Create an object of type "CatDP", which represents the Categorical-Dirichlet-Process(Multinomial-Dirichlet-Process) conjugate structure on positive integers:
-     \deqn{pi|alpha ~ DP(alpha,U)}
-     \deqn{x|pi ~ Categorical(pi)}
+     \deqn{pi|alpha \sim DP(alpha,U)}
+     \deqn{x|pi \sim Categorical(pi)}
 where DP(alpha,U) is a Dirichlet Process on positive integers, alpha is the "concentration parameter" of the Dirichlet Process, U is the "base measure" of this Dirichlet process, it is an uniform distribution on all positive integers.Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatDP, x can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), MAP(), marginalLikelihood(), dPosteriorPredictive(), rPosteriorPredictive() and so on.

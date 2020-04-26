@@ -18,61 +18,61 @@ a matrix or vector or list of random samples, depends on the type of 'obj'.
 }
 \description{
 This is a generic function that will generate random samples from the posterior predictive distribution. i.e. for the model structure: \cr
-     theta|gamma ~ H(gamma) \cr
-     x|theta ~ F(theta) \cr
+     \deqn{theta|gamma \sim H(gamma)}
+     \deqn{x|theta \sim F(theta)}
 generate x_new from the posterior predictive distribution of x|gamma.
 For a given Bayesian bricks object obj, \code{rPosteriorPredictive()} will generate random samples from different model structures:
 \subsection{class(obj)="LinearGaussianGaussian"}{
 Where
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,A,b,Sigma
 See \code{?rPosteriorPredictive.LinearGaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianGaussian"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{mu ~ Gaussian(m,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{mu \sim Gaussian(m,S)}
 Sigma is known.
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,S,Sigma
 See \code{?rPosteriorPredictive.GaussianGaussian} for details.
 }
 \subsection{class(obj)="GaussianInvWishart"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
 mu is known.
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|mu,v,S
 See \code{?rPosteriorPredictive.GaussianInvWishart} for details.
 }
 \subsection{class(obj)="GaussianNIW"}{
 Where
-\deqn{x ~ Gaussian(mu,Sigma)}
-\deqn{Sigma ~ InvWishart(v,S)}
-\deqn{mu ~ Gaussian(m,Sigma/k)}
+\deqn{x \sim Gaussian(mu,Sigma)}
+\deqn{Sigma \sim InvWishart(v,S)}
+\deqn{mu \sim Gaussian(m,Sigma/k)}
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|m,k,v,S
 See \code{?rPosteriorPredictive.GaussianNIW} for details.
 }
 \subsection{class(obj)="GaussianNIG"}{
 Where
-\deqn{x ~ Gaussian(X beta,sigma^2)}
-\deqn{sigma^2 ~ InvGamma(a,b)}
-\deqn{beta ~ Gaussian(m,sigma^2 V)}
+\deqn{x \sim Gaussian(X beta,sigma^2)}
+\deqn{sigma^2 \sim InvGamma(a,b)}
+\deqn{beta \sim Gaussian(m,sigma^2 V)}
 X is a row vector, or a design matrix where each row is an obervation.
 \code{rPosteriorPredictive()} will generate samples from the distribution of x,X|m,V,a,b
 See \code{?rPosteriorPredictive.GaussianNIG} for details.
 }
 \subsection{class(obj)="CatDirichlet"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ Dirichlet(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim Dirichlet(alpha)}
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
 See \code{?rPosteriorPredictive.CatDirichlet} for details.
 }
 \subsection{class(obj)="CatDP"}{
 Where
-\deqn{x ~ Categorical(pi)}
-\deqn{pi ~ DirichletProcess(alpha)}
+\deqn{x \sim Categorical(pi)}
+\deqn{pi \sim DirichletProcess(alpha)}
 \code{rPosteriorPredictive()} will generate samples from the distribution of x|alpha
 See \code{?rPosteriorPredictive.CatDP} for details.
 }

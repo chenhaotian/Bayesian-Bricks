@@ -20,8 +20,8 @@ If foreach=TRUE, will return a list of sufficient statistics for each row of x, 
 }
 \description{
 For following model structure:
-     \deqn{x ~ Gaussian(mu,Sigma)}
-     \deqn{mu ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(mu,Sigma)}
+     \deqn{mu \sim Gaussian(m,S)}
 Where Sigma is known. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 The sufficient statistics of a set of samples x (each row of x is a sample) are: \cr
 \itemize{

@@ -18,8 +18,8 @@ None. the gamma stored in "obj" will be updated based on "ss".
 }
 \description{
 For following model structure:
-     \deqn{x ~ Gaussian(A z + b, Sigma)}
-     \deqn{z ~ Gaussian(m,S)}
+     \deqn{x \sim Gaussian(A z + b, Sigma)}
+     \deqn{z \sim Gaussian(m,S)}
 Where Sigma is known. A is a \eqn{dimx x dimz} matrix, x is a \eqn{dimx x 1} random vector, z is a \eqn{dimz x 1} random vector, b is a \eqn{dimm x 1} vector. Gaussian() is the Gaussian distribution. See \code{?dGaussian} for the definition of Gaussian distribution.\cr
 Update (m,S) by adding the information of newly observed samples x. The model structure and prior parameters are stored in a "LinearGaussianGaussian" object, the prior parameters in this object will be updated after running this function.
 }
