@@ -198,5 +198,8 @@ check_win_devel()
 ##     "Have you built README.md from README.raw.md?")
 ## }
 
+## check if any example changed the par setting
+system("grep 'par(' ./man/*")
+
 devtools::release()
 

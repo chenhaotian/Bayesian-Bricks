@@ -1,6 +1,6 @@
 # bbricks 
  
-[![Build Status](https://travis-ci.com/chenhaotian/Bayesian-Bricks.svg?branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bbricks)](https://cran.r-project.org/package=bbricks) [![metacran downloads](https://cranlogs.r-pkg.org/badges/bbricks)](https://cran.r-project.org/package=bbricks)
+[![Build Status](https://travis-ci.org/chenhaotian/Bayesian-Bricks.svg?branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bbricks)](https://cran.r-project.org/package=bbricks) [![metacran downloads](https://cranlogs.r-pkg.org/badges/bbricks)](https://cran.r-project.org/package=bbricks)
  
 [bbricks](https://github.com/chenhaotian/Bayesian-Bricks) provides a collection of frequently used Bayesian parametric and nonparametric model *structures*, as well as a set of tools for common analytical *tasks*. 
  
