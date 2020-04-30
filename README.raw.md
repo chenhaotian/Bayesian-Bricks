@@ -483,23 +483,23 @@ Hierarchical Dirichlet Process(HDP) is a natural representation of a hierarchica
 If the component distribution is Gaussian, the CPDs will be:
 $$
 \begin{align}
-G_j|\gamma & \sim DP(\gamma) \\
-\pi |\alpha,G_j & \sim DP(\alpha,G_j) \\
-z | \pi & \sim Categorical(\pi) \\
-k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
+G|\gamma & \sim DP(\gamma) \\
+\pi_j |\alpha,G & \sim DP(\alpha,G) \\
+z | \pi & \sim Categorical(\pi_j) \\
+k| z,G & \sim Categorical(G) \text{, if }z\text{ is a sample from } G\\
 \theta_k | \psi & \sim NIW(\psi) \\
 x|\theta_k & \sim Gaussian(\theta_k)
 \end{align}
 $$
-Where $DP(\gamma)$ is a Dirichlet process on positive integers with "concentration parameter" $\gamma$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $DP(\alpha,G_j)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_j$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
+Where $DP(\gamma)$ is a Dirichlet process on positive integers with "concentration parameter" $\gamma$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  $DP(\alpha,G)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.The distribution of $(\gamma, \alpha, G, \pi_j , z, k)$ is a "HDP on positive integers". 
 
-The distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$ is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literature:
+HDP are usually represented in a much simpler and compact way(though not easier to use in practice, especially when generating random samples from HDP) in most literature:
 
 ![](./notes_pictures/HDP.png)
 
-From the compact representation we can see that HDP on positive integers is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$. In **bbricks**, "HDP on positive integers" is represented by an object of type `"CatHDP"`.
+From the compact representation we can see that HDP is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph $(c)$. 
 
-To simplify the mixture model calculations, **bbricks** alos provides an `"HDP"` type to represent more general hierarchical Dirichlet process models. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G_j, \pi_j , z, k)$, i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the $\psi \rightarrow \theta_k \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"` ,`"CatDirichlet"` and even `"CatDP"`) 
+In **bbricks**, "HDP on positive integers" is represented by an object of type `"CatHDP"`. To further simplify the mixture model calculations, **bbricks** alos provides an `"HDP"` type to represent more general hierarchical Dirichlet process models. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of $(\gamma, \alpha, G, \pi_j , z, k)$, i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the $\psi \rightarrow \theta_k \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"` ,`"CatDirichlet"` and even `"CatDP"`) 
 
 To estimate $k$, we use the following Gibbs sampling procedure:
 
@@ -573,12 +573,12 @@ plot(x=x[,1],y=x[,2],col=kBest)
 A topic model is a hierarchical mixture model(See [Hierarchical Mixture Models](#hierarchical-mixture-models)) with categorical component distribution:
 $$
 \begin{align}
-G_j|\gamma & \sim DP(\gamma) \\
-\pi |\alpha,G_j & \sim DP(\alpha,G_j) \\
-z | \pi & \sim Categorical(\pi) \\
-k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
-\pi_k | \psi & \sim Dirichlet(\psi) \\
-x|\pi_k & \sim Categorical(\pi_k)
+G|\gamma & \sim DP(\gamma) \\
+\pi_j |\alpha,G & \sim DP(\alpha,G) \\
+z | \pi_j & \sim Categorical(\pi_j) \\
+k| z,G & \sim Categorical(G) \text{, if }z\text{ is a sample from } G\\
+\theta_k | \psi & \sim Dirichlet(\psi) \\
+x|\theta_k & \sim Categorical(\theta_k)
 \end{align}
 $$
 The Gibbs sampling procedure on this model is exactly the same as the one in [Hierarchical Mixture Models](#hierarchical-mixture-models)
@@ -653,22 +653,22 @@ In this hierarchical mixture model, the observation $x$ are generated by some un
 If the component distribution is Gaussian, the CPDs will be:
 $$
 \begin{align}
-G_m | \eta & \sim DP(\eta) \\
-G_j|\gamma,G_m & \sim DP(\gamma,G_m) \\
-\pi_j |\alpha,G_j & \sim DP(\alpha,G_j) \\
-z | \pi & \sim Categorical(\pi) \\
-k| z,G_j & \sim Categorical(G_j) \text{, if }z\text{ is a sample from } G_j\\
-u| k,G_m & \sim Categorical(G_m) \text{, if }k\text{ is a sample from } G_m\\
+G | \eta & \sim DP(\eta) \\
+G_m|\gamma,G & \sim DP(\gamma,G) \\
+\pi_j |\alpha,G_m & \sim DP(\alpha,G_m) \\
+z | \pi_j & \sim Categorical(\pi_j) \\
+k| z,G_m & \sim Categorical(G_m) \text{, if }z\text{ is a sample from } G_m\\
+u| k,G & \sim Categorical(G) \text{, if }k\text{ is a sample from } G\\
 \theta_u | \psi & \sim NIW(\psi) \\
-x|\theta_u & \sim Gaussian(\theta_k)
+x|\theta_u & \sim Gaussian(\theta_u)
 \end{align}
 $$
 
-Where $DP(\eta)$ is a Dirichlet process on positive integers with "concentration parameter" $\eta$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula. $DP(\gamma,G_m)$ is a Dirichlet process with concentration parameter $\gamma$ and base measure $G_m$. $DP(\alpha,G_j)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_j$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
+Where $DP(\eta)$ is a Dirichlet process on positive integers with "concentration parameter" $\eta$, the "base measure", which is an uniform distribution on positive integers, is omitted from the formula. $DP(\gamma,G)$ is a Dirichlet process with concentration parameter $\gamma$ and base measure $G$. $DP(\alpha,G_m)$ is a Dirichlet process with concentration parameter $\alpha$ and base measure $G_m$. $NIW(\psi)$ is the Normal-Inverse-Wishart distribution with parameter $\psi = (m,k,v,S)$. $m$ is a numeric vector representing the "location parameter", $S$ is a symmetric positive definitive matrix representing the "scale parameter", $k$ and $v$ are degree of freedoms.
 
-The distribution of $(\eta,\gamma, \alpha, G_m,G_j, \pi_j , z, k,u)$ is a "HDP on positive integers with two layers of hierarchies". Like the `"CatHDP"` object mentioned in  [Hierarchical Mixture Models](#hierarchical-mixture-models), **bbricks** use a `"CatHDP2"` object to represent a "HDP on positive integers with two layers of hierarchies".
+The distribution of $(\eta,\gamma, \alpha, G_m,G, \pi_j , z, k,u)$ is a "HDP on positive integers with two layers of hierarchies". Like the `"CatHDP"` object mentioned in  [Hierarchical Mixture Models](#hierarchical-mixture-models), **bbricks** use a `"CatHDP2"` object to represent a "HDP on positive integers with two layers of hierarchies".
 
-To simplify the mixture model calculations, **bbricks** also provides an `"HDP2"` type to represent all hierarchical Dirichlet process with two layers of hierarchies. An object of type  `"HDP2"` is in essence a combination of a `"CatHDP2"` object, which encodes the distribution of $(\eta,\gamma, \alpha, G_m,G_j, \pi_j , z, k,u)$, i.e. a HDP on positive integers with two layers of hierarchies; and an arbitrary `"BasicBayesian"` object, which encodes the $\psi \rightarrow \theta_u \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"`, `"CatDirichlet"` and even `"CatDP"`)  
+To simplify the mixture model calculations, **bbricks** also provides an `"HDP2"` type to represent all hierarchical Dirichlet process with two layers of hierarchies. An object of type  `"HDP2"` is in essence a combination of a `"CatHDP2"` object, which encodes the distribution of $(\eta,\gamma, \alpha, G_m,G, \pi_j , z, k,u)$, i.e. a HDP on positive integers with two layers of hierarchies; and an arbitrary `"BasicBayesian"` object, which encodes the $\psi \rightarrow \theta_u \rightarrow x$ structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph $(b)$ are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"`, `"CatDirichlet"` and even `"CatDP"`)  
 
 To estimate $u$, we use the following Gibbs sampling procedure:
 

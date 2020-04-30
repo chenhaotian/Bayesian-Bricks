@@ -83,22 +83,22 @@ See \code{?posteriorDiscard.DP} for details.
 }
 \subsection{class(obj)="HDP"}{
 Where
-     \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
-     \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+     \deqn{G|gamma \sim DP(gamma,U)}
+     \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
      \deqn{z|pi_j \sim Categorical(pi_j)}
-     \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{k|z,G \sim Categorical(G),\text{ if z is a sample from the base measure G}}
      \deqn{theta_k|psi \sim H0(psi)}
 \code{posteriorDiscard()} will update gamma, alpha and psi in obj.
 See \code{?posteriorDiscard.HDP} for details.
 }
 \subsection{class(obj)="HDP2"}{
 Where
-     \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
-     \deqn{G_mj|gamma,G_m \sim DP(gamma,G_m), j = 1:J_m}
-     \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
-     \deqn{z|pi_mj \sim Categorical(pi_mj)}
-     \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
-     \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
+     \deqn{G |eta \sim DP(eta,U)}
+     \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
+     \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
+     \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
+     \deqn{k|z,G_m \sim Categorical(G_m),\text{ if z is a sample from the base measure G_m}}
+     \deqn{u|k,G \sim Categorical(G),\text{ if k is a sample from the base measure G_m}}
      \deqn{theta_u|psi \sim H0(psi)}
      \deqn{x|theta_u,u \sim F(theta_u)}
 \code{posteriorDiscard()} will update eta, gamma, alpha and psi in obj.

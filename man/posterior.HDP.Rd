@@ -26,13 +26,13 @@ None. the model stored in "obj" will be updated based on "ss", "ss1" and "ss2".
 }
 \description{
 For the model structure:
-     \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
-     \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+     \deqn{G|gamma \sim DP(gamma,U)}
+     \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
      \deqn{z|pi_j \sim Categorical(pi_j)}
-     \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
+     \deqn{k|z,G \sim Categorical(G), \text{ if z is a sample from the base measure G}}
      \deqn{theta_k|psi \sim H0(psi)}
      \deqn{x|theta_k,k \sim F(theta_k)}
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(alpha,G) is a Dirichlet Process on integers with concentration parameter alpha and base measure G. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
 In the case of HDP, z and k can only be positive integers. \cr
 This function will update the prior knowledge by adding the information of newly observed samples x, z and k. The model structure and prior parameters are stored in a "HDP" object, the prior parameters in this object will be updated after running this function.
 }

@@ -24,11 +24,11 @@ None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 }
 \description{
 For the model structure:
-     \deqn{G_j|gamma \sim DP(gamma,U), j = 1:J}
-     \deqn{pi_j|G_j,alpha \sim DP(alpha,G_j)}
+     \deqn{G|gamma \sim DP(gamma,U)}
+     \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
      \deqn{z|pi_j \sim Categorical(pi_j)}
-     \deqn{k|z,G_j \sim Categorical(G_j), if z is a sample from the base measure G}
-where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_j) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_j. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
+     \deqn{k|z,G \sim Categorical(G), \text{ if z is a sample from the base measure G}}
+where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(alpha,G) is a Dirichlet Process on integers with concentration parameter alpha and base measure G. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatHDP, z and k can only be positive integers. \cr
 Update the prior knowledge by adding the information of newly observed samples z and k. The model structure and prior parameters are stored in a "CatHDP" object, the prior parameters in this object will be updated after running this function.
 }

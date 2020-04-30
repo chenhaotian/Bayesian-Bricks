@@ -1,4 +1,17 @@
+# bbricks 0.1.3.9000
+
+
+
+## Improvements
+
++ fix graphical model representation error in package vignette.
+
++ fix wrong conditional probability distributions in DP related documentations.
+
+
+
 # bbricks 0.1.3 (2020-04-26)
+
 Enhance documentations.
 
 ## Improvements

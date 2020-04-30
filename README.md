@@ -1,6 +1,6 @@
 # bbricks 
  
-[![Build Status](https://travis-ci.org/chenhaotian/Bayesian-Bricks.svg?branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bbricks)](https://cran.r-project.org/package=bbricks) [![metacran downloads](https://cranlogs.r-pkg.org/badges/bbricks)](https://cran.r-project.org/package=bbricks)
+[![Build Status](https://travis-ci.org/chenhaotian/Bayesian-Bricks.svg?branch=master)](https://travis-ci.com/chenhaotian/Bayesian-Bricks) [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/bbricks)](https://cran.r-project.org/package=bbricks) [![metacran downloads](https://cranlogs.r-pkg.org/badges/bbricks)](https://cran.r-project.org/package=bbricks) 
  
 [bbricks](https://github.com/chenhaotian/Bayesian-Bricks) provides a collection of frequently used Bayesian parametric and nonparametric model *structures*, as well as a set of tools for common analytical *tasks*. 
  
@@ -13,10 +13,10 @@ See [Mindset](#mindset) for the idea behind **bbricks** and [Examples](#examples
  
 **----Installation----** 
  
-```R
-# install from CRAN:
-install.packages("bbricks")
-# or install development version from GitHub:
+```R 
+# install from CRAN: 
+install.packages("bbricks") 
+# or install development version from GitHub: 
 # install.packages("devtools") 
 devtools::install_github("chenhaotian/Bayesian-Bricks") 
 ``` 
@@ -54,7 +54,7 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 The idea of **bbricks** came from the fact that modeling in Bayesian statistics is nothing more than applying a set of **tasks** on a specific **model structure**. 
  
 Where the most frequently appeared **tasks** are: 
-
+ 
 + Update prior info into posterior when new samples are observed. 
 + Sample from the posterior distribution. 
 + Calculate marginal likelihood of the data set. 
@@ -463,17 +463,17 @@ Hierarchical Dirichlet Process(HDP) is a natural representation of a hierarchica
  
 If the component distribution is Gaussian, the CPDs will be: 
 
-![](./notes_pictures/cefebb7f0df448c0b16b12d06c414162.png)
+![](./notes_pictures/7eb577843f726b16edf2fd3bcba7fa29.png)
  
-Where ![](./notes_pictures/bf864399590af71694003acc86b1177c.png) is a Dirichlet process on positive integers with "concentration parameter" ![](./notes_pictures/3030fb4bd381ae861c94ec34459cf6bc.png), the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  ![](./notes_pictures/d08443355a96ffd86396722206cb0a71.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/8c087632bdd26f21799b9723227cabd4.png) and base measure ![](./notes_pictures/b87769cbb7f88da5148a1819fd467b83.png). ![](./notes_pictures/633fecc6c70e1dbb0c3765b388c9607b.png) is the Normal-Inverse-Wishart distribution with parameter ![](./notes_pictures/89ddf9f6873006f15de5f63f5aba8c89.png). ![](./notes_pictures/1ad7791ac511a6757ec0f9b5ea3a3f15.png) is a numeric vector representing the "location parameter", ![](./notes_pictures/2811f81f916c5df8b5c165dc20b419aa.png) is a symmetric positive definitive matrix representing the "scale parameter", ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png) and ![](./notes_pictures/bf33aa428e818d7fec11a721452d05e9.png) are degree of freedoms. 
+Where ![](./notes_pictures/bf864399590af71694003acc86b1177c.png) is a Dirichlet process on positive integers with "concentration parameter" ![](./notes_pictures/3030fb4bd381ae861c94ec34459cf6bc.png), the "base measure", which is an uniform distribution on positive integers, is omitted from the formula.  ![](./notes_pictures/746bc1338258258044ed695cb3893b47.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/8c087632bdd26f21799b9723227cabd4.png) and base measure ![](./notes_pictures/e2dfb9de34646ef66c3ad131580c8ede.png). ![](./notes_pictures/633fecc6c70e1dbb0c3765b388c9607b.png) is the Normal-Inverse-Wishart distribution with parameter ![](./notes_pictures/89ddf9f6873006f15de5f63f5aba8c89.png). ![](./notes_pictures/1ad7791ac511a6757ec0f9b5ea3a3f15.png) is a numeric vector representing the "location parameter", ![](./notes_pictures/2811f81f916c5df8b5c165dc20b419aa.png) is a symmetric positive definitive matrix representing the "scale parameter", ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png) and ![](./notes_pictures/bf33aa428e818d7fec11a721452d05e9.png) are degree of freedoms.The distribution of ![](./notes_pictures/5de00bb6a0cc1c18e6bee6e5f0b86210.png) is a "HDP on positive integers".  
  
-The distribution of ![](./notes_pictures/df7112b638719a1743a4cb3d060b64d5.png) is a "HDP on positive integers". HDP on positive integers are usually represented in a much simpler and compact way(though not easier to understand) in most literature: 
+HDP are usually represented in a much simpler and compact way(though not easier to use in practice, especially when generating random samples from HDP) in most literature: 
  
 ![](./notes_pictures/HDP.png) 
  
-From the compact representation we can see that HDP on positive integers is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph ![](./notes_pictures/aa6d91472b50a7d81415d654a507a89b.png). In **bbricks**, "HDP on positive integers" is represented by an object of type `"CatHDP"`. 
+From the compact representation we can see that HDP is following the "Hierarchical Bayesian" structure shown in [Mindset](#mindset) graph ![](./notes_pictures/aa6d91472b50a7d81415d654a507a89b.png).  
  
-To simplify the mixture model calculations, **bbricks** alos provides an `"HDP"` type to represent more general hierarchical Dirichlet process models. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of ![](./notes_pictures/df7112b638719a1743a4cb3d060b64d5.png), i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the ![](./notes_pictures/a146e4268e395dd62364466c366ce5cb.png) structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph ![](./notes_pictures/108ad30be304e27ce3a8b7dc70c74850.png) are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"` ,`"CatDirichlet"` and even `"CatDP"`)  
+In **bbricks**, "HDP on positive integers" is represented by an object of type `"CatHDP"`. To further simplify the mixture model calculations, **bbricks** alos provides an `"HDP"` type to represent more general hierarchical Dirichlet process models. An object of type  `"HDP"` is in essence a combination of a `"CatHDP"` object, which encodes the distribution of ![](./notes_pictures/5de00bb6a0cc1c18e6bee6e5f0b86210.png), i.e. a HDP on positive integers; and an arbitrary `"BasicBayesian"` object, which encodes the ![](./notes_pictures/a146e4268e395dd62364466c366ce5cb.png) structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph ![](./notes_pictures/108ad30be304e27ce3a8b7dc70c74850.png) are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"` ,`"CatDirichlet"` and even `"CatDP"`)  
  
 To estimate ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png), we use the following Gibbs sampling procedure: 
  
@@ -546,7 +546,7 @@ plot(x=x[,1],y=x[,2],col=kBest)
  
 A topic model is a hierarchical mixture model(See [Hierarchical Mixture Models](#hierarchical-mixture-models)) with categorical component distribution: 
 
-![](./notes_pictures/5dfdaa9bddf0f47919c60697093ec504.png)
+![](./notes_pictures/e6522aa186381143de48538a8ea25442.png)
  
 The Gibbs sampling procedure on this model is exactly the same as the one in [Hierarchical Mixture Models](#hierarchical-mixture-models) 
  
@@ -619,14 +619,14 @@ In this hierarchical mixture model, the observation ![](./notes_pictures/6ee74a8
 ![](./notes_pictures/hierarchicalMixtureModel2.png) 
 If the component distribution is Gaussian, the CPDs will be: 
 
-![](./notes_pictures/c0a8374cbd7fc012035f23676a50824d.png)
+![](./notes_pictures/3ca2652eeb24429c29d5c4871de18207.png)
  
  
-Where ![](./notes_pictures/5ea3a7b5edfb5c973ee6160f48d1195b.png) is a Dirichlet process on positive integers with "concentration parameter" ![](./notes_pictures/17f2575568e80a424c85237bb02bd9c0.png), the "base measure", which is an uniform distribution on positive integers, is omitted from the formula. ![](./notes_pictures/8480864ab20b75b14eebac5e5881452d.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/3030fb4bd381ae861c94ec34459cf6bc.png) and base measure ![](./notes_pictures/9b7eb01b3e83539bdbdcdd4293c3af66.png). ![](./notes_pictures/d08443355a96ffd86396722206cb0a71.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/8c087632bdd26f21799b9723227cabd4.png) and base measure ![](./notes_pictures/b87769cbb7f88da5148a1819fd467b83.png). ![](./notes_pictures/633fecc6c70e1dbb0c3765b388c9607b.png) is the Normal-Inverse-Wishart distribution with parameter ![](./notes_pictures/89ddf9f6873006f15de5f63f5aba8c89.png). ![](./notes_pictures/1ad7791ac511a6757ec0f9b5ea3a3f15.png) is a numeric vector representing the "location parameter", ![](./notes_pictures/2811f81f916c5df8b5c165dc20b419aa.png) is a symmetric positive definitive matrix representing the "scale parameter", ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png) and ![](./notes_pictures/bf33aa428e818d7fec11a721452d05e9.png) are degree of freedoms. 
+Where ![](./notes_pictures/5ea3a7b5edfb5c973ee6160f48d1195b.png) is a Dirichlet process on positive integers with "concentration parameter" ![](./notes_pictures/17f2575568e80a424c85237bb02bd9c0.png), the "base measure", which is an uniform distribution on positive integers, is omitted from the formula. ![](./notes_pictures/38e522a4b5183cfec24467b2ad4f97f1.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/3030fb4bd381ae861c94ec34459cf6bc.png) and base measure ![](./notes_pictures/e2dfb9de34646ef66c3ad131580c8ede.png). ![](./notes_pictures/a45cf561b43c589cb37c1481c00c3cbd.png) is a Dirichlet process with concentration parameter ![](./notes_pictures/8c087632bdd26f21799b9723227cabd4.png) and base measure ![](./notes_pictures/9b7eb01b3e83539bdbdcdd4293c3af66.png). ![](./notes_pictures/633fecc6c70e1dbb0c3765b388c9607b.png) is the Normal-Inverse-Wishart distribution with parameter ![](./notes_pictures/89ddf9f6873006f15de5f63f5aba8c89.png). ![](./notes_pictures/1ad7791ac511a6757ec0f9b5ea3a3f15.png) is a numeric vector representing the "location parameter", ![](./notes_pictures/2811f81f916c5df8b5c165dc20b419aa.png) is a symmetric positive definitive matrix representing the "scale parameter", ![](./notes_pictures/7fbcbab321e830bfeb617b6d679e8719.png) and ![](./notes_pictures/bf33aa428e818d7fec11a721452d05e9.png) are degree of freedoms. 
  
-The distribution of ![](./notes_pictures/f966482bb5bdc2bdf77c1debe3e3912b.png) is a "HDP on positive integers with two layers of hierarchies". Like the `"CatHDP"` object mentioned in  [Hierarchical Mixture Models](#hierarchical-mixture-models), **bbricks** use a `"CatHDP2"` object to represent a "HDP on positive integers with two layers of hierarchies". 
+The distribution of ![](./notes_pictures/981245f95d706bfa900fda8ed3fd6e07.png) is a "HDP on positive integers with two layers of hierarchies". Like the `"CatHDP"` object mentioned in  [Hierarchical Mixture Models](#hierarchical-mixture-models), **bbricks** use a `"CatHDP2"` object to represent a "HDP on positive integers with two layers of hierarchies". 
  
-To simplify the mixture model calculations, **bbricks** also provides an `"HDP2"` type to represent all hierarchical Dirichlet process with two layers of hierarchies. An object of type  `"HDP2"` is in essence a combination of a `"CatHDP2"` object, which encodes the distribution of ![](./notes_pictures/f966482bb5bdc2bdf77c1debe3e3912b.png), i.e. a HDP on positive integers with two layers of hierarchies; and an arbitrary `"BasicBayesian"` object, which encodes the ![](./notes_pictures/b2116efc097ef12c669479890d894c1f.png) structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph ![](./notes_pictures/108ad30be304e27ce3a8b7dc70c74850.png) are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"`, `"CatDirichlet"` and even `"CatDP"`)   
+To simplify the mixture model calculations, **bbricks** also provides an `"HDP2"` type to represent all hierarchical Dirichlet process with two layers of hierarchies. An object of type  `"HDP2"` is in essence a combination of a `"CatHDP2"` object, which encodes the distribution of ![](./notes_pictures/981245f95d706bfa900fda8ed3fd6e07.png), i.e. a HDP on positive integers with two layers of hierarchies; and an arbitrary `"BasicBayesian"` object, which encodes the ![](./notes_pictures/b2116efc097ef12c669479890d894c1f.png) structure. (in **bbricks**, all models with same structure as [Mindset](#mindset) graph ![](./notes_pictures/108ad30be304e27ce3a8b7dc70c74850.png) are `"BasicBayesian" `s, such as `"GaussianNIW"`, `"GaussianNIG"`, `"CatDirichlet"` and even `"CatDP"`)   
  
 To estimate ![](./notes_pictures/f42ab172f591be89e7c5b52dd2c7c922.png), we use the following Gibbs sampling procedure: 
  

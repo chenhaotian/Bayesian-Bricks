@@ -15,20 +15,20 @@ CatHDP2(
 
 \item{ENV}{environment, specify where the object will be created.}
 
-\item{gamma}{list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G_m), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_mj), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamma$m.}
+\item{gamma}{list, a named list of parameters, gamma=list(eta,gamma,alpha,m,j). Where gamma$eta is a numeric value specifying the concentration parameter of DP(eta,U), gamma$gamma is a numeric value specifying the concentration parameter of DP(gamma,G), gamma$alpha is a numeric value specifying the concentration parameter of DP(alpha,G_m), gamma$m is the number of groups M, gamma$j is the number of subgroups in each group, must satisfy length(gamma$j)=gamma$m.}
 }
 \value{
 An object of class "CatHDP2".
 }
 \description{
 Create an object of type "CatHDP2" that represents the Categorical-Hierarchical-Dirichlet-Process of two Dirichlet Process hierarchies, which is basically CatHDP with an additional layer of Dirichlet Process:
-     \deqn{G_m |eta \sim DP(eta,U), m = 1:M}
-     \deqn{G_mj|gamma \sim DP(gamma,G_m), j = 1:J_m}
-     \deqn{pi_mj|G_mj,alpha \sim DP(alpha,G_mj)}
-     \deqn{z|pi_mj \sim Categorical(pi_mj)}
-     \deqn{k|z,G_mj \sim Categorical(G_mj), if z is a sample from the base measure G_mj}
-     \deqn{u|k,G_m \sim Categorical(G_m), if k is a sample from the base measure G_m}
-where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G_m) is a Dirichlet Process on integers with concentration parameter gamma and base measure G_m. DP(alpha,G_mj) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_mj. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
+     \deqn{G |eta \sim DP(eta,U)}
+     \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
+     \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
+     \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
+     \deqn{k|z,G_m \sim Categorical(G_m), \text{ if z is a sample from the base measure G_m}}
+     \deqn{u|k,G \sim Categorical(G), \text{ if k is a sample from the base measure G}}
+where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 In the case of CatHDP2, u, z and k can only be positive integers. \cr
 This object will be used as a place for recording and accumulating information in the related inference/sampling functions such as posterior(), posteriorDiscard(), dPosteriorPredictive(), rPosteriorPredictive() and so on.
 }
