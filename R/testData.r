@@ -103,3 +103,19 @@
 
 
 
+#' @title Samples from a hidden Markov model
+#' @description
+#' Random samples generated from a Hidden Markov Model (HMM) with 3 hidden states. The initial distribution is c(0.2,0.6,0.2), the transition matrix is matrix(c(0.9, 0.04, 0.06, 0.06, 0.9, 0.07, 0.04, 0.06, 0.87),3,3).
+#'
+#' @docType data
+#'
+#' @usage data(hmmData)
+#'
+#' @format A list of four elements.
+#' \describe{
+#'   \item{x}{matrix, two dimensional Gaussian observations. The observations are split into 'Nsegs' segment, see 'Nsegs' and 'breaks' below.}
+#'   \item{z}{integer vector, the real hidden states.}
+#'   \item{Nsegs}{integer, the number of segments.}
+#'   \item{breaks}{integer vector, the starting and ending locations of the segments. The ith segment start at breaks[i]+1, ends at breaks[i+1]}
+#' }
+"hmmData"
