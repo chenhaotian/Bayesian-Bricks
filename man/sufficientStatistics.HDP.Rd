@@ -21,7 +21,7 @@ For following model structure:
      \deqn{G|gamma \sim DP(gamma,U)}
      \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
      \deqn{z|pi_j \sim Categorical(pi_j)}
-     \deqn{k|z,G \sim Categorical(G), \text{ if z is a sample from the base measure G}}
+     \deqn{k|z,G \sim Categorical(G), \textrm{ if z is a sample from the base measure G}}
      \deqn{theta_k|psi \sim H0(psi)}
      \deqn{x|theta_k,k \sim F(theta_k)}
 where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(alpha,G) is a Dirichlet Process on integers with concentration parameter alpha and base measure G. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr

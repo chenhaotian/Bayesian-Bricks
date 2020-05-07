@@ -114,7 +114,7 @@ Where
      \deqn{G|gamma \sim DP(gamma,U)}
      \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
      \deqn{z|pi_j \sim Categorical(pi_j)}
-     \deqn{k|z,G \sim Categorical(G),\text{ if z is a sample from the base measure G}}
+     \deqn{k|z,G \sim Categorical(G),\textrm{ if z is a sample from the base measure G}}
      \deqn{theta_k|psi \sim H0(psi)}
 The sufficient statistics of "HDP" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP".
 See \code{?sufficientStatistics_Weighted.HDP} for details.
@@ -125,8 +125,8 @@ Where
      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-     \deqn{k|z,G_m \sim Categorical(G_m),\text{ if z is a sample from the base measure G_m}}
-     \deqn{u|k,G \sim Categorical(G),\text{ if k is a sample from the base measure G_m}}
+     \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_m}}
+     \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G_m}}
      \deqn{theta_u|psi \sim H0(psi)}
      \deqn{x|theta_u,u \sim F(theta_u)}
 The sufficient statistics of "HDP2" object is the same sufficient statistics of the "BasicBayesian" inside the "HDP2".

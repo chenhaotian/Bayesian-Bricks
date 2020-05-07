@@ -24,8 +24,8 @@ For following model structure:
      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-     \deqn{k|z,G_m \sim Categorical(G_m),\text{ if z is a sample from the base measure G_mj}}
-     \deqn{u|k,G \sim Categorical(G),\text{ if k is a sample from the base measure G}}
+     \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+     \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
      \deqn{theta_u|psi \sim H0(psi)}
      \deqn{x|theta_u,u \sim F(theta_u)}
 where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP2" object is simply a combination of a "CatHDP2" object (see \code{?CatHDP2}) and an object of any "BasicBayesian" type.\cr

@@ -200,6 +200,7 @@ check_win_devel()
 
 ## check if any example changed the par setting
 system("grep 'par(' ./man/*")
+system("grep '\\text{*' ./man/*")
 
 devtools::release()
 
