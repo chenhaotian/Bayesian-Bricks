@@ -6,8 +6,8 @@
 \title{Samples from a hierarchical mixture model}
 \format{A list of two elements:
 \describe{
-  \item{x}{matrix, 2-dimensional Gaussian samples, each row is a sample}
-  \item{groupLabel}{integer, the group label of each Gaussian sample}
+  \item{x}{: matrix, 2-dimensional Gaussian samples, each row is a sample}
+  \item{groupLabel}{: integer, the group label of each Gaussian sample}
 }}
 \usage{
 data(mmhData)

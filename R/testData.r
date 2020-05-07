@@ -20,8 +20,8 @@
 #'
 #' @format A list of two elements:
 #' \describe{
-#'   \item{x}{matrix, 2-dimensional Gaussian samples, each row is a sample}
-#'   \item{groupLabel}{integer, the group label of each Gaussian sample}
+#'   \item{x}{: matrix, 2-dimensional Gaussian samples, each row is a sample}
+#'   \item{groupLabel}{: integer, the group label of each Gaussian sample}
 #' }
 "mmhData"
 
@@ -33,11 +33,11 @@
 #'
 #' @usage data(mmhhData)
 #'
-#' @format A list of two elements:
+#' @format A list of three elements:
 #' \describe{
-#'   \item{x}{matrix, 2-dimensional Gaussian samples, each row is a sample}
-#'   \item{groupLabel}{integer, the group label of each Gaussian sample}
-#'   \item{subGroupLabel}{integer, the subgroup label of each Gaussian sample}
+#'   \item{x}{: matrix, 2-dimensional Gaussian samples, each row is a sample}
+#'   \item{groupLabel}{: integer, the group label of each Gaussian sample}
+#'   \item{subGroupLabel}{: integer, the subgroup label of each Gaussian sample}
 #' }
 "mmhhData"
 
@@ -51,8 +51,8 @@
 #'
 #' @format A list of two elements:
 #' \describe{
-#'   \item{x}{numeric, linear samples}
-#'   \item{X}{matrix, the "locations" of the linear samples}
+#'   \item{x}{: numeric, linear samples}
+#'   \item{X}{: matrix, the "locations" of the linear samples}
 #' }
 "lrData"
 
@@ -65,9 +65,9 @@
 #'
 #' @format A list of three elements:
 #' \describe{
-#'   \item{mathScore}{numeric, the mathScore of each student}
-#'   \item{socioeconomicStatus}{numeric, the socioeconomic status score of each student}
-#'   \item{schoolID}{integer, the school ID of each student}
+#'   \item{mathScore}{: numeric, the mathScore of each student}
+#'   \item{socioeconomicStatus}{: numeric, the socioeconomic status score of each student}
+#'   \item{schoolID}{: integer, the school ID of each student}
 #' }
 #' @references Hoff, Peter D. A first course in Bayesian statistical methods. Vol. 580. New York: Springer, 2009.
 "hlrData"
@@ -83,8 +83,8 @@
 #'
 #' @format A list of two elements:
 #' \describe{
-#'   \item{word}{character, the words}
-#'   \item{document}{integer, document id of each word}
+#'   \item{word}{: character, the words}
+#'   \item{document}{: integer, document id of each word}
 #' }
 #' @source \href{https://archive.ics.uci.edu/ml/datasets/Farm+Ads}{Farm-Ads}
 "farmadsData"
@@ -111,11 +111,11 @@
 #'
 #' @usage data(hmmData)
 #'
-#' @format A list of four elements.
+#' @format A list of four elements:
 #' \describe{
-#'   \item{x}{matrix, two dimensional Gaussian observations. The observations are split into 'Nsegs' segment, see 'Nsegs' and 'breaks' below.}
-#'   \item{z}{integer vector, the real hidden states.}
-#'   \item{Nsegs}{integer, the number of segments.}
-#'   \item{breaks}{integer vector, the starting and ending locations of the segments. The ith segment start at breaks[i]+1, ends at breaks[i+1]}
+#'   \item{x}{: matrix, two dimensional Gaussian observations. The observations are split into 'Nsegs' segment, see 'Nsegs' and 'breaks' below.}
+#'   \item{z}{: integer vector, the real hidden states.}
+#'   \item{Nsegs}{: integer, the number of segments.}
+#'   \item{breaks}{: integer vector, the starting and ending locations of the segments. The ith segment start at breaks[i]+1, ends at breaks[i+1]}
 #' }
 "hmmData"

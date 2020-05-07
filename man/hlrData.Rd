@@ -6,9 +6,9 @@
 \title{Samples from a hierarchical linear model}
 \format{A list of three elements:
 \describe{
-  \item{mathScore}{numeric, the mathScore of each student}
-  \item{socioeconomicStatus}{numeric, the socioeconomic status score of each student}
-  \item{schoolID}{integer, the school ID of each student}
+  \item{mathScore}{: numeric, the mathScore of each student}
+  \item{socioeconomicStatus}{: numeric, the socioeconomic status score of each student}
+  \item{schoolID}{: integer, the school ID of each student}
 }}
 \usage{
 data(lrData)

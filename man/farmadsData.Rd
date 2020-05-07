@@ -6,8 +6,8 @@
 \title{farm ads data}
 \format{A list of two elements:
 \describe{
-  \item{word}{character, the words}
-  \item{document}{integer, document id of each word}
+  \item{word}{: character, the words}
+  \item{document}{: integer, document id of each word}
 }}
 \source{
 \href{https://archive.ics.uci.edu/ml/datasets/Farm+Ads}{Farm-Ads}

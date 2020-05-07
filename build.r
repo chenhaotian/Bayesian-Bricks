@@ -3,7 +3,7 @@ library(devtools)
 library(usethis)
 
 VERSION <- "0.1.3.9000"
-VERSION <- "0.1.3"
+VERSION <- "0.1.4"
 
 ## remove previous build
 system("rm -r man")
@@ -36,7 +36,7 @@ Authors@R:
            role = c(\"aut\", \"cre\"),
            email = \"chenhaotian.jtt@gmail.com\",
            comment = structure(\"0000-0001-9751-2093\", .Names = \"ORCID\"))
-Description: A class of frequently used Bayesian parametric and nonparametric model structures, as well as a set of tools for common analytical tasks. Structures include linear Gaussian systems, Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, sampling from posteriors, calculating marginal likelihood, calculating posterior predictive densities, sampling from posterior predictive distributions, calculating \"Maximum A Posteriori\" (MAP) estimates ... See <https://chenhaotian.github.io/Bayesian-Bricks/> to get started.
+Description: A set of frequently used Bayesian parametric and nonparametric model structures, as well as a set of tools for common analytical tasks. Structures include linear Gaussian systems, Gaussian and Normal-Inverse-Wishart conjugate structure, Gaussian and Normal-Inverse-Gamma conjugate structure, Categorical and Dirichlet conjugate structure, Dirichlet Process on positive integers, Dirichlet Process in general, Hierarchical Dirichlet Process ... Tasks include updating posteriors, sampling from posteriors, calculating marginal likelihood, calculating posterior predictive densities, sampling from posterior predictive distributions, calculating \"Maximum A Posteriori\" (MAP) estimates ... See <https://chenhaotian.github.io/Bayesian-Bricks/> to get started.
 License: What license it uses
 URL: https://github.com/chenhaotian/Bayesian-Bricks
 BugReports: https://github.com/chenhaotian/Bayesian-Bricks/issues

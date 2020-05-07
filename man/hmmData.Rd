@@ -4,12 +4,12 @@
 \name{hmmData}
 \alias{hmmData}
 \title{Samples from a hidden Markov model}
-\format{A list of four elements.
+\format{A list of four elements:
 \describe{
-  \item{x}{matrix, two dimensional Gaussian observations. The observations are split into 'Nsegs' segment, see 'Nsegs' and 'breaks' below.}
-  \item{z}{integer vector, the real hidden states.}
-  \item{Nsegs}{integer, the number of segments.}
-  \item{breaks}{integer vector, the starting and ending locations of the segments. The ith segment start at breaks[i]+1, ends at breaks[i+1]}
+  \item{x}{: matrix, two dimensional Gaussian observations. The observations are split into 'Nsegs' segment, see 'Nsegs' and 'breaks' below.}
+  \item{z}{: integer vector, the real hidden states.}
+  \item{Nsegs}{: integer, the number of segments.}
+  \item{breaks}{: integer vector, the starting and ending locations of the segments. The ith segment start at breaks[i]+1, ends at breaks[i+1]}
 }}
 \usage{
 data(hmmData)

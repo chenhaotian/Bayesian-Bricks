@@ -6,8 +6,8 @@
 \title{Samples from a simple linear model}
 \format{A list of two elements:
 \describe{
-  \item{x}{numeric, linear samples}
-  \item{X}{matrix, the "locations" of the linear samples}
+  \item{x}{: numeric, linear samples}
+  \item{X}{: matrix, the "locations" of the linear samples}
 }}
 \usage{
 data(lrData)

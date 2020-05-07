@@ -4,7 +4,7 @@
 \alias{posteriorDiscard.HDP}
 \title{Update a "HDP" object with sample sufficient statistics}
 \usage{
-\method{posteriorDiscard}{HDP}(obj, ss, ss1, ss2, j, w = NULL, ...)
+\method{posteriorDiscard}{HDP}(obj, ss = NULL, ss1, ss2 = NULL, j, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "HDP" object.}

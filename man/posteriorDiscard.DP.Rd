@@ -4,7 +4,7 @@
 \alias{posteriorDiscard.DP}
 \title{Update a "DP" object with sample sufficient statistics}
 \usage{
-\method{posteriorDiscard}{DP}(obj, ss, z, w = NULL, ...)
+\method{posteriorDiscard}{DP}(obj, ss = NULL, z, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "DP" object.}

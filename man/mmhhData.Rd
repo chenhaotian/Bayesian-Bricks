@@ -4,11 +4,11 @@
 \name{mmhhData}
 \alias{mmhhData}
 \title{Samples from a hierarchical mixture model with two layers of hierarchies}
-\format{A list of two elements:
+\format{A list of three elements:
 \describe{
-  \item{x}{matrix, 2-dimensional Gaussian samples, each row is a sample}
-  \item{groupLabel}{integer, the group label of each Gaussian sample}
-  \item{subGroupLabel}{integer, the subgroup label of each Gaussian sample}
+  \item{x}{: matrix, 2-dimensional Gaussian samples, each row is a sample}
+  \item{groupLabel}{: integer, the group label of each Gaussian sample}
+  \item{subGroupLabel}{: integer, the subgroup label of each Gaussian sample}
 }}
 \usage{
 data(mmhhData)

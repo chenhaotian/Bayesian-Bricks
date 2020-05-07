@@ -4,6 +4,20 @@
 
 
 
+
+#' @title Get the probabilities of all possible values of the hidden indicator variables from the DP family objects.
+#' @description
+#' This is a generic function that will get the probabilities of all possible values of the hidden indicator variables. i.e. for the model structure: \cr
+#'      \deqn{theta|gamma_1 \sim H1(gamma_1)}
+#'      \deqn{z|gamma_2 \sim H2(gamma_2)}
+#'      \deqn{x|theta,z \sim F(theta_z)}
+#' get p(z|x,gamma_2,gamma_1) for all possible values of z. Where H2 is either CatDP, CatHDP, CatHDP2, DP, HDP, or HDP2.
+#' @param obj A "CatDP", "CatHDP", "CatHDP2", "DP", "HDP", or a "HDP2" object used to select a method.
+#' @param ... further arguments passed to or from other methods.
+#' @return a data.frame of indicator values and their corresponding probabilities.
+#' @export
+dAllIndicators <- function(obj,...) UseMethod("dAllIndicators")
+
 #' @include Bayesian_Bricks.r Categorical_Inference.r Gaussian_Inference.r Gamma_Inference.r
 
 
@@ -201,6 +215,7 @@ posterior.CatDP <- function(obj,ss,w=NULL,...){
         if(!is.integer(ss)) stop("'ss' must be a 'ssCatDP' object or an integer vector!")
         if(!is.null(w)){
             if(!is.vector(w)) w <- as.vector(w)
+            if(length(w)==1L & length(ss)>1L) w <- rep(w,length(ss))
             if(length(ss)!=length(w)) stop("length of 'ss' and 'w' don't match!")
             if(length(ss)==1L){
                 if(is.na(obj$gamma$nk[ss])) obj$gamma$nk[ss] <- w
@@ -329,6 +344,7 @@ posteriorDiscard.CatDP <- function(obj,ss,w=NULL,...){
         if(!is.integer(ss)) stop("'ss' must be a 'ssCatDP' object or an integer vector!")
         if(!is.null(w)){
             if(!is.vector(w)) w <- as.vector(w)
+            if(length(w)==1L & length(ss)>1L) w <- rep(w,length(ss))
             if(length(ss)!=length(w)) stop("length of 'ss' and 'w' don't match!")
             if(length(ss)==1L){
                 if(is.na(obj$gamma$nk[ss])) stop("No way to discard label that has never been observed before")
@@ -660,10 +676,11 @@ posterior.CatHDP <- function(obj,ss1,ss2,j,w=NULL,...){
     if(!is.integer(j) | j<=0L) stop("'j' must be a positive integer.")
 
     if(length(obj$Z2)<j){                #if there's new group label observed
+        shortage <- j-length(obj$Z2)
         obj$Z2 <- c(obj$Z2,
-                    replicate(n = j-length(obj$Z2), expr = do.call("CatDP",list(ENV=obj,gamma=list(alpha=obj$gamma$alpha))),simplify = FALSE))
+                    replicate(n = shortage, expr = do.call("CatDP",list(ENV=obj,gamma=list(alpha=obj$gamma$alpha))),simplify = FALSE))
         obj$Z12map <- c(obj$Z12map,
-                        replicate(n = j-length(obj$Z2),expr = integer(0),simplify = FALSE))
+                        replicate(n = shortage,expr = integer(0),simplify = FALSE))
     }
     posterior(obj = obj$Z2[[j]],ss=ss2,w=w)
     if(is.null(w)) w <- 1
@@ -879,10 +896,11 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
     if(!is.integer(ss1) | ss1<=0L) stop("'ss1' must be a positive integer.")
 
     if(length(obj$Z2)<m){                #if there's new group label observed
+        shortage <- m-length(obj$Z2)
         obj$Z2 <- c(obj$Z2,
-                    lapply(1L:(m-length(obj$Z2)),function(M){CatHDP(ENV = obj,gamma = list(gamma=obj$gamma$gamma,alpha=obj$gamma$alpha,j=1L))}))
+                    lapply(1L:shortage,function(M){CatHDP(ENV = obj,gamma = list(gamma=obj$gamma$gamma,alpha=obj$gamma$alpha,j=1L))}))
         obj$Z12map <- c(obj$Z12map,
-                        replicate(n = m-length(obj$Z2),expr = integer(0),simplify = FALSE))
+                        replicate(n = shortage,expr = integer(0),simplify = FALSE))
     }
     posterior.CatHDP(obj = obj$Z2[[m]],ss1 = ss2,ss2=ss3,w=w,j=j)
 
@@ -1108,7 +1126,7 @@ DP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
         object$H0aF <- gamma$H0aF
         object$Z <- CatDP(ENV = object,gamma = list(alpha=gamma$alpha)) #a CatDP object for partition distribution
         object$H <- do.call(gamma$H0aF,list(ENV = object,gamma=gamma$parH0)) #a object of class specified by H0aF for observation distribution, new() will create the object according to class representation of setClass(), so use do.call() instead
-        object$X <- list()                                      #the list of observation distributions for each partition
+        object$X <- list(do.call(gamma$H0aF,list(objCopy=object$H,ENV=object)))                                      #the list of observation distributions for each partition, initialized for only 1 partition
     }
     class(object) <- c('DP',"BayesianBrick")
     return(object)
@@ -1215,15 +1233,15 @@ sufficientStatistics_Weighted.DP <- function(obj,x,w,...){
 #' for(i in 1L:length(z)) posterior(obj = obj,ss = ss[[i]],z=z[i])
 #' obj
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posterior.DP <- function(obj,ss,z,w=NULL,...){
-    if(missing(ss)|missing(z)) stop("'ss' and 'z' must be specified")
+posterior.DP <- function(obj,ss=NULL,z,w=NULL,...){
+    if(missing(z)) stop("'z' must be specified")
     if(length(z)>1L) stop("posterior.DP can only update from observations one at a time")
     if(!is.integer(z) | z<=0L) stop("'z' must be a positive integer.")
     if(length(obj$X)<z)
         obj$X <- c(obj$X,
                    replicate(n = z-length(obj$X), expr = do.call(obj$H0aF,list(objCopy=obj$H,ENV=obj)),simplify = FALSE))
     posterior(obj = obj$Z,ss=z,w=w)
-    posterior(obj = obj$X[[z]],ss = ss,w=w)
+    if(!is.null(ss)) posterior(obj = obj$X[[z]],ss = ss,w=w)
 }
 
 #' @title Update a "DP" object with sample sufficient statistics
@@ -1253,10 +1271,10 @@ posterior.DP <- function(obj,ss,z,w=NULL,...){
 #' for(i in 1L:length(z)) posteriorDiscard(obj = obj,ss = ss[[i]],z=z[i])
 #' obj
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posteriorDiscard.DP <- function(obj,ss,z,w=NULL,...){
-    if(missing(ss)|missing(z)) stop("'ss' and 'z' must be specified")
+posteriorDiscard.DP <- function(obj,ss=NULL,z,w=NULL,...){
+    if(missing(z)) stop("'z' must be specified")
     posteriorDiscard(obj = obj$Z,ss=z,w=w)
-    posteriorDiscard(obj = obj$X[[z]],ss = ss,w=w)
+    if(!is.null(ss)) posteriorDiscard(obj = obj$X[[z]],ss = ss,w=w)
 }
 
 #' @title Marginal likelihood for Dirichlet Process(DP)
@@ -1460,11 +1478,12 @@ HDP <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
                (!all(names(gamma) %in% c("gamma","alpha","j","H0aF","parH0"))))
                 stop("gamma must be of list(gamma,j,alpha,H0aF,parH0)")
         if(!is.character(gamma$H0aF) | length(gamma$H0aF)!=1) stop("'H0aF' must be a length 1 character specifying the name of the BasicBayesian class")
+        if(!"j" %in% names(gamma)) gamma$j <- 1L
         if(!is.integer(gamma$j)) gamma$j <- as.integer(gamma$j)
         object$gamma <- gamma
         object$Z <- CatHDP(ENV = object,gamma = list(gamma=gamma$gamma,j=gamma$j,alpha=gamma$alpha))
         object$H <- do.call(gamma$H0aF,list(ENV = object,gamma=gamma$parH0)) #a object of class specified by H0aF for observation distribution, new() will create the object according to class representation of setClass(), so use do.call() instead
-        object$X <- list()                                      #the list of observation distributions for each partition
+        object$X <- list(do.call(gamma$H0aF,list(objCopy=object$H,ENV=object)))                                      #the list of observation distributions for each partition, initialized for only 1 partition(because there's always at least 1 partition)
     }
     class(object) <- c('HDP',"BayesianBrick")
     return(object)
@@ -1588,17 +1607,20 @@ sufficientStatistics_Weighted.HDP <- function(obj,x,w,...){
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1" and "ss2".
 #' @export
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
-    if(missing(ss)|missing(ss2)|missing(j)|missing(ss1)) stop("'ss','ss2','j' and 'ss1' must all be specified")
-    if(length(ss2)>1L) stop("posterior.HDP can only update from observations one at a time, for now")
-    if(!is.integer(ss2) | ss2<=0L) stop("'ss2' must be a positive integer.")
-    if(!is.integer(j) | j<=0L) stop("'j' must be a positive integer.")
+posterior.HDP <- function(obj,ss=NULL,ss1,ss2=NULL,j,w=NULL,...){
+    if(missing(j)|missing(ss1)) stop("'j' and 'ss1' must be specified")
+    if(length(ss1)>1L) stop("posterior.HDP can only update from observations one at a time, for now")
     if(!is.integer(ss1) | ss1<=0L) stop("'ss1' must be a positive integer.")
+    if(!is.integer(j) | j<=0L) stop("'j' must be a positive integer.")
+    if(missing(ss)&missing(ss2)) stop("'ss2' must be specified when 'ss' is missing")
+    if(!is.null(ss2))
+        if(!is.integer(ss2) | ss2<=0L) stop("'ss2' must be a positive integer.")
     if(length(obj$X)<ss1)
         obj$X <- c(obj$X,
                    replicate(n = ss1-length(obj$X), expr = do.call(obj$gamma$H0aF,list(objCopy=obj$H,ENV=obj)),simplify = FALSE))
     posterior(obj = obj$Z,ss1 = ss1,ss2 = ss2,j = j,w = w)
-    posterior(obj = obj$X[[ss1]],ss = ss,w=w)
+    if(!is.null(ss))
+        posterior(obj = obj$X[[ss1]],ss = ss,w=w)
 }
 
 #' @title Update a "HDP" object with sample sufficient statistics
@@ -1625,10 +1647,11 @@ posterior.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #' @return None. the model stored in "obj" will be updated based on "ss1" and "ss2".
 #' @export
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
-    if(missing(ss)|missing(ss2)|missing(j)|missing(ss1)) stop("'ss','ss2','j' and 'ss1' must all be specified")
+posteriorDiscard.HDP <- function(obj,ss=NULL,ss1,ss2=NULL,j,w=NULL,...){
+    if(missing(j)|missing(ss1)) stop("'j' and 'ss1' must be specified")
     posteriorDiscard(obj = obj$Z,ss1 = ss1,ss2 = ss2,j = j,w = w)
-    posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
+    if(!is.null(ss))
+        posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
 }
 
 #' @title Marginal likelihood for HDP
@@ -1638,6 +1661,62 @@ posteriorDiscard.HDP <- function(obj,ss,ss1,ss2,j,w=NULL,...){
 #' @export
 marginalLikelihood.HDP <- function(obj,...){
     stop("marginalLikelihood for this type not implemented yet")
+}
+
+#' @title Get the probabilities of all possible values of the hidden indicator variables of an "HDP" object.
+#' @description
+#' Get p(z,k|gamma,alpha,psi,j,x), or p(z,k|gamma,alpha,psi,j) for the model structure:
+#'      \deqn{G|gamma \sim DP(gamma,U)}
+#'      \deqn{pi_j|G,alpha \sim DP(alpha,G), j = 1:J}
+#'      \deqn{z|pi_j \sim Categorical(pi_j)}
+#'      \deqn{k|z,G \sim Categorical(G), \text{ if z is a sample from the base measure G}}
+#'      \deqn{theta_k|psi \sim H0(psi)}
+#'      \deqn{x|theta_k,k \sim F(theta_k)}
+#' where DP(gamma,U) is a Dirichlet Process on positive integers, gamma is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(alpha,G) is a Dirichlet Process on integers with concentration parameter alpha and base measure G. The choice of F() and H0() can be described by an arbitrary "BasicBayesian" object such as "GaussianGaussian","GaussianInvWishart","GaussianNIW", "GaussianNIG", "CatDirichlet", and "CatDP". See \code{?BasicBayesian} for definition of "BasicBayesian" objects, and see for example \code{?GaussianGaussian} for specific "BasicBayesian" instances. As a summary, An "HDP" object is simply a combination of a "CatHDP" object (see \code{?CatHDP}) and an object of any "BasicBayesian" type.\cr
+#' In the case of HDP, z and k can only be positive integers. \cr
+#' This function will return all possible values of z, k and their corresponding probabilities
+#' @param obj A "HDP" object.
+#' @param j integer, the group ID.
+#' @param x the observation. The data type of x must fit the observation distribution specified by "H0aF" when initiating the "HDP" object.
+#' @param ... further arguments passed to or from other methods.
+#' @return a data.frame of three columns, the first two columns are all possible values of z and k, the third column is the corresponding probabilities.
+#' @export
+dAllIndicators.HDP <- function(obj,j,x=NULL,...){
+    if(missing(j)) stop("'j' must be specified.")
+    allz <- which(obj$Z$Z2[[j]]$gamma$nk>0)
+    allk <- which(obj$Z$Z1$gamma$nk>0)
+    
+    probs <- data.frame(
+        z=c(allz,rep(obj$Z$Z2[[j]]$gamma$newLabel,length(allk)+1L)),
+        k=c(obj$Z$Z12map[[j]][allz],allk,obj$Z$Z1$gamma$newLabel),
+        p=c((obj$Z$Z2[[j]]$gamma$prop*obj$Z$Z2[[j]]$gamma$pFreq)[allz],
+        (obj$Z$Z1$gamma$prop*obj$Z$Z1$gamma$pFreq*obj$Z$Z2[[j]]$gamma$pH0)[allk],
+        obj$Z$Z2[[j]]$gamma$pH0*obj$Z$Z1$gamma$pH0),
+        stringsAsFactors = FALSE
+    )
+
+    if(!is.null(x)){
+        if(is.vector(x)){
+            x <- matrix(x, ncol = 1)
+        }else if(!.is(x,"matrix")){
+            stop("'x' must be a vector(univariate) or a matrix(multivariate)!")
+        }
+        if(nrow(x)>1L) stop("There can only be one observation in 'x', so 'x' must be a matrix of only 1 row.")
+        if(length(obj$Z$Z1$gamma$nk)>0){
+            lpx <- vapply(seq_along(obj$Z$Z1$gamma$nk),function(ki){
+                if(ki>0) dPosteriorPredictive(obj = obj$X[[ki]],x = x,LOG = TRUE)
+                else as.numeric(NA)
+            },FUN.VALUE = numeric(1),USE.NAMES = FALSE)
+            lpx <- lpx[probs$k]
+            lpx[is.na(lpx)] <- dPosteriorPredictive(obj = obj$H,x = x,LOG = TRUE)
+        }else{
+            lpx <- dPosteriorPredictive(obj = obj$H,x = x,LOG = TRUE)
+        }
+        probs$p <- log(probs$p)+lpx
+        probs$p <- exp(probs$p-logsumexp(probs$p))
+    }
+
+    probs
 }
 
 #' @title Posterior predictive density function of a "HDP" object
@@ -1719,6 +1798,13 @@ dPosteriorPredictive.HDP <- function(obj,x=NULL,z,k,j,LOG=TRUE,...){
 rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
     if(missing(x)|missing(j)) stop("'x' and 'j'must be specified")
     if(n>1) stop("for now only support n=1")
+    if(length(obj$Z$Z2)<j){                #if there's new group label observed
+        shortage <- j-length(obj$Z$Z2)
+        obj$Z$Z2 <- c(obj$Z$Z2,
+                    replicate(n = shortage, expr = do.call("CatDP",list(ENV=obj,gamma=list(alpha=obj$gamma$alpha))),simplify = FALSE))
+        obj$Z$Z12map <- c(obj$Z$Z12map,
+                        replicate(n = shortage,expr = integer(0),simplify = FALSE))
+    }
     allz <- which(obj$Z$Z2[[j]]$gamma$nk>0)
     allk <- which(obj$Z$Z1$gamma$nk>0)
     zs <- c(allz,rep(obj$Z$Z2[[j]]$gamma$newLabel,length(allk)+1L))
@@ -1726,7 +1812,7 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
     probs <- dPosteriorPredictive(obj = obj,x=x,z=zs,k=ks,j=j,LOG = TRUE)
     probs <- exp(probs-max(probs))
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
-    c(z=zs[idx],k=ks[idx])
+    c(z=unname(zs[idx]),k=unname(ks[idx]))
 }
 
 #' @title Create objects of type "HDP2".
@@ -1829,7 +1915,7 @@ HDP2 <- function(objCopy=NULL,ENV=parent.frame(),gamma=list(
         object$gamma <- gamma
         object$Z <- CatHDP2(ENV = object,gamma = list(eta=gamma$eta,gamma=gamma$gamma,alpha=gamma$alpha,m=gamma$m,j=gamma$j))
         object$H <- do.call(gamma$H0aF,list(ENV = object,gamma=gamma$parH0)) #a object of class specified by H0aF for observation distribution, new() will create the object according to class representation of setClass(), so use do.call() instead
-        object$X <- list()                                      #the list of observation distributions for each partition
+        object$X <- list(do.call(gamma$H0aF,list(objCopy=object$H,ENV=object)))                                      #the list of observation distributions for each partition, initialized for only 1 partition(because there's always at least 1 partition)
     }
     class(object) <- c('HDP2',"BayesianBrick")
     return(object)
@@ -1960,13 +2046,14 @@ sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1", "ss2"and "ss3".
 #' @export
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
+posterior.HDP2 <- function(obj,ss=NULL,ss1,ss2,ss3,m,j,w=NULL,...){
     if(length(ss2)>1L) stop("posterior.HDP2 can only update from observations one at a time, for now")
     if(length(obj$X)<ss1)
         obj$X <- c(obj$X,
                    replicate(n = ss1-length(obj$X), expr = do.call(obj$gamma$H0aF,list(objCopy=obj$H,ENV=obj)),simplify = FALSE))
     posterior(obj = obj$Z,ss1 = ss1,ss2 = ss2,ss3 = ss3,m=m,j = j,w = w)
-    posterior(obj = obj$X[[ss1]],ss = ss,w=w)
+    if(!is.null(ss))
+        posterior(obj = obj$X[[ss1]],ss = ss,w=w)
 }
 
 #' @title Update a "HDP2" object with sample sufficient statistics
@@ -1997,10 +2084,10 @@ posterior.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
 #' @return None. the model stored in "obj" will be updated based on "ss", "ss1", "ss2"and "ss3".
 #' @export
 #' @references Teh, Yee W., et al. "Sharing clusters among related groups: Hierarchical Dirichlet processes." Advances in neural information processing systems. 2005.
-posteriorDiscard.HDP2 <- function(obj,ss,ss1,ss2,ss3,m,j,w=NULL,...){
-    if(missing(ss)|missing(j)|missing(m)) stop("'ss', 'j' and 'm' must all be specified")
+posteriorDiscard.HDP2 <- function(obj,ss=NULL,ss1,ss2,ss3,m,j,w=NULL,...){
     posteriorDiscard(obj = obj$Z,ss1 = ss1,ss2 = ss2,ss3 = ss3,m = m,j = j,w = w)
-    posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
+    if(!is.null(ss))
+        posteriorDiscard(obj = obj$X[[ss1]],ss = ss,w=w)
 }
 
 #' @title Marginal likelihood for HDP2
@@ -2099,6 +2186,7 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j,...){
     if(missing(x)|missing(j)|missing(m)) stop("'x', 'm'and 'j'must be specified")
     if(n>1) stop("for now only support n=1")
 
+    
     allz <- which(obj$Z$Z2[[m]]$Z2[[j]]$gamma$nk>0)
     allk <- which(obj$Z$Z2[[m]]$Z1$gamma$nk>0)
     allu <- which(obj$Z$Z1$gamma$nk>0)
@@ -2111,5 +2199,5 @@ rPosteriorPredictive.HDP2 <- function(obj,n=1,x,m,j,...){
     probs <- dPosteriorPredictive.HDP2(obj = obj,x=x,u=us,k=ks,z=zs,m=m,j=j,LOG = TRUE)
     probs <- exp(probs-max(probs))
     idx <- sample.int(length(zs),size = n,replace = TRUE,prob = probs)
-    c(u=us[idx],k=ks[idx],z=zs[idx])
+    c(u=unname(us[idx]),k=unname(ks[idx]),z=unname(zs[idx]))
 }

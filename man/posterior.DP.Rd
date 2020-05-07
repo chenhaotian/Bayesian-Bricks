@@ -4,7 +4,7 @@
 \alias{posterior.DP}
 \title{Update a "DP" object with sample sufficient statistics}
 \usage{
-\method{posterior}{DP}(obj, ss, z, w = NULL, ...)
+\method{posterior}{DP}(obj, ss = NULL, z, w = NULL, ...)
 }
 \arguments{
 \item{obj}{A "DP" object.}
