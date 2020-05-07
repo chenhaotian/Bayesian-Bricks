@@ -41,8 +41,8 @@ devtools::install_github("chenhaotian/Bayesian-Bricks")
 + [Hierarchical Mixture Models with Two Layers of Hierarchies](#hierarchical-mixture-models-with-two-layers-of-hierarchies)
   + [Hierarchical Topic Modeling with HDP2](#hierarchical-topic-modeling-with-hdp2)
 + [Bayesian Linear Regression](#bayesian-linear-regression)
-+ [Hidden Markov Model](#hidden-markov-model-(hmm))
-+ [Infinite States Hidden Markov Model (HDP-HMM)](#infinite-states-hidden-markov-model-(hdp-hmm))
++ [Hidden Markov Model (HMM)](#hidden-markov-model-hmm)
++ [Infinite States Hidden Markov Model (HDP-HMM)](#infinite-states-hidden-markov-model-hdp-hmm)
 
 [3.References](#references)
 
