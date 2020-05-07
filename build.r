@@ -170,6 +170,11 @@ install.packages(paste0("../bbricks_",VERSION,".tar.gz")) #different from instal
 
 library(bbricks)
 
+## Very important step!!
+system("cd .. && R CMD build bbricks")
+system(paste0("R CMD check ../bbricks_",VERSION,".tar.gz"))
+
+
 remove.packages("bbricks")
 ## uninstall()
 ## remove.packages("bbricks")

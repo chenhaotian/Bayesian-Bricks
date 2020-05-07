@@ -800,7 +800,7 @@ rPosteriorPredictive.CatHDP <- function(obj,n=1L,j,...){
 #'      \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G), \textrm{ if k is a sample from the base measure G}}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
@@ -873,7 +873,7 @@ print.CatHDP2 <- function(x,...){
 #'      \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G), \textrm{ if k is a sample from the base measure G}}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
@@ -917,7 +917,7 @@ posterior.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
 #'      \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G), \textrm{ if k is a sample from the base measure G}}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
@@ -951,7 +951,7 @@ posteriorDiscard.CatHDP2 <- function(obj,ss1,ss2,ss3,m,j,w=NULL,...){
 #'      \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G), \textrm{ if k is a sample from the base measure G}}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
@@ -998,7 +998,7 @@ dPosteriorPredictive.CatHDP2 <- function(obj,u,k,z,m,j,LOG=TRUE,...){
 #'      \deqn{G_m|gamma \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m), \textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G), \textrm{ if k is a sample from the base measure G}}
 #' where DP(eta,U) is a Dirichlet Process on positive integers, eta is the "concentration parameter", U is the "base measure" of this Dirichlet process, U is an uniform distribution on all positive integers.  DP(gamma,G) is a Dirichlet Process on integers with concentration parameter gamma and base measure G. DP(alpha,G_m) is a Dirichlet Process on integers with concentration parameter alpha and base measure G_m. Categorical() is the Categorical distribution. See \code{dCategorical} for the definition of the Categorical distribution. \cr
 #' In the case of CatHDP2, u, z and k can only be positive integers. \cr
@@ -1822,7 +1822,7 @@ rPosteriorPredictive.HDP <- function(obj,n=1,x,j,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_m}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_m}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -1944,7 +1944,7 @@ print.HDP2 <- function(x,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -1983,7 +1983,7 @@ sufficientStatistics.HDP2 <- function(obj,x,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure } G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -2025,7 +2025,7 @@ sufficientStatistics_Weighted.HDP2 <- function(obj,x,w,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -2063,7 +2063,7 @@ posterior.HDP2 <- function(obj,ss=NULL,ss1,ss2,ss3,m,j,w=NULL,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -2106,7 +2106,7 @@ marginalLikelihood.HDP2 <- function(obj,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
@@ -2163,7 +2163,7 @@ dPosteriorPredictive.HDP2 <- function(obj,x=NULL,u,k,z,m,j,LOG=TRUE,...){
 #'      \deqn{G_m|gamma,G \sim DP(gamma,G), m = 1:M}
 #'      \deqn{pi_{mj}|G_m,alpha \sim DP(alpha,G_m), j = 1:J_m}
 #'      \deqn{z|pi_{mj} \sim Categorical(pi_{mj})}
-#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure G_mj}}
+#'      \deqn{k|z,G_m \sim Categorical(G_m),\textrm{ if z is a sample from the base measure }G_{mj}}
 #'      \deqn{u|k,G \sim Categorical(G),\textrm{ if k is a sample from the base measure G}}
 #'      \deqn{theta_u|psi \sim H0(psi)}
 #'      \deqn{x|theta_u,u \sim F(theta_u)}
