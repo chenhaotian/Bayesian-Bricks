@@ -1,3 +1,9 @@
+# bbricks 0.1.5 (2021-01-16)
+
+## Bug fixes
+
++ Fixed bug: bbricks::pdsInverse returns wrong value when the input is not a matrix.
+
 # bbricks 0.1.4 (2020-05-07)
 
 ## New features

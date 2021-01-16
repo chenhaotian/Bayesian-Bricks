@@ -4,6 +4,7 @@ library(usethis)
 
 VERSION <- "0.1.3.9000"
 VERSION <- "0.1.4"
+VERSION <- "0.1.5"
 
 ## remove previous build
 system("rm -r man")

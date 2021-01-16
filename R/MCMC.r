@@ -1,6 +1,4 @@
 
-
-
 #' Metropolis-Hastings sampler
 #' 
 #' sample xhat from the target distribution p(xhat), with given proposal distribution q(xhat|x), the acceptance rate is: \cr

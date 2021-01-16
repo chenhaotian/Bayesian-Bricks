@@ -1112,7 +1112,7 @@ pdsInverse <- function(S,returnUpper=FALSE){
         if(returnUpper==FALSE)
             return(1/S)
         else
-            return(sqrt(S))
+            return(sqrt(1/S))
     }else{
         A <- chol(S)                              #Cholesky decomposition S=A'A
         Ai <- backsolve(A,diag(nrow(S)))          #A_i = A^(-1)
